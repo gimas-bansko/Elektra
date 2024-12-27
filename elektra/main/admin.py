@@ -11,3 +11,7 @@ class ThemeItemV(admin.ModelAdmin):
     list_display_links = ('title', )
     list_filter = ('theme_id', )
     ordering = ('item', )
+
+admin.site.register(Task)
+admin.site.register(TaskItem)
+admin.site.register(School)

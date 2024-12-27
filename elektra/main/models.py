@@ -2,10 +2,38 @@ from django.contrib.auth.models import User
 from django.db import models  
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from .utils import *
 
-# ****************************************
-#             потребители
-# ****************************************
+""" 
+***************************************
+               Училища
+***************************************
+"""
+class School(models.Model):
+    short_name = models.CharField('Абревиатура', max_length=20, default='', blank=True,
+                                  help_text='Съкратено име на училището')
+    full_name = models.TextField('Име', default='', blank=True, help_text='Пълно име на училището')
+    city = models.CharField('Населено място', max_length=50, default='', blank=True,
+                            help_text='Населено място, където се намира училището')
+    address = models.CharField('Адрес', max_length=50, default='', blank=True,
+                            help_text='Адрес в населеното място (ул. ... №...)')
+    phone_number = models.CharField('Телефон', max_length=15, default='', blank=True)
+    email = models.CharField('e-mail', max_length=35, default='', blank=True)
+    boss = models.CharField('Директор', max_length=50, default='', blank=True,
+                            help_text='Име на директора на училището')
+
+    def __str__(self):
+        return f'{self.short_name} {self.city}'
+
+    class Meta:
+        verbose_name = 'Училище/организация'
+        verbose_name_plural = 'Училища/организации'
+
+"""
+***************************************
+            Потребители
+***************************************
+"""
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  
     phone_number = models.CharField(max_length=15, blank=True)  
@@ -73,3 +101,75 @@ class ThemeItem(models.Model):
         verbose_name = 'Тема - точка'
         verbose_name_plural = 'Теми - точки'
 
+""" 
+***************************************
+        Въпроси и отговори към тях
+***************************************
+
+"""
+class ImageField(models.ImageField):
+    def value_to_string(self, obj):
+        return obj.pic.url
+
+# Въпроси - формулировка
+class TaskManager(models.Manager):
+    def create_task(self, itm):
+        item = self.create(item=itm)
+        return item
+
+
+class Task(models.Model):
+    item = models.ForeignKey(ThemeItem, on_delete=models.CASCADE, null=True, related_name='tasks_knowledge')
+    num = models.PositiveSmallIntegerField(default=0, help_text='генерира се автоматично')
+    text = models.TextField('Въпрос', default='', blank=True, help_text='Формулировка (текст) на въпроса')
+    type = models.PositiveSmallIntegerField(choices=TASK_TYPE, default=TYPE1, help_text='тип на въпроса')
+    picture = models.ImageField('Картинка', upload_to='task_pics', blank=True)
+    group = models.PositiveSmallIntegerField(default=0, help_text='0 - ако не е групирано')
+    mark_red = models.BooleanField('Червен маркер', null=True, default=False)
+    mark_green = models.BooleanField('Зелен маркер', null=True, default=False)
+    mark_yellow = models.BooleanField('Жълт маркер', null=True, default=False)
+    themes = models.ManyToManyField(Theme, blank=True)
+
+    objects = TaskManager()
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name = 'Въпрос'
+        verbose_name_plural = 'Въпроси'
+
+
+# Въпроси - опции
+class TaskItemManager(models.Manager):
+    def create_task(self, task_id):
+        item = self.create(task=task_id)
+        return item
+
+
+class TaskItem(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, related_name='options')
+    leading_char = models.CharField('Водещ символ', max_length=4, default='', blank=True, help_text='№ или буква')
+    text = models.CharField('Текст', max_length=200, default='', blank=True, help_text='Формулировка (текст) на опцията(отговора)')
+    value = models.CharField('Стойност', max_length=20, default='', blank=True, help_text='Отговор - стойност')
+    value_name = models.CharField("Стойност - име", max_length=200, default='', blank=True, help_text='Отговор - име')
+    checked = models.BooleanField('Отговор - маркирано', null=True, help_text='Отговор за опции с маркиране')
+    checked_t = models.BooleanField('Отговор - маркирано', null=True, help_text='генерира се автоматично')
+    value_t = models.CharField('Стойност', max_length=20, default='', blank=True, help_text='генерира се автоматично')
+
+    objects = TaskItemManager()
+
+    def __str__(self):
+        return f'{self.leading_char} {self.text}'
+
+    class Meta:
+        verbose_name = 'Въпрос - опция'
+        verbose_name_plural = 'Въпроси - опции'
+
+
+""" 
+***************************************
+        Въпроси и отговори към тях
+***************************************
+
+"""
