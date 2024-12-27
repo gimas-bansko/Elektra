@@ -86,7 +86,8 @@ DATABASES = {
     }
 }
 
-
+# Промени в данните за потребителите
+AUTH_USER_MODEL = 'yourapp.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
