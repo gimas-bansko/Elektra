@@ -15,3 +15,10 @@ class ThemeItemV(admin.ModelAdmin):
 admin.site.register(Task)
 admin.site.register(TaskItem)
 admin.site.register(School)
+
+@admin.register(Log)
+class LogV(admin.ModelAdmin):
+    list_display = ('user_name', 'action', 'date' )
+    list_display_links = ('user_name', 'action', )
+    list_filter = ('user_name', 'action', )
+    ordering = ('-date', )

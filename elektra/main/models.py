@@ -3,6 +3,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .utils import *
+from datetime import datetime
+from django.utils import timezone
 
 """ 
 ***************************************
@@ -169,7 +171,18 @@ class TaskItem(models.Model):
 
 """ 
 ***************************************
-        Въпроси и отговори към тях
+        Логове
 ***************************************
-
 """
+class Log(models.Model):
+    user_id = models.IntegerField('id на потрбител', default=0)
+    user_name = models.CharField('име на потрбител', max_length=50, default='', null=True)
+    action = models.CharField('Действие', max_length=200, default='')
+    date = models.DateTimeField('дата и час', default=timezone.now, null=True)
+
+    def __str__(self):
+        return '('+str(self.date)+') '+self.user_name+'/ '+self.action
+
+    class Meta:
+        verbose_name = 'Действие'
+        verbose_name_plural = 'Действия'

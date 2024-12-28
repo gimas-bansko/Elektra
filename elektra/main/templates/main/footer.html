@@ -22,85 +22,7 @@
                         </div>
                     </div>
                     <div class="separator-animated animated-true mt--50 mb--50"></div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                            <div class="rainbow-footer-widget">
-                                <h4 class="title">Newsletter</h4>
-                                <div class="inner">
-                                    <h6 class="subtitle">2000+ Our clients are subscribe Around the World</h6>
-                                    <form class="newsletter-form" action="#">
-                                        <div class="form-group">
-                                            <input type="email" placeholder="Enter Your Email Here">
-                                            <button class="btn-default bg-solid-primary" type="submit"><i
-                                            class="feather-arrow-right"></i></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-sm-6 col-12">
-                            <div class="rainbow-footer-widget">
-                                <div class="widget-menu-top">
-                                    <h4 class="title">Services</h4>
-                                    <div class="inner">
-                                        <ul class="footer-link link-hover">
-                                            <li><a href="image-generator.html">Image Generator</a></li>
-                                            <li><a href="vedio-generator.html">Video Generator</a></li>
-                                            <li><a href="text-generator.html">Text Generator</a></li>
-                                            <li><a href="code-generator.html">Code Generator</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-sm-6 col-12">
-                            <div class="rainbow-footer-widget">
-                                <div class="widget-menu-bottom">
-                                    <h4 class="title">Products</h4>
-                                    <div class="inner">
-                                        <ul class="footer-link link-hover">
-                                            <li><a href="utilize.html">About</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="roadmap.html">Roadmap</a></li>
-                                            <li><a href="terms-policy.html">Terms Policy</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-sm-6 col-12">
-                            <div class="rainbow-footer-widget">
-                                <div class="widget-menu-top">
-                                    <h4 class="title">Company</h4>
-                                    <div class="inner">
-                                        <ul class="footer-link link-hover">
-                                            <li><a href="#">Corporate</a></li>
-                                            <li><a href="#">Portfolio</a></li>
-                                            <li><a href="#">SEO Agency</a></li>
-                                            <li><a href="#">Web Agency</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-sm-6 col-12">
-                            <div class="rainbow-footer-widget">
-                                <div class="widget-menu-bottom">
-                                    <h4 class="title">Solutions</h4>
-                                    <div class="inner">
-                                        <ul class="footer-link link-hover">
-                                            <li><a href="#">Gallery</a></li>
-                                            <li><a href="team.html">Testimonial</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="roadmap.html">Roadmap</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                 </div>
             </div>
         </footer>
         <!-- End Footer Area  -->
@@ -113,13 +35,13 @@
                         <div class="copyright-left">
                             <ul class="ft-menu link-hover">
                                 <li>
-                                    <a href="privacy-policy.html">Политика за сигурност</a>
+                                    <a href="{% url 'privacy' %}">Политика за сигурност</a>
                                 </li>
                                 <li>
-                                    <a href="terms-policy.html">Условия за ползване</a>
+                                    <a href="{% url 'terms' %}">Условия за ползване</a>
                                 </li>
                                 <li>
-                                    <a href="contact.html">Свържете се с нас</a>
+                                    <a href="{% url 'contact' %}">Свържете се с нас</a>
                                 </li>
                             </ul>
                         </div>

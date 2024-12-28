@@ -14,7 +14,7 @@
         </div>
 
         <!-- Start Sign up Area  -->
-        <div class="signup-area rainbow-section-gapTop-big" data-black-overlay="2">
+        <div class="signup-area" data-black-overlay="2">
             <div class="sign-up-wrapper rainbow-section-gap">
                 <div class="sign-up-box bg-flashlight">
                     <div class="signup-box-top top-flashlight light-xl">
@@ -40,14 +40,15 @@
                                 <span>Или влезте </span>
                                 <hr>
                             </div>
-                            <form>
+                            <form method="post">
+                                {% csrf_token %}
                                 <div class="input-section mail-section">
                                     <div class="icon"><i class="feather-user"></i></div>
-                                    <input type="text" placeholder="Потребителско име">
+                                    {{ form.username }}
                                 </div>
                                 <div class="input-section password-section">
                                     <div class="icon"><i class="feather-lock"></i></div>
-                                    <input type="password" placeholder="Парола">
+                                    {{ form.password }}
                                 </div>
                                 <div class="forget-text"><a class="btn-read-more" href="#"><span>Забравена парола</span></a></div>
                                 <button type="submit" class="btn-default">Вход</button>
