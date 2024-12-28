@@ -10,3 +10,16 @@ def signin(request):
 
 def signup(request):
     return render(request, 'main/signup.html')
+
+def dzi_home(request):
+    return render(request, 'main/dzi_splash.html')
+
+def terms_and_conditions(request):
+    return render(request, 'main/dzi_splash.html')
+
+def dzi_home(request):
+    return render(request, 'main/dzi_splash.html')
+
+def dzi_home(request):
+    return render(request, 'main/dzi_splash.html')
+
