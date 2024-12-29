@@ -8,4 +8,5 @@ urlpatterns = [
     path('contact', views.contact, name='contact'),
     path('privacy_policy', views.privacy_policy, name='privacy'),
     path('terms_policy', views.terms_policy, name='terms'),
+    path('dashboard_dzi', views.dashboard_dzi, name='home_dzi'),
 ]

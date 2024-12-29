@@ -25,6 +25,25 @@ LEVEL_TYPE = [
     (LEVEL4, 'анализ'),
 ]
 
+# Теми за визията на интерфейса
+DARK = 1
+LIGHT = 2
+THEME_TYPE = [
+    (DARK, 'тъмна'),
+    (LIGHT, 'светла'),
+]
+
+# Роли
+SUPERADMIN= 1
+GUESTADMIN = 2
+SCHOOLADMIN = 3
+TEACHER = 4
+STUDENT = 5
+
+USER_LEVEL = [
+    (DARK, 'тъмна'),
+    (LIGHT, 'светла'),
+]
 
 class DataMixin:
     def get_user_context(self, **kwargs):

@@ -1,10 +1,33 @@
-from django.contrib.auth.models import User  
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models  
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .utils import *
 from datetime import datetime
 from django.utils import timezone
+
+""" 
+***************************************
+               Специалности
+***************************************
+"""
+class Specialty(models.Model):
+
+    professional_field_num = models.CharField('Професионално направление - номер', max_length=3, default='', blank=True)
+    professional_field_name = models.CharField('Професионално направление - име', max_length=100, default='', blank=True)
+    profession_num = models.CharField('Професия - номер', max_length=6, default='', blank=True)
+    profession_name = models.CharField('Професия - име', max_length=100, default='', blank=True)
+    specialty_num = models.CharField('Специалност - номер', max_length=8, default='', blank=True)
+    specialty_name = models.CharField('Специалност - име', max_length=100, default='', blank=True)
+    nip = models.FileField('НИП', upload_to='docs/')
+
+    def __str__(self):
+        return f'{self.specialty_num}: {self.specialty_name}'
+
+    class Meta:
+        verbose_name = 'Специалност'
+        verbose_name_plural = 'Специалности'
 
 """ 
 ***************************************
@@ -23,6 +46,7 @@ class School(models.Model):
     email = models.CharField('e-mail', max_length=35, default='', blank=True)
     boss = models.CharField('Директор', max_length=50, default='', blank=True,
                             help_text='Име на директора на училището')
+    specialities = models.ManyToManyField(Specialty, verbose_name='Езиково обучение')
 
     def __str__(self):
         return f'{self.short_name} {self.city}'
@@ -31,15 +55,39 @@ class School(models.Model):
         verbose_name = 'Училище/организация'
         verbose_name_plural = 'Училища/организации'
 
+""" 
+***************************************
+            Документи
+***************************************
+"""
+class Documents(models.Model):
+    title = models.CharField('Име', max_length=200)
+    attachment = models.FileField('Файл', upload_to='docs/')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Документ'
+        verbose_name_plural = 'Документи'
+
 """
 ***************************************
             Потребители
 ***************************************
 """
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  
-    phone_number = models.CharField(max_length=15, blank=True)  
-    birth_date = models.DateField(null=True, blank=True)  
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='user_school', name='school_id', null=True)
+    access_level = models.PositiveSmallIntegerField('Роля', choices=USER_LEVEL, default=STUDENT,
+                                                    help_text='роля (ниво на достъп)')
+    session_screen = models.PositiveSmallIntegerField('Интерфейс', choices=THEME_TYPE, default=DARK,
+                                                      help_text='цветова схема на интерфейса')
+    session_theme = models.PositiveSmallIntegerField('Тема', default=1,
+                                                     validators=[ MinValueValidator(1), MaxValueValidator(100) ],
+                                                     help_text='номер на тема от НИП по подразбиране')
+    speciality = models.ForeignKey(Specialty, name='Специалност', on_delete=models.CASCADE, related_name='user_speciality',
+                                   help_text='специалност по подразбиране', null=True)
 
     def __str__(self):
         return f'Потребител #{self.user.id}: {self.user.first_name} {self.user.last_name}'
@@ -125,6 +173,8 @@ class Task(models.Model):
     num = models.PositiveSmallIntegerField(default=0, help_text='генерира се автоматично')
     text = models.TextField('Въпрос', default='', blank=True, help_text='Формулировка (текст) на въпроса')
     type = models.PositiveSmallIntegerField(choices=TASK_TYPE, default=TYPE1, help_text='тип на въпроса')
+    level = models.PositiveSmallIntegerField(choices=LEVEL_TYPE, default=LEVEL1, help_text='ниво на въпроса по Блум')
+    school = models.ManyToManyField(School, verbose_name='id на училище в което се ползва', blank=True)
     picture = models.ImageField('Картинка', upload_to='task_pics', blank=True)
     group = models.PositiveSmallIntegerField(default=0, help_text='0 - ако не е групирано')
     mark_red = models.BooleanField('Червен маркер', null=True, default=False)

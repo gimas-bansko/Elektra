@@ -10,7 +10,10 @@ def index(request):
     return render(request, 'main/index.html')
 
 def signin(request):
-    return render(request, 'main/signin.html')
+    context = {
+        'tab_title': 'вход',
+    }
+    return render(request, 'main/signin.html', context)
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
@@ -31,9 +34,8 @@ class LoginUser(DataMixin, LoginView):
             record.action = 'ВЛИЗАНЕ В ПЛАТФОРМАТА'
             record.save()
 
-            return reverse_lazy('dzi')
+            return reverse_lazy('home_dzi')
         else:
-            reverse_lazy_addr = 'register'
             return reverse_lazy('login')
 
 
@@ -46,7 +48,10 @@ def signup(request):
     return render(request, 'main/signup.html')
 
 def dzi_home(request):
-    return render(request, 'main/dzi_splash.html')
+    context = {
+        'tab_title': 'начало',
+    }
+    return render(request, 'main/home_dzi.html', context)
 
 def privacy_policy(request):
     return render(request, 'main/privacy-policy.html')
@@ -56,4 +61,7 @@ def terms_policy(request):
 
 def contact(request):
     return render(request, 'main/contact.html')
+
+def dashboard_dzi(request):
+    return render(request, 'main/dashboard_dzi.html')
 
