@@ -43,7 +43,6 @@ def logout_user(request):
     logout(request)
     return redirect('dzi')
 
-
 def signup(request):
     return render(request, 'main/signup.html')
 
@@ -63,5 +62,25 @@ def contact(request):
     return render(request, 'main/contact.html')
 
 def dashboard_dzi(request):
-    return render(request, 'main/dashboard_dzi.html')
+    user = request.user
+    user_profile = user.userprofile
+
+    # Извличане на данни от UserProfile
+    school = user_profile.school
+    access_level = user_profile.access_level
+    session_screen = user_profile.session_screen
+    session_theme = user_profile.session_theme
+    speciality = user_profile.speciality
+    schools = School.objects.all()
+    context = {
+        'tab_title': 'вход',
+        'user_nick': user.username,
+        'user_name': user.first_name+' '+user.last_name,
+        'user_level': USER_LEVEL[access_level-1][1],
+        'school': school,
+        'schools': schools,
+    }
+    for s in schools:
+        print(s.full_name)
+    return render(request, 'main/dashboard_dzi.html', context)
 

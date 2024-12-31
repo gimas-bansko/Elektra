@@ -41,8 +41,11 @@ TEACHER = 4
 STUDENT = 5
 
 USER_LEVEL = [
-    (DARK, 'тъмна'),
-    (LIGHT, 'светла'),
+    (SUPERADMIN, 'Системен администратор'),
+    (GUESTADMIN, 'НАБЛЮДАВАЩ АДМИНИСТРАТОР'),
+    (SCHOOLADMIN, 'УЧИЛИЩЕН АДМИНИСТРАТОР'),
+    (TEACHER, 'УЧИТЕЛ'),
+    (STUDENT, 'УЧЕНИК'),
 ]
 
 class DataMixin:

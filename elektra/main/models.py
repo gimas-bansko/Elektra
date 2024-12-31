@@ -46,7 +46,7 @@ class School(models.Model):
     email = models.CharField('e-mail', max_length=35, default='', blank=True)
     boss = models.CharField('Директор', max_length=50, default='', blank=True,
                             help_text='Име на директора на училището')
-    specialities = models.ManyToManyField(Specialty, verbose_name='Езиково обучение')
+    specialities = models.ManyToManyField(Specialty, verbose_name='Специалности', blank=True)
 
     def __str__(self):
         return f'{self.short_name} {self.city}'
@@ -78,16 +78,17 @@ class Documents(models.Model):
 """
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='user_school', name='school_id', null=True)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='user_school', verbose_name='училище',
+                               null=True, blank=True)
     access_level = models.PositiveSmallIntegerField('Роля', choices=USER_LEVEL, default=STUDENT,
                                                     help_text='роля (ниво на достъп)')
     session_screen = models.PositiveSmallIntegerField('Интерфейс', choices=THEME_TYPE, default=DARK,
                                                       help_text='цветова схема на интерфейса')
     session_theme = models.PositiveSmallIntegerField('Тема', default=1,
-                                                     validators=[ MinValueValidator(1), MaxValueValidator(100) ],
+                                                     validators=[ MinValueValidator(1), MaxValueValidator(18) ],
                                                      help_text='номер на тема от НИП по подразбиране')
-    speciality = models.ForeignKey(Specialty, name='Специалност', on_delete=models.CASCADE, related_name='user_speciality',
-                                   help_text='специалност по подразбиране', null=True)
+    speciality = models.ForeignKey(Specialty, verbose_name='Специалност', on_delete=models.CASCADE, related_name='user_speciality',
+                                   help_text='специалност по подразбиране', null=True, blank=True)
 
     def __str__(self):
         return f'Потребител #{self.user.id}: {self.user.first_name} {self.user.last_name}'
