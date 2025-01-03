@@ -34,7 +34,7 @@ class LoginUser(DataMixin, LoginView):
             record.action = 'ВЛИЗАНЕ В ПЛАТФОРМАТА'
             record.save()
 
-            return reverse_lazy('home_dzi')
+            return reverse_lazy('dzi_home')
         else:
             return reverse_lazy('login')
 
@@ -61,7 +61,7 @@ def terms_policy(request):
 def contact(request):
     return render(request, 'main/contact.html')
 
-def dashboard_dzi(request):
+def dzi_dashboard(request):
     user = request.user
     user_profile = user.userprofile
 
@@ -82,5 +82,26 @@ def dashboard_dzi(request):
     }
     for s in schools:
         print(s.full_name)
-    return render(request, 'main/dashboard_dzi.html', context)
+    # return render(request, 'main/dashboard_dzi.html', context)
+    return render(request, 'main/dzi_welcome.html', context)
 
+def dzi_test(request):
+    return render(request, 'main/dzi_test.html')
+
+def dzi_tasks(request):
+    return render(request, 'main/dzi_test.html')
+
+def dzi_users(request):
+    return render(request, 'main/dzi_users.html')
+
+def dzi_sys(request):
+    return render(request, 'main/dzi_sys.html')
+
+def dzi_settings(request):
+    return render(request, 'main/dzi_settings.html')
+
+""" 
+***************************************
+            API
+***************************************
+"""

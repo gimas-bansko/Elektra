@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -6,9 +6,17 @@ urlpatterns = [
     path('signin', views.LoginUser.as_view(), name='login'),
     path('signup', views.signup, name='register'),
     path('logout', views.logout_user, name='logout'),
-    path('dzi_home', views.dzi_home, name='dzi'),
+    path('dzi', views.dzi_home, name='dzi'),
     path('contact', views.contact, name='contact'),
     path('privacy_policy', views.privacy_policy, name='privacy'),
     path('terms_policy', views.terms_policy, name='terms'),
-    path('dashboard_dzi', views.dashboard_dzi, name='home_dzi'),
+
+    path('dzi_dashboard', views.dzi_dashboard, name='dzi_home'),
+    path('dzi_tests', views.dzi_test, name='dzi_tests'),
+    path('dzi_tasks', views.dzi_tasks, name='dzi_tasks'),
+    path('dzi_users', views.dzi_users, name='dzi_users'),
+    path('dzi_sys', views.dzi_sys, name='dzi_sys'),
+    path('dzi_settings', views.dzi_settings, name='dzi_settings'),
+
+    path('api-auth/', include('rest_framework.urls'))
 ]

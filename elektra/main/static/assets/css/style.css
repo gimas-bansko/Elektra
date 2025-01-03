@@ -8322,12 +8322,14 @@ textarea:-ms-input-placeholder {
   background: linear-gradient(95deg, var(--color-primary) 15%, var(--color-tertiary) 45%, var(--color-primary) 75%, var(--color-secondary) 100%) 95%/200% 100%;
 }
 
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+@media (forced-colors: active) {
+  /* High contrast styles */
   .theme-gradient, .counter-style-1 .count-number {
     color: var(--color-secondary);
     background: none !important;
   }
 }
+
 /* Heading Font  */
 .h1 {
   font-size: var(--h1) !important;
