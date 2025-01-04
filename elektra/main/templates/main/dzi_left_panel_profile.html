@@ -1,0 +1,47 @@
+{% load static %}
+            <!-- Start Left panel -->
+            <div class="rbt-left-panel popup-dashboardleft-section">
+                <div class="rbt-default-sidebar">
+                    <div class="inner">
+                        <div class="content-item-content">
+                            <div class="rbt-default-sidebar-wrapper">
+                                <nav class="mainmenu-nav">
+                                    <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                        <li><img class="boxed-logo-dark" src="{% static 'assets/images/test/Logo_large.png' %}" alt="School logo"> ПГЕЕ гр.Банско</li>
+                                        <li>ПРОФЕСИОНАЛНА ГИМНАЗИЯ ПО ЕЛЕКТРОНИКА И АВТОМАТИКА</li>
+                                   </ul>
+                                    <div class="rbt-sm-separator"></div>
+                                    <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                        <li>Специалност:</li>
+                                        <li >5230501 - Компютърна техника и технологии</li>
+                                    </ul>
+                                    {% if show_theme %}
+                                    <div class="rbt-sm-separator"></div>
+                                    <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                        <li>Тема:</li>
+                                        <li >№ 18 - Процеси, нишки, алгоритми за планиране и управление на паметта в
+                                            операционната система (ОС)</li>
+                                    </ul>
+                                    {% endif %}
+                                </nav>
+
+                                <div class="rbt-sm-separator"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subscription-box">
+                        <div class="inner">
+                            <a href="profile-details.html" class="autor-info">
+                                <p>Потребител:</p>
+                                <div class="author-desc" style="padding-left: 20px;">
+                                    <p style="font-size: 12px;">{{ user_name }}</p>
+                                    <p style="font-size: 10px;">{{ user_level }}</p>
+                                    <p style="font-size: 10px;">Влязъл като <span style="font-weight: 500;">{{ user_nick }}</span></p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <p class="subscription-copyright copyright-text text-center b4  small-text">© 2024 <a href="https://themeforest.net/user/rainbow-themes/portfolio">инж. Георги Бориков</a>.</p>
+                </div>
+            </div>
+            <!-- End Left panel -->

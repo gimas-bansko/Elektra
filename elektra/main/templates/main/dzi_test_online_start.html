@@ -1,0 +1,256 @@
+{% extends 'main/dzi_base.html' %}
+{% load static %}
+
+{% block left_panel %}
+{% include 'main/dzi_left_panel_profile.html' %}
+{% endblock %}
+
+{% block main_content %}
+            <!-- Main content -->
+            <div class="rbt-main-content mr--0">
+                <!-- Start Breadcarumb area  -->
+                <div class="breadcrumb-area breadcarumb-style1 pt--180 pb--60">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="breadcrumb-inner text-center">
+                                    <h1 class="title theme-gradient h2">Тест</h1>
+                                    <ul class="page-list">
+                                        <li class="rainbow-breadcrumb-item"><a href="{% url 'dzi_home' %}">Начало</a></li>
+                                        <li class="rainbow-breadcrumb-item"><a href="{% url 'dzi_tests' %}">Тест</a></li>
+                                        <li class="rainbow-breadcrumb-item active">Онлайн тест</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Breadcarumb area  -->
+                <div class="chatenai-separator">
+                    <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
+                    <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
+                </div>
+
+                <div class="rbt-daynamic-page-content">
+                    <!-- Dashboard Center Content -->
+                    <div class="rbt-dashboard-content">
+                        <div class="content-page">
+                            <div class="chat-box-list">
+                                <div class="rainbow-generartor-section rainbow-section-gap">
+                                    <div class="section-title text-justify sal-animate" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
+                                        <p class="description b1">Тази страница Ви дава възможност да получите тест по
+                                            тема "" от Националната изпитна програма за провеждане на държавен изпит за
+                                            придобиване на трета степен на професионална квалификация за специалност код
+                                            5230501 „Компютърна техника и технологии“ от професия код 523050 „Техник на
+                                            компютърни системи“ от професионално направление код 523 „Електроника,
+                                            автоматика, комуникационна и компютърна техника“ (НИП).</p>
+                                        <p>
+                                            Тестът съдържа задачи с различна трудност с максимален брой точки – 100. За
+                                            всеки Ваш отговор ще получите определен брой точки, показан в горния десен
+                                            ъгъл на всяка задача. Целта на теста е да се установи равнището на усвоените
+                                            от Вас знания и умения, задължителни за придобиване на трета степен на
+                                            професионална квалификация.</p>
+                                        <p>
+                                            Тестовете се генерират като по случаен начин се подбират въпроси от базата
+                                            данни с изпитни тестови задачи. За да започнете нов тест използвайте бутона
+                                            "Стартирай тест". След генериране на нов тест се извеждат всички въпроси от
+                                            него. Това дава възможност тестовите задачи да се решават в произволен ред,
+                                            както и да се коригират вече отбелязаните отговори. По време на теста се
+                                            извежда таймер, показащ изминалото време от началото. Времето не се
+                                            контролира от програмата.</p>
+                                        <p>
+                                            Край на теста и оценка на резултата се извиква с бутона "Край на теста".
+                                            Оценката на теста се дава общ брой точки, без да се посочва кои от подадените
+                                            отговори са правилни и кои не. Броят на тестовете, които може да генерира един
+                                            потребител не е ограничено, но всеки следващ път ще бъде генериран нов,
+                                            различен от предишните набор от тестови задачи.</p>
+                                        <p>
+                                            Отбелязването на верния според Вас отговор при задачите с изборен отговор
+                                            е чрез маркиране (клик с левия бутон на мишката върху текста на съответния
+                                            отговор), а за другите типове задачи начинът на отговор се въвежда от
+                                            клавиатурата в съответното поле. Някои задачи изискват не само познаване на
+                                            учебното съдържание, но и логическо мислене, затова четете внимателно
+                                            условията на задачите преди да посочите някой отговор за верен.</p>
+                                        <p>
+                                            <span class="theme-gradient">ПОЖЕЛАВАМЕ ВИ УСПЕШНА РАБОТА!</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rbt-static-bar collapse-width">
+                            <!-- End Header Top Area  -->
+                            <ul class="staticbar-btn-grp d-md-flex">
+                                <li>
+                                    <a class="btn-default btn-small btn-border"
+                                            href="{% url 'test'%}">
+                                        <span>Стартирай тест</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <button class="btn-default btn-small btn-border"
+                                            data-bs-toggle="modal" data-bs-target="#selectTheme">
+                                        <span>Избери тема</span>
+                                    </button>
+                                </li>
+                            </ul>
+                            <div id="my_switcher" class="my_switcher">
+                                <ul>
+                                    <li>
+                                        <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                                            <img src="{% static 'assets/images/light/switch/sun-01.svg' %}" alt="Sun images"><span title="Light Mode"> Light</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                                            <img src="{% static 'assets/images/light/switch/vector.svg' %}" alt="Vector Images"><span title="Dark Mode">
+                                        Dark</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+{% endblock %}
+
+{% block modals %}
+        <!--Избор на тема Modal HTML -->
+        <div id="selectTheme" class="modal rbt-modal-box copy-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight light-xl">
+                    <div class="section-title text-center mb--30 sal-animate" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
+                        <h4 class="title mb--0 w-600">Избор на тема</h4>
+                    </div>
+                    <div class="genarator-section">
+                        <ul class="genarator-card-group">
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 1: </span>
+                                            Микропроцесор. Архитектура на микропроцесор</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 1: </span>
+                                            Микропроцесор. Архитектура на микропроцесор</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 1: </span>
+                                            Микропроцесор. Архитектура на микропроцесор</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 1: </span>
+                                            Микропроцесор. Архитектура на микропроцесор</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 1: </span>
+                                            Микропроцесор. Архитектура на микропроцесор</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 18: </span>
+                                            Процеси, нишки, алгоритми за планиране и управление на паметта в
+                                            операционната система (ОС)</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 18: </span>
+                                            Процеси, нишки, алгоритми за планиране и управление на паметта в
+                                            операционната система (ОС)</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="text-generator.html" class="genarator-card">
+                                    <div class="inner">
+                                        <div class="left-align">
+                                            <h5>
+                                            <span class="theme-gradient">Тема 18: </span>
+                                            Процеси, нишки, алгоритми за планиране и управление на паметта в
+                                            операционната система (ОС)</h5>
+                                        </div>
+                                        <div class="right-align">
+                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="close-button" data-bs-dismiss="modal">
+                        <i class="feather-x"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block page_script %}
+    <script src="{% static 'assets/js/elektra/dzi_dashboard.js' %}"></script>
+{% endblock %}

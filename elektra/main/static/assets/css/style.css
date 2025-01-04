@@ -22022,3 +22022,7 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
   opacity: 0.5;
 }
 /*# sourceMappingURL=../maps/style.css.map */
+
+.text-justify {
+    text-align: justify !important;
+}

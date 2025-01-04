@@ -40,6 +40,7 @@ class School(models.Model):
     full_name = models.TextField('Име', default='', blank=True, help_text='Пълно име на училището')
     city = models.CharField('Населено място', max_length=50, default='', blank=True,
                             help_text='Населено място, където се намира училището')
+    logo = models.ImageField('Лого', upload_to='sys_pics', blank=True)
     address = models.CharField('Адрес', max_length=50, default='', blank=True,
                             help_text='Адрес в населеното място (ул. ... №...)')
     phone_number = models.CharField('Телефон', max_length=15, default='', blank=True)
@@ -78,6 +79,7 @@ class Documents(models.Model):
 """
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    gender = models.BooleanField('Пол', default=True, choices=[(True, 'мъж'), (False, 'жена'), ] )
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='user_school', verbose_name='училище',
                                null=True, blank=True)
     access_level = models.PositiveSmallIntegerField('Роля', choices=USER_LEVEL, default=STUDENT,

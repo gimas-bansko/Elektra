@@ -73,7 +73,7 @@ def dzi_dashboard(request):
     speciality = user_profile.speciality
     schools = School.objects.all()
     context = {
-        'tab_title': 'вход',
+        'tab_title': 'начало',
         'user_nick': user.username,
         'user_name': user.first_name+' '+user.last_name,
         'user_level': USER_LEVEL[access_level-1][1],
@@ -86,19 +86,49 @@ def dzi_dashboard(request):
     return render(request, 'main/dzi_welcome.html', context)
 
 def dzi_test(request):
-    return render(request, 'main/dzi_test.html')
+    context = {
+        'tab_title': 'тест',
+        'show_theme': True,
+    }
+    return render(request, 'main/dzi_test.html', context)
+
+def dzi_test_online_start(request):
+    context = {
+        'tab_title': 'тест',
+        'show_theme': True,
+    }
+    return render(request, 'main/dzi_test_online_start.html', context)
+
+def dzi_test_online(request):
+    context = {
+        'tab_title': 'тест',
+        'show_theme': True,
+    }
+    return render(request, 'main/dzi_test_online.html', context)
 
 def dzi_tasks(request):
-    return render(request, 'main/dzi_test.html')
+    context = {
+        'tab_title': 'въпроси',
+    }
+    return render(request, 'main/dzi_test.html', context)
 
 def dzi_users(request):
-    return render(request, 'main/dzi_users.html')
+    context = {
+        'tab_title': 'потребители',
+    }
+    return render(request, 'main/dzi_users.html', context)
 
 def dzi_sys(request):
-    return render(request, 'main/dzi_sys.html')
+    context = {
+        'tab_title': 'системни',
+    }
+    return render(request, 'main/dzi_sys.html', context)
 
 def dzi_settings(request):
-    return render(request, 'main/dzi_settings.html')
+    context = {
+        'tab_title': 'настройки',
+    }
+    return render(request, 'main/dzi_settings.html', context)
 
 """ 
 ***************************************
