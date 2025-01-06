@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране:  4 яну 2025 в 22:32
+-- Време на генериране:  6 яну 2025 в 22:31
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -148,7 +148,7 @@ CREATE TABLE `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$600000$bAENMC2y6CBzHiVvZTa7sj$MP961DiZWk5LKNig+de4AKqeNf9wD+aKmJxqhxmyeGU=', '2025-01-04 20:24:57.277794', 1, 'superadmin', 'Георги', 'Бориков', 'ggborikov@abv.bg', 1, 1, '2024-12-29 17:32:38.000000'),
+(1, 'pbkdf2_sha256$600000$bAENMC2y6CBzHiVvZTa7sj$MP961DiZWk5LKNig+de4AKqeNf9wD+aKmJxqhxmyeGU=', '2025-01-06 19:09:29.263939', 1, 'superadmin', 'Георги', 'Бориков', 'ggborikov@abv.bg', 1, 1, '2024-12-29 17:32:38.000000'),
 (2, 'pbkdf2_sha256$600000$RWfc0Po5N9BUkizdDNHsIE$67D49ArZ/dLSqU4KFPLJWBiuSslah0gCNFCagSxXVdg=', NULL, 0, 'guestadmin', 'Гост', 'Админ', 'ga@ad.com', 0, 1, '2024-12-29 21:35:09.000000'),
 (3, 'pbkdf2_sha256$600000$PEevvgdmijM2ilQntfJs4g$ullQlEiWASWqqMTtkX7eq6rErh6GnKns/W3cRTV6YIY=', '2024-12-31 17:52:19.656400', 0, 'schooladmin1', 'Училищен', 'Админ', '', 0, 1, '2024-12-29 21:38:59.000000'),
 (4, 'pbkdf2_sha256$600000$Na4YoANjNOepAC37fCZz2I$c2jwxDw8oBet84B/aoFbvd91i5HKDLxniPSuJD2hkDk=', NULL, 0, 'teacher1', 'Учител', '1', '', 0, 1, '2024-12-29 21:40:28.000000'),
@@ -259,7 +259,10 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (54, '2025-01-04 20:27:25.448123', '1', 'Потребител #1: Георги Бориков', 2, '[{\"changed\": {\"fields\": [\"\\u0423\\u0447\\u0438\\u043b\\u0438\\u0449\\u0435\"]}}]', 13, 1),
 (55, '2025-01-04 20:31:47.486143', '1', 'Потребител #1: Георги Бориков', 2, '[{\"changed\": {\"fields\": [\"\\u0423\\u0447\\u0438\\u043b\\u0438\\u0449\\u0435\"]}}]', 13, 1),
 (56, '2025-01-04 20:35:26.079610', '3', 'Потребител #3: Училищен Админ', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\"]}}]', 13, 1),
-(57, '2025-01-04 20:50:53.523506', '1', 'Потребител #1: Георги Бориков', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\"]}}]', 13, 1);
+(57, '2025-01-04 20:50:53.523506', '1', 'Потребител #1: Георги Бориков', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\"]}}]', 13, 1),
+(58, '2025-01-05 17:55:25.833453', '1', '1. Дефинира понятието микропроцесор. Проследява развитието на микропроцесорите.', 2, '[{\"changed\": {\"fields\": [\"\\u0417\\u0430\\u0433\\u043b\\u0430\\u0432\\u0438\\u0435\"]}}]', 14, 1),
+(59, '2025-01-05 18:01:23.329862', '1', '1. RISC и CISC микропроцесори. Развитие на микропроцесорите', 2, '[{\"changed\": {\"fields\": [\"\\u0417\\u0430\\u0433\\u043b\\u0430\\u0432\\u0438\\u0435\", \"\\u0417\\u0430\\u0433\\u043b\\u0430\\u0432\\u0438\\u0435\"]}}]', 14, 1),
+(60, '2025-01-05 18:02:42.105769', '2', '2. Основни функционални блокове на CISC микропроцесор', 2, '[{\"changed\": {\"fields\": [\"\\u0417\\u0430\\u0433\\u043b\\u0430\\u0432\\u0438\\u0435\"]}}]', 14, 1);
 
 -- --------------------------------------------------------
 
@@ -352,11 +355,17 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('21sh22a77rh34si6t8gfns7voclo9zfa', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUsTh:J9tI6D6pjdp8u44mGiM6HBsgZ3VnpOXPRn7uKzlJQ6c', '2025-01-20 19:09:29.274534'),
+('30emskj9uh6r4ei6hvktjk5vy3fdbovc', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUFbV:uouOqJmsaDReuSupFStz-keCGmqOcFqkShdsfDt-hNk', '2025-01-19 01:38:57.340694'),
 ('3ru5pv463wmorx95l7ebw670mclzfkq8', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUAOG:BmSidPGyYyAxTKPgzqUcOjIEefKwR4otkuFC2S8jNw0', '2025-01-18 20:04:56.430846'),
+('8mstj9f58xi14czbvnd70qat11v2cskj', 'e30:1tUBse:pdrhJabkhjQIc1vl2dTVa_-W0OgcmJIBZ0gB55qA0Gc', '2025-01-18 21:40:24.685498'),
+('df9u2zir7nyvk0cyr7e8s99a7vpt30it', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUC4B:DUggkm-H9BZPSbjBaa4Bpduh9K-TqYsgCjDCGfdMjMo', '2025-01-18 21:52:19.757616'),
+('dr803shmi80ajfgx539dzaa7vijt79ve', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUEuq:QANcjOaSqg-LmLU7z8XGZzGxd0S86Mph9139IrpsrVE', '2025-01-19 00:54:52.877419'),
 ('h1hz9wjgo5jq324vq0vfvtoqtsg9hv0h', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUAhd:r9RVWvaGYoj0XAjUqRQgxxvDb8bGxBtyQFM38aeRp8A', '2025-01-18 20:24:57.285524'),
 ('iqppbszl75bm1jzfqtdmmpyym5nvockj', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tTWVn:JaFKZPGmjnc_EGlQpIojCrSBbRrL1Fp1KAiq5ewddms', '2025-01-17 01:30:03.184676'),
 ('l4rsxt8r9edreck8mjbiocw72kxiyith', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tS1s1:7tT4KQbm4McDON9jJOzBXcYygyH3r1R34iQgekenYbc', '2025-01-12 22:34:49.613757'),
 ('mc01p662lmy6j84pzz6sx7bxrnbm8ho7', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tSzeg:pVsPc5IbeDT1fzuqP5BgkxuZXMrJCWhXwJ7WHEJKrFc', '2025-01-15 14:25:02.052397'),
+('pul6ra6t7qsyfia6bc9bup9kvwt15rqa', 'e30:1tUBqa:uC2hg0NIhfndIzVVqi5YI3hRB5U7e__xQABuE5gAt-8', '2025-01-18 21:38:16.378424'),
 ('pzwm5erx2frykg6kmwkc6cykpemcfs83', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tRzD1:POrK6kLmN90kQWTtHnWoosZjhZcqnQIETPObHPZXigk', '2025-01-12 19:44:19.901785'),
 ('tz54oipwy1dbmmsciysur2b65ehlfbxa', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tS1ti:VfzIDthWanLwGbe_dFxTXsZfKmg5OMPx9Zk9HDqhe7A', '2025-01-12 22:36:34.874467'),
 ('zuy5o3kagr3p5v5o2a2e1617463tlfrz', '.eJxVjDsOwjAQBe_iGlkbO_4sJX3OYK1_OIBsKU4qxN2RpRTQvpl5b-bo2Is7etrcGtmVSXb53TyFZ6oDxAfVe-Oh1X1bPR8KP2nnS4vpdTvdv4NCvYxaKfRI3lhAMcecSSjUkgTAhDBFSEnLDNLOWlDSmZQFY9AggPKoAvt8Ac1VNu0:1tSgPj:GThGiHTGGvglDa2lw_h8Lo521dDVUIuTTM9UVzAF52U', '2025-01-14 17:52:19.666660');
@@ -439,7 +448,16 @@ INSERT INTO `main_log` (`id`, `user_id`, `user_name`, `action`, `date`) VALUES
 (36, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 19:33:43.142281'),
 (37, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 19:35:59.496697'),
 (38, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 19:37:12.552027'),
-(39, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 20:24:57.281519');
+(39, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 20:24:57.281519'),
+(40, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 21:38:16.386368'),
+(41, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 21:40:24.822721'),
+(42, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 21:48:07.548822'),
+(43, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 21:49:34.123116'),
+(44, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-04 21:52:19.750588'),
+(45, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-05 00:54:52.873133'),
+(46, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-05 01:38:57.336150'),
+(47, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-05 17:10:39.330227'),
+(48, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-01-06 19:09:29.269385');
 
 -- --------------------------------------------------------
 
@@ -624,8 +642,8 @@ CREATE TABLE `main_themeitem` (
 --
 
 INSERT INTO `main_themeitem` (`id`, `item`, `title`, `criterion`, `total_points`, `knowledge`, `comprehension`, `application`, `analysis`, `theme_id_id`) VALUES
-(1, 1, 'Дефинира пRISC и CISC микропроцесори. Развитие на микропроцесорите.онятието микропроцесор. Проследява развитието на микропроцесорите.', 'Дефинира понятието микропроцесор. Проследява развитието на микропроцесорите.', 20, 4, 3, 0, 0, 1),
-(2, 2, 'Основни функционални блокове на CISC микропроцесор', 'Чертае обобщена блок-схема на микропроцесор с фон Нойманова (Принс\r\nтънска) архитектура. Обяснява функциите на отделните блокове и връзките \r\nмежду тях', 30, 2, 1, 1, 2, 1),
+(1, 1, 'RISC и CISC микропроцесори. Развитие на микропроцесорите', 'Дефинира понятието „микропроцесор“, пояснява разликата между CISC и RISC процесорите, проследява хронологично развитието на процесорите.', 20, 4, 3, 0, 0, 1),
+(2, 2, 'Основни функционални блокове на CISC микропроцесор', 'Чертае обобщена блок-схема на микропроцесор с фон Нойманова (Принстънска) архитектура. Обяснява функциите на отделните блокове и връзките между тях.', 30, 2, 1, 1, 2, 1),
 (3, 3, 'Технически параметри на микропроцесорите', 'Изброява и пояснява основните параметри на процесорите.', 10, 1, 2, 0, 0, 1),
 (4, 4, 'Режими на работа на микропроцесорите', 'Посочва и обяснява режимите на работа на процесорите', 20, 0, 2, 2, 0, 1),
 (5, 5, 'Тенденции в развитието на микропроцесорите, съвместимост', 'Представя тенденциите в развитието на микропроцесорите. Определя възможностите за съвместимост между различните архитектури', 20, 2, 0, 0, 2, 1);
@@ -652,7 +670,7 @@ CREATE TABLE `main_userprofile` (
 --
 
 INSERT INTO `main_userprofile` (`id`, `access_level`, `session_screen`, `session_theme`, `user_id`, `school_id`, `speciality_id`, `gender`) VALUES
-(1, 1, 1, 1, 1, 2, 2, 1),
+(1, 1, 1, 1, 1, 1, 1, 1),
 (2, 2, 1, 1, 2, 1, NULL, 1),
 (3, 3, 1, 1, 3, 1, 2, 1),
 (4, 4, 1, 1, 4, 1, NULL, 1),
@@ -866,7 +884,7 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
@@ -890,7 +908,7 @@ ALTER TABLE `main_documents`
 -- AUTO_INCREMENT for table `main_log`
 --
 ALTER TABLE `main_log`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `main_school`

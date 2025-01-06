@@ -12,9 +12,13 @@ urlpatterns = [
     path('terms_policy', views.terms_policy, name='terms'),
 
     path('dzi_dashboard', views.dzi_dashboard, name='dzi_home'),
+    path('dzi_school_selected/<int:sc>/', views.dzi_set_school, name='set_school'),
+    path('dzi_speciality_selected/<int:sp>/', views.dzi_set_speciality, name='set_speciality'),
+
     path('dzi_tests', views.dzi_test, name='dzi_tests'),
     path('dzi_tests_online_start', views.dzi_test_online_start, name='start_test'),
     path('dzi_tests_online', views.dzi_test_online, name='test'),
+
     path('dzi_tasks', views.dzi_tasks, name='dzi_tasks'),
     path('dzi_users', views.dzi_users, name='dzi_users'),
     path('dzi_sys', views.dzi_sys, name='dzi_sys'),

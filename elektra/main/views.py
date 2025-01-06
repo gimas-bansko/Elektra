@@ -64,26 +64,40 @@ def contact(request):
 def dzi_dashboard(request):
     user = request.user
     user_profile = user.userprofile
-
-    # Извличане на данни от UserProfile
-    school = user_profile.school
-    access_level = user_profile.access_level
-    session_screen = user_profile.session_screen
-    session_theme = user_profile.session_theme
-    speciality = user_profile.speciality
     schools = School.objects.all()
+
     context = {
         'tab_title': 'начало',
         'user_nick': user.username,
         'user_name': user.first_name+' '+user.last_name,
-        'user_level': USER_LEVEL[access_level-1][1],
-        'school': school,
+        'user_first_name': user.first_name,
+        'user_level': USER_LEVEL[user_profile.access_level-1][1],
+        'user_profile': user_profile,
         'schools': schools,
+        'specialities': user_profile.school.specialities.all(),
     }
-    for s in schools:
-        print(s.full_name)
     # return render(request, 'main/dashboard_dzi.html', context)
     return render(request, 'main/dzi_welcome.html', context)
+
+def dzi_set_school(request, sc):
+    user = request.user
+    user_profile = user.userprofile
+    if sc>0:
+        new_school = School.objects.get(id=sc)
+        user_profile.school = new_school
+        user_profile.save()
+
+    return dzi_dashboard(request)
+
+def dzi_set_speciality(request, sp):
+    user = request.user
+    user_profile = user.userprofile
+    if sp>0:
+        new_spec = Specialty.objects.get(id=sp)
+        user_profile.speciality = new_spec
+        user_profile.save()
+
+    return dzi_dashboard(request)
 
 def dzi_test(request):
     context = {
@@ -107,10 +121,19 @@ def dzi_test_online(request):
     return render(request, 'main/dzi_test_online.html', context)
 
 def dzi_tasks(request):
+    user = request.user
+    user_profile = user.userprofile
+    schools = School.objects.all()
+
     context = {
         'tab_title': 'въпроси',
+        'user_nick': user.username,
+        'user_name': user.first_name+' '+user.last_name,
+        'user_level': USER_LEVEL[user_profile.access_level-1][1],
+        'user_profile': user_profile,
+        'show_theme': True,
     }
-    return render(request, 'main/dzi_test.html', context)
+    return render(request, 'main/dzi_tasks.html', context)
 
 def dzi_users(request):
     context = {

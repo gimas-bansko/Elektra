@@ -20205,7 +20205,7 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
   height: auto;
 }
 .chat-box .inner .chat-section .chat-content {
-  max-width: calc(100% - 60px);
+  max-width: calc(100% - 10px);
   width: 100%;
 }
 @media only screen and (max-width: 767px) {
@@ -20900,7 +20900,7 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
 }
 
 /*---------------------------
-    Rbt Show More Button  
+    Rbt Show More Button
 ------------------------------*/
 .rbt-show-more-btn {
   font-size: 14px;
@@ -20982,6 +20982,7 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
   border: none;
   outline: none;
 }
+
 @media only screen and (max-width: 479px) {
   .chatenai-tab .tab-btn-grp button {
     padding: 10px 15px;
@@ -22025,4 +22026,60 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
 
 .text-justify {
     text-align: justify !important;
+}
+
+.color-level-1 {
+  color: #41a341 !important;
+}
+
+.color-level-2 {
+  color: #41a3a0 !important;
+}
+
+.color-level-3 {
+  color: #4150a3 !important;
+}
+
+.color-level-4 {
+  color: #7d41a3 !important;
+}
+
+.color-Ok {
+  color: green;
+  text-decoration: underline;
+}
+
+.color-No {
+  color: brown;
+  text-decoration: line-through;
+}
+
+.bg-color-bad {
+  background: red;
+  color: black;
+}
+
+.bg-color-good {
+  background: #088512;
+  color: black;
+}
+
+.bg-color-mid {
+  background: #ba9d09;
+  color: black;
+}
+
+.elektra-tab {
+  padding: 10px 35px;
+  font-size: var(--font-size-b4);
+  line-height: var(--line-height-b1);
+  font-weight: 500;
+  color: var(--color-heading);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
 }

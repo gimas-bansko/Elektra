@@ -32,7 +32,11 @@
 
                                 <div class="welcome-wrapper">
                                     <div class="content-section">
-                                        <h4 class="title">👋 Добре дошъл, Георги</h4>
+                                        {% if user_profile.gender %}
+                                        <h4 class="title">👋 Добре дошъл, {{ user_first_name }}</h4>
+                                        {% else %}
+                                        <h4 class="title">👋 Добре дошлa, {{ user_first_name }}</h4>
+                                        {% endif %}
                                     </div>
                                 </div>
 
@@ -97,14 +101,15 @@
                     </div>
                     <div class="genarator-section">
                         <ul class="genarator-card-group">
+                            {% for school in schools %}
                             <li>
-                                <a href="text-generator.html" class="genarator-card">
+                                <a href="{% url 'set_school' school.id %}" class="genarator-card">
                                     <div class="inner">
                                         <div class="left-align">
                                             <div class="img-bar">
-                                                <img src="{% static 'assets/images/generator-icon/school.png' %}" alt="AI Generator">
+                                                <img style="width: 35px; height: auto;" src="{{ school.logo.url }}" alt="AI Generator">
                                             </div>
-                                            <h5 class="title">ПГЕЕ гр. Банско</h5>
+                                            <h5 class="title">{{ school.short_name }} - {{ school.city }}</h5>
                                         </div>
                                         <div class="right-align">
                                             <div class="icon-bar"><i data-feather="arrow-right"></i></div>
@@ -112,18 +117,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5 class="title">ПГЕЕ - гр. Банско</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <button class="close-button" data-bs-dismiss="modal">
@@ -142,14 +136,12 @@
                     </div>
                     <div class="genarator-section">
                         <ul class="genarator-card-group">
+                            {% for sp in specialities %}
                             <li>
-                                <a href="text-generator.html" class="genarator-card">
+                                <a href="{% url 'set_speciality' sp.id %}" class="genarator-card">
                                     <div class="inner">
                                         <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="{% static 'assets/images/generator-icon/spec.png' %}" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Компютърна техника и технологии</h5>
+                                            <p style="font-size: 12px;" class="title">{{ sp.specialty_num }} - {{ sp.specialty_name }}</p>
                                         </div>
                                         <div class="right-align">
                                             <div class="icon-bar"><i data-feather="arrow-right"></i></div>
@@ -157,18 +149,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5 class="title">Приложно програмиране</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <button class="close-button" data-bs-dismiss="modal">

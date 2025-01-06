@@ -2,134 +2,284 @@
 {% load static %}
 
 {% block left_panel %}
-            <!-- Start Left panel -->
-            <div class="rbt-left-panel popup-dashboardleft-section">
-                <div class="rbt-default-sidebar">
-                    <div class="inner">
-                        <div class="content-item-content">
-                            <div class="rbt-default-sidebar-wrapper">
-                                <nav class="mainmenu-nav">
-                                    <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                                        <li><a href="dashboard.html"><i class="feather-monitor"></i><span>Welcome</span></a></li>
-                                        <li><a href="plans-billing.html"><i class="feather-briefcase"></i><span>Manage
-                                        Subsription</span></a></li>
-                                    </ul>
-                                    <div class="rbt-sm-separator"></div>
-                                    <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                                        <li><a href="text-generator.html">
-                                                <img class="boxed-logo-dark" src="assets/images/generator-icon/text.png" alt="AI Generator">
-                                                <img class="boxed-logo-light" src="assets/images/light/generator-icon/text.png" alt="AI Generator">
-                                                <span>Text Generator</span></a></li>
-                                        <li><a href="image-generator.html"><img class="boxed-logo-dark" src="assets/images/generator-icon/photo.png" alt="AI Generator"><img class="boxed-logo-light" src="assets/images/light/generator-icon/photo.png" alt="AI Generator"><span>Image Generator</span>
-                                                <div class="rainbow-badge-card badge-sm ml--10">NEW</div>
-                                            </a></li>
-                                        <li><a href="code-generator.html">
-                                                <img class="boxed-logo-dark" src="assets/images/generator-icon/code-editor.png" alt="AI Generator">
-                                                <img class="boxed-logo-light" src="assets/images/light/generator-icon/code-editor.png" alt="AI Generator">
-                                                <span>Code Generator</span></a></li>
-                                        <li><a href="image-editor.html">
-                                                <img class="boxed-logo-dark" src="assets/images/generator-icon/photo-editor.png" alt="AI Generator">
-                                                <img class="boxed-logo-light" src="assets/images/light/generator-icon/photo-editor.png" alt="AI Generator">
-                                                <span>Image Editor</span></a></li>
-                                        <li><a href="vedio-generator.html">
-                                                <img class="boxed-logo-dark" src="assets/images/generator-icon/video-camera.png" alt="AI Generator">
-                                                <img class="boxed-logo-light" src="assets/images/light/generator-icon/video-camera.png" alt="AI Generator">
-                                                <span>Vedio Generator</span></a></li>
-                                        <li><a href="email-generator.html">
-                                                <img class="boxed-logo-dark" src="assets/images/generator-icon/email.png" alt="AI Generator">
-                                                <img class="boxed-logo-light" src="assets/images/light/generator-icon/email.png" alt="AI Generator">
-                                                <span>Email Generator</span></a></li>
-                                        <li><a tabindex="-1" class="disabled" aria-disabled="true">
-                                                <img class="boxed-logo-dark" src="assets/images/generator-icon/website-design.png" alt="AI Generator">
-                                                <img class="boxed-logo-light" src="assets/images/light/generator-icon/website-design.png" alt="AI Generator">
-                                                <span>Website Generator</span>
-                                                <div class="rainbow-badge-card badge-sm ml--10">PRO</div>
-                                            </a></li>
-                                    </ul>
-                                </nav>
+{% include 'main/dzi_left_panel_profile.html' %}
+{% endblock %}
 
-                                <div class="rbt-sm-separator"></div>
+{% block lef_panel_icon%}
+                                <div class="expand-btn-grp @@display-class">
+                                    <button class="bg-solid-primary popup-dashboardright-btn">
+                                        <i class="feather-sidebar right"></i>
+                                    </button>
+                                </div>
+{% endblock %}
 
-                                <nav class="mainmenu-nav">
-                                    <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                                        <li class="has-submenu"><a class="collapse-btn collapsed" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><i
-                                        class="feather-plus-circle"></i><span>Setting</span></a>
-                                            <div class="collapse" id="collapseExample">
-                                                <ul class="submenu rbt-default-sidebar-list">
-                                                    <li>
-                                                        <a href="profile-details.html">
-                                                            <i class="feather-user"></i>
-                                                            <span>Profile Details</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="notification.html">
-                                                            <i class="feather-shopping-bag"></i>
-                                                            <span>Notification</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="chat-export.html">
-                                                            <i class="feather-users"></i>
-                                                            <span>Chat Export</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="appearance.html">
-                                                            <i class="feather-home"></i>
-                                                            <span>Apperance</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="plans-billing.html">
-                                                            <i class="feather-briefcase"></i>
-                                                            <span>Plans and Billing</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="sessions.html">
-                                                            <i class="feather-users"></i>
-                                                            <span>Sessions</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="application.html">
-                                                            <i class="feather-list"></i>
-                                                            <span>Application</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li><a href="help.html"><i class="feather-award"></i><span>Help & FAQ</span></a></li>
-                                    </ul>
-                                    <div class="rbt-sm-separator"></div>
-                                    <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                                        <li><a href="release-notes.html"><i class="feather-bell"></i><span>Release notes</span></a>
-                                        </li>
-                                        <li><a href="terms-policy.html"><i class="feather-briefcase"></i><span>Terms &
-                                        Policy</span></a></li>
-                                    </ul>
-                                </nav>
+{% block main_content %}
+            <!-- Main content -->
+            <div class="rbt-main-content">
+                <div class="rbt-daynamic-page-content">
+                    <!-- Start Breadcarumb area  -->
+                    <div class="chatenai-separator">
+                        <img class="w-100 separator-dark"
+                             src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
+                        <img class="w-100 separator-light"
+                             src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
+                    </div>
+                    <div class="breadcrumb-area breadcarumb-style1 pt--30 pb--30">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="breadcrumb-inner text-center">
+                                        <h1 class="title theme-gradient h2">Тестoви въпроси</h1>
+                                        <ul class="page-list">
+                                            <li class="rainbow-breadcrumb-item"><a href="{% url 'dzi_home' %}">Начало</a></li>
+                                            <li class="rainbow-breadcrumb-item active">Въпроси</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="subscription-box">
-                        <div class="inner">
-                            <a href="profile-details.html" class="autor-info">
-                                <div class="author-img active">
-                                    <img class="w-100" src="assets/images/team/team-01.jpg" alt="Author">
+                    <!-- End Breadcarumb area  -->
+                    <div class="chatenai-separator">
+                        <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
+                        <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
+                    </div>
+
+                    <!-- Dashboard Center Content -->
+                    <div class="rbt-dashboard-content">
+                        <div class="content-page">
+                            <div class="chat-box-list pt--30" id="chatContainer">
+                                <!-- ****************
+                                     Точка от темата
+                                        (подтема)
+                                     ****************-->
+                                <!-- Заглавна част -->
+                                <div class="chat-box author-speech bg-flashlight">
+                                    <div class="inner">
+                                        <div class="chat-section">
+                                            <div class="chat-content">
+                                                <h6 class="title">1. Оператори – видове. Синтаксис на операторите – за
+                                                    въвеждане, извеждане, присвояване</h6>
+                                                <p>Критерии за оценяване: <br>Дефинира понятието „микропроцесор“, пояснява
+                                                    разликата между CISC и RISC процесорите, проследява хронологично
+                                                    развитието на процесорите. </p>
+                                                <!-- Start Pricing Compare Detailed  -->
+                                                <div class="rainbow-pricing-detailed-area mt--60">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="section-title text-left mb--30" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
+                                                                <p class="title w-600 mb--0">Брой тестови задачи по равнища </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row row--15">
+                                                        <div class="col-lg-12">
+                                                            <div class="rainbow-compare-table style-1">
+                                                                <table class="table-responsive">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th></th>
+                                                                            <th class="sm-radius-top-left color-level-1">
+                                                                                Знание<br>(0 – 2 т.)</th>
+                                                                            <th class="color-level-2">
+                                                                                Разбиране<br>(0 – 4 т.)</th>
+                                                                            <th class="color-level-3">
+                                                                                Приложение<br>(0 – 6 т.)</th>
+                                                                            <th class="sm-radius-top-right color-level-4">
+                                                                                Анализ<br>(0 – 8 т.)
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>по НИП</td>
+                                                                            <td>2</td>
+                                                                            <td>0</td>
+                                                                            <td>0</td>
+                                                                            <td>2</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>в БД</td>
+                                                                            <td class="bg-color-good">2</td>
+                                                                            <td class="bg-color-mid">0</td>
+                                                                            <td class="bg-color-bad">0</td>
+                                                                            <td>2</td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td>
+                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="author-desc">
-                                    <h6>Trent Adam</h6>
-                                    <p>trentadam@net</p>
+                                <!-- списък на въпросите на подтемата по нива на Блум -->
+                                <!-- Въпрос тип 1 - затворен без картинка-->
+                                <div class="chat-box ai-speech bg-flashlight">
+                                    <div class="inner top-flashlight leftside light-xl">
+                                        <div class="chat-section generate-section">
+                                            <div class="chat-content">
+                                                <h6 class="title color-text-off mb--0">Въпрос №13</h6>
+                                                <div class="reaction-section">
+                                                    <div class="btn-grp">
+                                                        <div class="left-side-btn dropup">
+                                                            <button class="react-btn btn-default btn-small btn-border  bg-color-warning">
+                                                                <i class="feather-thumbs-up"></i> 10 </button>
+                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal"
+                                                                    class="react-btn btn-default btn-small btn-border bg-color-danger">
+                                                                <i class="feather-thumbs-down"></i></button>
+                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal"
+                                                                    class="react-btn btn-default btn-small btn-border bg-color-success">
+                                                                <i class="feather-share"></i></button>
+                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="feather-more-vertical"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="#"><i
+                                                                            class="feather-copy"></i> Copy</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i
+                                                                            class="feather-tag"></i> Pin Chat</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i
+                                                                            class="feather-file-text"></i> Rename</a>
+                                                                </li>
+                                                                <li><a class="dropdown-item delete-item" href="#"><i
+                                                                            class="feather-trash-2"></i> Delete Chat</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="right-side-btn">
+                                                            <button class="react-btn btn-default btn-small btn-border">
+                                                                <i class="feather-repeat"></i><span>Regenerate</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                           </div>
+                                        </div>
+                                        <div class="chat-section">
+                                            <div class="chat-content">
+                                                <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
+                                                </h6>
+                                                <p class="mb--20">Въпрос тип 1 - затворен без картинка.</p>
+                                                <p>За да видим едномерен масив в Python можем да използваме синтаксиса
+                                                    на срезовете за едномерен масив. Открийте с array[::-1] как ще
+                                                    направим това:</p>
+                                                <div class="row">
+                                                    <div class="col-lg-1"></div>
+                                                    <div class="col-lg-11">
+                                                        <div class="rbt-checkbox-wrapper">
+                                                            <input id="rbt-checkbox-1" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                            <label for="rbt-checkbox-1">
+                                                                <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="rbt-checkbox-wrapper">
+                                                            <input id="rbt-checkbox-2" name="rbt-checkbox-1" type="checkbox" checked disabled>
+                                                            <label for="rbt-checkbox-2">
+                                                                <span class="color-Ok">а. ще върнем масива в оригиналната последователност</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="rbt-checkbox-wrapper">
+                                                            <input id="rbt-checkbox-3" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                            <label for="rbt-checkbox-3">
+                                                                <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="rbt-checkbox-wrapper">
+                                                            <input id="rbt-checkbox-4" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                            <label for="rbt-checkbox-4">
+                                                                <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="reaction-section">
+                                                    <div class="btn-grp">
+                                                        <div class="left-side-btn dropup">
+                                                            <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                    class="feather-thumbs-up"></i></button>
+                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                    class="feather-thumbs-down"></i></button>
+                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                    class="feather-share"></i></button>
+                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="feather-more-vertical"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="#"><i
+                                                                            class="feather-copy"></i> Copy</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i
+                                                                            class="feather-tag"></i> Pin Chat</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i
+                                                                            class="feather-file-text"></i> Rename</a>
+                                                                </li>
+                                                                <li><a class="dropdown-item delete-item" href="#"><i
+                                                                            class="feather-trash-2"></i> Delete Chat</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="right-side-btn">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-danger">
+                                                                <i class="feather-repeat"></i><span>Изтрий</span>
+                                                            </button>
+                                                            &nbsp
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-warning">
+                                                                <i class="feather-repeat"></i><span>Копирай</span>
+                                                            </button>
+                                                            &nbsp
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-success">
+                                                                <i class="feather-repeat"></i><span>Промени</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="author-badge">Free</div>
-                            </a>
-                            <div class="btn-part">
-                                <a href="pricing.html" class="btn-default btn-border">Upgrade To Pro</a>
                             </div>
                         </div>
+
+                        <div class="rbt-static-bar collapse-width">
+                            <!-- End Header Top Area  -->
+                            <ul class="staticbar-btn-grp d-md-flex">
+                                <li>
+                                    <button class="btn-default btn-small btn-border"
+                                            data-bs-toggle="modal" data-bs-target="#selectTheme">
+                                        <span>Изберете друга тема</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <a class="btn-default btn-small btn-border"
+                                            href="{% url 'start_test'%}">
+                                        <span>Покажи всички въпроси</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn-default btn-small btn-border"
+                                            href="{% url 'start_test'%}">
+                                        <span>Покажи въпросите за училището</span>
+                                    </a>
+                                </li>
+                            </ul>
                             <div id="my_switcher" class="my_switcher">
                                 <ul>
                                     <li>
@@ -145,335 +295,6 @@
                                     </li>
                                 </ul>
                             </div>
-                    </div>
-                    <p class="subscription-copyright copyright-text text-center b4  small-text">© 2024 <a href="https://themeforest.net/user/rainbow-themes/portfolio">Rainbow Themes</a>.</p>
-                </div>
-            </div>
-            <!-- End Left panel -->
-{% endblock %}
-
-{% block main_content %}
-            <!-- Main content -->
-            <div class="rbt-main-content">
-                <div class="rbt-daynamic-page-content">
-
-                    <!-- Dashboard Center Content -->
-                    <div class="rbt-dashboard-content">
-                        <div class="content-page">
-
-                            <div class="chat-box-list pt--30" id="chatContainer">
-
-                                <!-- Text Generator -->
-                                <div class="chat-box author-speech bg-flashlight">
-                                    <div class="inner">
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/team-01.jpg" alt="Author">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">You</h6>
-                                                <p>What is a chat AI?</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-box ai-speech bg-flashlight">
-                                    <div class="inner top-flashlight leftside light-xl">
-                                        <div class="chat-section generate-section">
-                                            <div class="author">
-                                                <img src="assets/images/icons/loader-one.gif" alt="Loader Images">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title color-text-off mb--0">Generating answers for you…</h6>
-                                            </div>
-                                        </div>
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/avater.png" alt="ChatenAI">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
-                                                </h6>
-                                                <p class="mb--20">A chat AI, or chatAi, is a type of artificial
-                                                    intelligence designed to simulate conversation with human users,
-                                                    especially through natural language processing. These systems are
-                                                    often used in various applications, including customer service,
-                                                    virtual assistants, and online interactions.</p>
-                                                <div class="reaction-section">
-                                                    <div class="btn-grp">
-                                                        <div class="left-side-btn dropup">
-                                                            <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-up"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-down"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-share"></i></button>
-                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="feather-more-vertical"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-copy"></i> Copy</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-tag"></i> Pin Chat</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-file-text"></i> Rename</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item delete-item" href="#"><i
-                                                                            class="feather-trash-2"></i> Delete Chat</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="right-side-btn">
-                                                            <button class="react-btn btn-default btn-small btn-border">
-                                                                <i class="feather-repeat"></i><span>Regenerate</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-box author-speech bg-flashlight">
-                                    <div class="inner">
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/team-01.jpg" alt="Author">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">You</h6>
-                                                <p>How do chatAI work?</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-box ai-speech bg-flashlight">
-                                    <div class="inner top-flashlight leftside light-xl">
-                                        <div class="chat-section generate-section">
-                                            <div class="author">
-                                                <img src="assets/images/icons/loader-one.gif" alt="Loader Images">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title color-text-off mb--0">Generating answers for you…</h6>
-                                            </div>
-                                        </div>
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/avater.png" alt="ChatenAI">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
-                                                </h6>
-                                                <p class="mb--20">ChatAi boost operational efficiency and bring cost
-                                                    savings to businesses while offering convenience and added services
-                                                    to internal employees and external customers. They allow companies
-                                                    to easily resolve many types of customer queries and issues while
-                                                    reducing the need for human interaction.</p>
-                                                <div class="reaction-section">
-                                                    <div class="btn-grp">
-                                                        <div class="left-side-btn dropup">
-                                                            <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-up"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-down"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-share"></i></button>
-                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="feather-more-vertical"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-copy"></i> Copy</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-tag"></i> Pin Chat</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-file-text"></i> Rename</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item delete-item" href="#"><i
-                                                                            class="feather-trash-2"></i> Delete Chat</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="right-side-btn">
-                                                            <button class="react-btn btn-default btn-small btn-border">
-                                                                <i class="feather-repeat"></i><span>Regenerate</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-box author-speech bg-flashlight">
-                                    <div class="inner">
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/team-01.jpg" alt="Author">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">You</h6>
-                                                <p>How can i talk with chat AI?</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-box ai-speech bg-flashlight">
-                                    <div class="inner top-flashlight leftside light-xl">
-                                        <div class="chat-section generate-section">
-                                            <div class="author">
-                                                <img src="assets/images/icons/loader-one.gif" alt="Loader Images">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title color-text-off mb--0">Generating answers for you…</h6>
-                                            </div>
-                                        </div>
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/avater.png" alt="ChatenAI">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
-                                                </h6>
-                                                <p>You're already talking to a chat AI right now! You can ask me
-                                                    anything or discuss various topics. Just type your questions or
-                                                    statements, and I'll do my best to provide helpful and informative
-                                                    responses.</p>
-                                                <p class="mb--20">If you have a specific topic in mind or if there's
-                                                    something you'd like to know or discuss, feel free to let me know!
-                                                </p>
-                                                <div class="reaction-section">
-                                                    <div class="btn-grp">
-                                                        <div class="left-side-btn dropup">
-                                                            <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-up"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-down"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-share"></i></button>
-                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="feather-more-vertical"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-copy"></i> Copy</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-tag"></i> Pin Chat</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-file-text"></i> Rename</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item delete-item" href="#"><i
-                                                                            class="feather-trash-2"></i> Delete Chat</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="right-side-btn">
-                                                            <button class="react-btn btn-default btn-small btn-border">
-                                                                <i class="feather-repeat"></i><span>Regenerate</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-box author-speech bg-flashlight">
-                                    <div class="inner">
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/team-01.jpg" alt="Author">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">You</h6>
-                                                <p>Could I know Everything from chatenAI?</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-box ai-speech bg-flashlight">
-                                    <div class="inner top-flashlight leftside light-xl">
-                                        <div class="chat-section generate-section">
-                                            <div class="author">
-                                                <img src="assets/images/icons/loader-one.gif" alt="Loader Images">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title color-text-off mb--0">Generating answers for you…</h6>
-                                            </div>
-                                        </div>
-                                        <div class="chat-section">
-                                            <div class="author">
-                                                <img class="w-100" src="assets/images/team/avater.png" alt="ChatenAI">
-                                            </div>
-                                            <div class="chat-content">
-                                                <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
-                                                </h6>
-                                                <p class="mb--20">While ChatenAI is a powerful language model that has
-                                                    been trained on a diverse range of internet text, it doesn't know
-                                                    everything. It has limitations</p>
-                                                <div class="reaction-section">
-                                                    <div class="btn-grp">
-                                                        <div class="left-side-btn dropup">
-                                                            <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-up"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-down"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-share"></i></button>
-                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="feather-more-vertical"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-copy"></i> Copy</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-tag"></i> Pin Chat</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-file-text"></i> Rename</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item delete-item" href="#"><i
-                                                                            class="feather-trash-2"></i> Delete Chat</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="right-side-btn">
-                                                            <button class="react-btn btn-default btn-small btn-border">
-                                                                <i class="feather-repeat"></i><span>Regenerate</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="rbt-static-bar">
-                            <form class="new-chat-form border-gradient">
-                                <textarea id="txtarea" rows="1" placeholder="Send a message..."></textarea>
-                                <div class="left-icons">
-                                    <div title="ChatenAI" class="form-icon icon-gpt">
-                                        <i class="feather-aperture"></i>
-                                    </div>
-                                </div>
-                                <div class="right-icons">
-                                    <div class="form-icon icon-plus" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Choose File">
-                                        <input type="file" class="input-file" name="myfile" multiple>
-                                        <i class="feather-plus-circle"></i>
-                                    </div>
-                                    <button class="form-icon icon-mic" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Voice Search">
-                                        <i class="feather-mic"></i>
-                                    </button>
-                                    <button class="form-icon icon-send" id="sendButton" onclick="sendMessage()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Send message">
-                                        <i class="feather-send"></i>
-                                    </button>
-                                </div>
-                            </form>
-                            <p class="b3 small-text">ChatenAi can make mistakes. Consider checking important information.</p>
                         </div>
                     </div>
 
@@ -481,22 +302,78 @@
                     <div class="rbt-right-side-panel popup-dashboardright-section">
 
                         <div class="right-side-top">
+                            <h5>Филтър:</h5>
+                            <div class="row">
+                            <nav class="chatenai-tab">
+                                <div class="tab-btn-grp nav nav-tabs text-center justify-content-center" id="nav-tab" role="tablist">
+                                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                                        Всички
+                                    </button>
+                                    <button class="nav-link with-badge" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                                        само за училището
+                                    </button>
+                                </div>
+                            </nav></div>
+                            <ul class="chat-history-list">
+                                    <li class="history-box active">
+                                        <div class="dropdown history-box-dropdown">
+                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="feather-more-horizontal"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
+                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                            </ul>
+                                        </div>
+                                        Знание <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.3)&nbsp; </span>
+                                    </li>
+                                    <li class="history-box active">
+                                        <div class="dropdown history-box-dropdown">
+                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="feather-more-horizontal"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
+                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                            </ul>
+                                        </div>
+                                        Разбиране <span style="background-color: red; color: black;"> &nbsp;2 (мин.3)&nbsp; </span>
+                                    </li>
+                                    <li class="history-box active">
+                                        <div class="dropdown history-box-dropdown">
+                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="feather-more-horizontal"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
+                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                            </ul>
+                                        </div>
+                                        Анализ <span style="background-color: green; color: black;"> &nbsp;9 (мин.3)&nbsp; </span>
+                                    </li>
+                                </ul>
                             <a class="btn-default bg-solid-primary" data-bs-toggle="modal" data-bs-target="#newchatModal">
                                 <span class="icon"><i class="feather-plus-circle"></i></span>
-                                <span>New Chat</span>
+                                <span>Промени филтъра</span>
                             </a>
                         </div>
                         <div class="right-side-bottom">
-                            <div class="small-search search-section mb--20">
-                                <input type="search" placeholder="Search Here...">
-                                <i class="feather-search"></i>
-                            </div>
+                            <h6 class="title">Съдържание на темата:</h6>
 
-                            <div class="chat-history-section">
-                                <h6 class="title">Today</h6>
+                            <div class="chat-history-section has-show-more">
+                                <h6 class="title">1. Оператори – видове. Синтаксис на операторите – за въвеждане,
+                                    извеждане, присвояване</h6>
                                 <ul class="chat-history-list">
                                     <li class="history-box active">
-                                        ChatenAI Defination
                                         <div class="dropdown history-box-dropdown">
                                             <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="feather-more-horizontal"></i>
@@ -509,9 +386,9 @@
                                                 <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
                                             </ul>
                                         </div>
+                                        Знание <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.3)&nbsp; </span>
                                     </li>
-                                    <li class="history-box">
-                                        Your last Question
+                                    <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
                                             <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="feather-more-horizontal"></i>
@@ -524,9 +401,9 @@
                                                 <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
                                             </ul>
                                         </div>
+                                        Разбиране <span style="background-color: red; color: black;"> &nbsp;2 (мин.3)&nbsp; </span>
                                     </li>
-                                    <li class="history-box">
-                                        Business Shortcurt Methode
+                                    <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
                                             <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="feather-more-horizontal"></i>
@@ -539,21 +416,7 @@
                                                 <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
                                             </ul>
                                         </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Best way to maintain code Quality
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
+                                        Анализ <span style="background-color: green; color: black;"> &nbsp;9 (мин.3)&nbsp; </span>
                                     </li>
                                 </ul>
                             </div>
@@ -946,7 +809,7 @@
 
 {% block modals %}
         <!--New Chat Section Modal HTML -->
-        <div id="newchatModal" class="modal rbt-modal-box copy-modal fade" tabindex="-1">
+        <div id="selectTheme" class="modal rbt-modal-box copy-modal fade" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content wrapper top-flashlight light-xl">
                     <div class="section-title text-center mb--30 sal-animate" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">

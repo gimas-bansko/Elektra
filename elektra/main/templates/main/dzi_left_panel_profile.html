@@ -7,19 +7,21 @@
                             <div class="rbt-default-sidebar-wrapper">
                                 <nav class="mainmenu-nav">
                                     <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                                        <li><img class="boxed-logo-dark" src="{% static 'assets/images/test/Logo_large.png' %}" alt="School logo"> ПГЕЕ гр.Банско</li>
-                                        <li>ПРОФЕСИОНАЛНА ГИМНАЗИЯ ПО ЕЛЕКТРОНИКА И АВТОМАТИКА</li>
+                                        <li>
+                                            <img class="boxed-logo-dark" src="{{ user_profile.school.logo.url }}" alt="School logo">
+                                            {{ user_profile.school.short_name}} - {{ user_profile.school.city}}</li>
+                                        <li>{{ user_profile.school.full_name}}</li>
                                    </ul>
                                     <div class="rbt-sm-separator"></div>
                                     <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                                         <li>Специалност:</li>
-                                        <li >5230501 - Компютърна техника и технологии</li>
+                                        <li style="font-size: 12px;">{{user_profile.speciality.specialty_num}} - {{user_profile.speciality.specialty_name}}</li>
                                     </ul>
                                     {% if show_theme %}
                                     <div class="rbt-sm-separator"></div>
                                     <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                                         <li>Тема:</li>
-                                        <li >№ 18 - Процеси, нишки, алгоритми за планиране и управление на паметта в
+                                        <li style="font-size: 12px;">№ 18 - Процеси, нишки, алгоритми за планиране и управление на паметта в
                                             операционната система (ОС)</li>
                                     </ul>
                                     {% endif %}
