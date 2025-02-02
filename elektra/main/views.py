@@ -120,7 +120,7 @@ def dzi_test_online(request):
     }
     return render(request, 'main/dzi_test_online.html', context)
 
-def dzi_tasks(request):
+def user_context(request):
     user = request.user
     user_profile = user.userprofile
     schools = School.objects.all()
@@ -133,24 +133,26 @@ def dzi_tasks(request):
         'user_profile': user_profile,
         'show_theme': True,
     }
+    return context
+
+def dzi_tasks(request):
+    context = user_context(request)
+    context['tab_title'] = 'въпроси'
     return render(request, 'main/dzi_tasks.html', context)
 
 def dzi_users(request):
-    context = {
-        'tab_title': 'потребители',
-    }
+    context = user_context(request)
+    context['tab_title'] = 'потребители'
     return render(request, 'main/dzi_users.html', context)
 
 def dzi_sys(request):
-    context = {
-        'tab_title': 'системни',
-    }
+    context = user_context(request)
+    context['tab_title'] = 'системни'
     return render(request, 'main/dzi_sys.html', context)
 
 def dzi_settings(request):
-    context = {
-        'tab_title': 'настройки',
-    }
+    context = user_context(request)
+    context['tab_title'] = 'настройки'
     return render(request, 'main/dzi_settings.html', context)
 
 """ 
