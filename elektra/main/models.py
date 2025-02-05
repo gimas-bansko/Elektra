@@ -116,10 +116,9 @@ def save_user_profile(sender, instance, **kwargs):
 # ****************************************
 
 class Theme(models.Model):
+    specialty = models.ForeignKey(Specialty,  on_delete=models.CASCADE, related_name='items')
     num = models.PositiveSmallIntegerField('Тема №', default=1, help_text='№ на тема: 1, 2, ... 18')
     title = models.TextField('Заглавие', help_text='Заглавие на темата')
-    remark = models.TextField('Коментар/забележка', blank=True,
-                              help_text='Допълнително указание или коментар към темата')
     tasks_total = models.PositiveSmallIntegerField('Общ брой задачи', default=24, help_text='Максимален брой задачи')
     tasks_knowledge = models.PositiveSmallIntegerField('Знание', default=0, help_text='Знание - брой задачи ')
     tasks_comprehension = models.PositiveSmallIntegerField('Разбиране', default=0, help_text='Разбиране - брой задачи ')
