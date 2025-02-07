@@ -179,10 +179,6 @@ class Task(models.Model):
     school = models.ManyToManyField(School, verbose_name='id на училище в което се ползва', blank=True)
     picture = models.ImageField('Картинка', upload_to='task_pics', blank=True)
     group = models.PositiveSmallIntegerField(default=0, help_text='0 - ако не е групирано')
-    mark_red = models.BooleanField('Червен маркер', null=True, default=False)
-    mark_green = models.BooleanField('Зелен маркер', null=True, default=False)
-    mark_yellow = models.BooleanField('Жълт маркер', null=True, default=False)
-    themes = models.ManyToManyField(Theme, blank=True)
 
     objects = TaskManager()
 

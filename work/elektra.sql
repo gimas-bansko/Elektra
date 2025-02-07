@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране:  6 фев 2025 в 00:22
+-- Време на генериране:  7 фев 2025 в 17:15
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 -- Структура на таблица `auth_group`
 --
 
+DROP TABLE IF EXISTS `auth_group`;
 CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL
@@ -38,6 +39,7 @@ CREATE TABLE `auth_group` (
 -- Структура на таблица `auth_group_permissions`
 --
 
+DROP TABLE IF EXISTS `auth_group_permissions`;
 CREATE TABLE `auth_group_permissions` (
   `id` bigint(20) NOT NULL,
   `group_id` int(11) NOT NULL,
@@ -50,6 +52,7 @@ CREATE TABLE `auth_group_permissions` (
 -- Структура на таблица `auth_permission`
 --
 
+DROP TABLE IF EXISTS `auth_permission`;
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -129,6 +132,7 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 -- Структура на таблица `auth_user`
 --
 
+DROP TABLE IF EXISTS `auth_user`;
 CREATE TABLE `auth_user` (
   `id` int(11) NOT NULL,
   `password` varchar(128) NOT NULL,
@@ -163,6 +167,7 @@ INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `userna
 -- Структура на таблица `auth_user_groups`
 --
 
+DROP TABLE IF EXISTS `auth_user_groups`;
 CREATE TABLE `auth_user_groups` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -175,6 +180,7 @@ CREATE TABLE `auth_user_groups` (
 -- Структура на таблица `auth_user_user_permissions`
 --
 
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
 CREATE TABLE `auth_user_user_permissions` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -187,6 +193,7 @@ CREATE TABLE `auth_user_user_permissions` (
 -- Структура на таблица `django_admin_log`
 --
 
+DROP TABLE IF EXISTS `django_admin_log`;
 CREATE TABLE `django_admin_log` (
   `id` int(11) NOT NULL,
   `action_time` datetime(6) NOT NULL,
@@ -276,6 +283,7 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 -- Структура на таблица `django_content_type`
 --
 
+DROP TABLE IF EXISTS `django_content_type`;
 CREATE TABLE `django_content_type` (
   `id` int(11) NOT NULL,
   `app_label` varchar(100) NOT NULL,
@@ -309,6 +317,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 -- Структура на таблица `django_migrations`
 --
 
+DROP TABLE IF EXISTS `django_migrations`;
 CREATE TABLE `django_migrations` (
   `id` bigint(20) NOT NULL,
   `app` varchar(255) NOT NULL,
@@ -343,7 +352,8 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (20, 'main', '0002_remove_userprofile_school_id_and_more', '2024-12-29 21:15:37.517969'),
 (21, 'main', '0003_school_logo_userprofile_gender_and_more', '2025-01-04 20:03:23.676098'),
 (22, 'main', '0004_alter_school_logo', '2025-01-04 20:13:35.286383'),
-(23, 'main', '0005_remove_theme_remark_theme_specialty', '2025-02-05 14:23:22.738554');
+(23, 'main', '0005_remove_theme_remark_theme_specialty', '2025-02-05 14:23:22.738554'),
+(24, 'main', '0006_remove_task_mark_green_remove_task_mark_red_and_more', '2025-02-07 16:12:25.744066');
 
 -- --------------------------------------------------------
 
@@ -351,6 +361,7 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 -- Структура на таблица `django_session`
 --
 
+DROP TABLE IF EXISTS `django_session`;
 CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
@@ -385,6 +396,7 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 -- Структура на таблица `main_documents`
 --
 
+DROP TABLE IF EXISTS `main_documents`;
 CREATE TABLE `main_documents` (
   `id` bigint(20) NOT NULL,
   `title` varchar(200) NOT NULL,
@@ -406,6 +418,7 @@ INSERT INTO `main_documents` (`id`, `title`, `attachment`) VALUES
 -- Структура на таблица `main_log`
 --
 
+DROP TABLE IF EXISTS `main_log`;
 CREATE TABLE `main_log` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -483,6 +496,7 @@ INSERT INTO `main_log` (`id`, `user_id`, `user_name`, `action`, `date`) VALUES
 -- Структура на таблица `main_school`
 --
 
+DROP TABLE IF EXISTS `main_school`;
 CREATE TABLE `main_school` (
   `id` bigint(20) NOT NULL,
   `short_name` varchar(20) NOT NULL,
@@ -509,6 +523,7 @@ INSERT INTO `main_school` (`id`, `short_name`, `full_name`, `city`, `address`, `
 -- Структура на таблица `main_school_specialities`
 --
 
+DROP TABLE IF EXISTS `main_school_specialities`;
 CREATE TABLE `main_school_specialities` (
   `id` bigint(20) NOT NULL,
   `school_id` bigint(20) NOT NULL,
@@ -530,6 +545,7 @@ INSERT INTO `main_school_specialities` (`id`, `school_id`, `specialty_id`) VALUE
 -- Структура на таблица `main_specialty`
 --
 
+DROP TABLE IF EXISTS `main_specialty`;
 CREATE TABLE `main_specialty` (
   `id` bigint(20) NOT NULL,
   `professional_field_num` varchar(3) NOT NULL,
@@ -555,6 +571,7 @@ INSERT INTO `main_specialty` (`id`, `professional_field_num`, `professional_fiel
 -- Структура на таблица `main_task`
 --
 
+DROP TABLE IF EXISTS `main_task`;
 CREATE TABLE `main_task` (
   `id` bigint(20) NOT NULL,
   `num` smallint(5) UNSIGNED NOT NULL CHECK (`num` >= 0),
@@ -563,9 +580,6 @@ CREATE TABLE `main_task` (
   `level` smallint(5) UNSIGNED NOT NULL CHECK (`level` >= 0),
   `picture` varchar(100) NOT NULL,
   `group` smallint(5) UNSIGNED NOT NULL CHECK (`group` >= 0),
-  `mark_red` tinyint(1) DEFAULT NULL,
-  `mark_green` tinyint(1) DEFAULT NULL,
-  `mark_yellow` tinyint(1) DEFAULT NULL,
   `item_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -575,6 +589,7 @@ CREATE TABLE `main_task` (
 -- Структура на таблица `main_taskitem`
 --
 
+DROP TABLE IF EXISTS `main_taskitem`;
 CREATE TABLE `main_taskitem` (
   `id` bigint(20) NOT NULL,
   `leading_char` varchar(4) NOT NULL,
@@ -593,6 +608,7 @@ CREATE TABLE `main_taskitem` (
 -- Структура на таблица `main_task_school`
 --
 
+DROP TABLE IF EXISTS `main_task_school`;
 CREATE TABLE `main_task_school` (
   `id` bigint(20) NOT NULL,
   `task_id` bigint(20) NOT NULL,
@@ -602,21 +618,10 @@ CREATE TABLE `main_task_school` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `main_task_themes`
---
-
-CREATE TABLE `main_task_themes` (
-  `id` bigint(20) NOT NULL,
-  `task_id` bigint(20) NOT NULL,
-  `theme_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Структура на таблица `main_theme`
 --
 
+DROP TABLE IF EXISTS `main_theme`;
 CREATE TABLE `main_theme` (
   `id` bigint(20) NOT NULL,
   `num` smallint(5) UNSIGNED NOT NULL CHECK (`num` >= 0),
@@ -659,6 +664,7 @@ INSERT INTO `main_theme` (`id`, `num`, `title`, `tasks_total`, `tasks_knowledge`
 -- Структура на таблица `main_themeitem`
 --
 
+DROP TABLE IF EXISTS `main_themeitem`;
 CREATE TABLE `main_themeitem` (
   `id` bigint(20) NOT NULL,
   `item` smallint(5) UNSIGNED NOT NULL CHECK (`item` >= 0),
@@ -780,6 +786,7 @@ INSERT INTO `main_themeitem` (`id`, `item`, `title`, `criterion`, `total_points`
 -- Структура на таблица `main_userprofile`
 --
 
+DROP TABLE IF EXISTS `main_userprofile`;
 CREATE TABLE `main_userprofile` (
   `id` bigint(20) NOT NULL,
   `access_level` smallint(5) UNSIGNED NOT NULL CHECK (`access_level` >= 0),
@@ -937,14 +944,6 @@ ALTER TABLE `main_task_school`
   ADD KEY `main_task_school_school_id_e5d27546_fk_main_school_id` (`school_id`);
 
 --
--- Индекси за таблица `main_task_themes`
---
-ALTER TABLE `main_task_themes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `main_task_themes_task_id_theme_id_30649038_uniq` (`task_id`,`theme_id`),
-  ADD KEY `main_task_themes_theme_id_d3221678_fk_main_theme_id` (`theme_id`);
-
---
 -- Индекси за таблица `main_theme`
 --
 ALTER TABLE `main_theme`
@@ -1023,7 +1022,7 @@ ALTER TABLE `django_content_type`
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `main_documents`
@@ -1071,12 +1070,6 @@ ALTER TABLE `main_taskitem`
 -- AUTO_INCREMENT for table `main_task_school`
 --
 ALTER TABLE `main_task_school`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `main_task_themes`
---
-ALTER TABLE `main_task_themes`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
@@ -1160,13 +1153,6 @@ ALTER TABLE `main_taskitem`
 ALTER TABLE `main_task_school`
   ADD CONSTRAINT `main_task_school_school_id_e5d27546_fk_main_school_id` FOREIGN KEY (`school_id`) REFERENCES `main_school` (`id`),
   ADD CONSTRAINT `main_task_school_task_id_57251098_fk_main_task_id` FOREIGN KEY (`task_id`) REFERENCES `main_task` (`id`);
-
---
--- Ограничения за таблица `main_task_themes`
---
-ALTER TABLE `main_task_themes`
-  ADD CONSTRAINT `main_task_themes_task_id_8ea4c748_fk_main_task_id` FOREIGN KEY (`task_id`) REFERENCES `main_task` (`id`),
-  ADD CONSTRAINT `main_task_themes_theme_id_d3221678_fk_main_theme_id` FOREIGN KEY (`theme_id`) REFERENCES `main_theme` (`id`);
 
 --
 -- Ограничения за таблица `main_theme`
