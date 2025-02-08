@@ -4,7 +4,9 @@ from .forms import LoginUserForm
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from .models import *
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import *
 
 def index(request):
     return render(request, 'main/index.html')
@@ -157,6 +159,173 @@ def dzi_settings(request):
 
 """ 
 ***************************************
-            API
+               API
 ***************************************
 """
+
+# ************************************************
+#                 ВЪПРОСИ
+# ************************************************
+
+# Премахване на въпрос
+class TaskDelTaskAPIView(APIView):
+    def post(self, request):
+        level = request.data['level']
+        task_id = request.data['id']
+        Task.objects.filter(id=task_id).delete()
+        return Response(status=201)
+
+
+# Премахване на опция към въпрос
+class TaskDelItemAPIView(APIView):
+    def post(self, request):
+        level = request.data['level']
+        for option in request.data['ids']:
+            TaskItem.objects.filter(id=option).delete()
+        return Response(status=201)
+
+
+# Създаване на нов въпрос
+class TaskNewQuestionBodyAPIView(APIView):
+    def post(self, request):
+        level = request.data['level']
+        item = request.data['item']
+        itm = ThemeItem.objects.filter(id=item).get()
+        task = Task.objects.create_task(itm)
+        task.save()
+        return Response(task.id)
+
+
+# Въпрос - запазване на тялото на въпроса
+class TaskSaveQuestionBodyAPIView(APIView):
+    def post(self, request, pk):
+        data = TaskSaveTaskBodySerializer(data=request.data)
+        if data.is_valid():
+            data.save()
+        else:
+            print('error validation: ', data.errors)
+        return Response(status=201)
+
+
+# Въпрос - запазване на опциите на въпроса
+class TaskSaveQuestionOptionsAPIView(APIView):
+    def post(self, request, pk1, pk2, pk3):
+        if pk2 == 0:  # вмъквам нова опция
+            task_id = Task.objects.filter(id=pk3).get()
+            option = TaskItem.objects.create_task(task_id)
+            option.leading_char = request.data['leading_char']
+            option.text = request.data['text']
+            option.value = request.data['value']
+            option.value_name = request.data['value_name']
+            option.checked = request.data['checked']
+            option.save()
+        else:
+            option = TaskSaveTaskOptionsSerializer(data=request.data)
+            if option.is_valid():
+                option.save()
+            else:
+                print('error validation: ', option.errors)
+
+        return Response(status=201)
+
+
+# Въпрос - обновяване на картинка за въпрос
+class TaskFileAPIView(APIView):
+    def post(self, request):
+        data = TaskFileSerializer(data=request.data)
+        if data.is_valid():
+            data.save(id=request.data['id'])
+        return Response(status=201)
+
+# ***********************************************
+def tests_by_theme(request, pk):
+    theme = Theme.objects.get(id=pk)
+    items = ThemeItem.objects.filter(theme_id=pk).order_by('item')
+    themes = Theme.objects.all()
+    context = {
+        'state': 'collapsed',
+        'theme': theme,
+        'themes': themes,
+        'items': items,
+    }
+    return render(request, 'diki/test.html', context)
+
+
+class ThemeItemView(APIView):
+    def get(self, request, pk):
+        queryset = ThemeItem.objects.filter(theme_id=pk).order_by('item')
+        serializer = ThemeItemSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+
+class ThemeView(APIView):
+    def get(self, request, pk):
+        queryset = Theme.objects.filter(num=pk)
+        serializer = ThemeSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+
+class ThemeNumView(APIView):
+    def get(self, request):
+        queryset = Theme.objects.all()
+        serializer = ThemeNumSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+
+class TestByUserView(APIView):
+    def get(self, request):
+        queryset = Test.objects.order_by('user_id')
+        serializer = TestSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+
+class TestByThemeView(APIView):
+    def get(self, request):
+        queryset = Test.objects.order_by('theme')
+        serializer = TestSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+
+"""
+       *******************   TEST  ******************
+"""
+
+
+class SaveTestResults(APIView):
+    def post(self, request):
+        user = self.request.user
+        user_id = user.id
+        user_name = user.first_name + ' ' + user.last_name
+        theme = request.data['theme']
+        points = request.data['points']
+        time = request.data['time']
+
+        record = Test.objects.create()
+        record.user_id = user_id
+        record.user_name = user_name
+        record.theme = theme
+        record.points = points
+        record.time = time
+        record.save()
+
+        return Response(status=201)
+
+
+"""
+       *******************   LOG  ******************
+"""
+class SaveLogAction(APIView):
+    def post(self, request):
+        user = self.request.user
+        user_id = user.id
+        user_name = user.first_name + ' ' + user.last_name
+        action = request.data['action']
+
+        record = Log.objects.create()
+        record.user_id = user_id
+        record.user_name = user_name
+        record.action = action
+        record.save()
+
+        return Response(status=201)
+

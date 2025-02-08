@@ -24,5 +24,20 @@ urlpatterns = [
     path('dzi_sys', views.dzi_sys, name='dzi_sys'),
     path('dzi_settings', views.dzi_settings, name='dzi_settings'),
 
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+
+    path('api/theme_items/<int:pk>/', views.ThemeItemView.as_view()),
+    path('api/TaskKnowledgeFile/', views.TaskFileAPIView.as_view()),
+    path('api/TaskDelItem/', views.TaskDelItemAPIView.as_view()),
+    path('api/TaskDelete/', views.TaskDelTaskAPIView.as_view()),
+    path('api/TaskSaveQuestionBody/<int:pk>/', views.TaskSaveQuestionBodyAPIView.as_view()),
+    path('api/TaskSaveQuestionOption/<int:pk1>/<int:pk2>/<int:pk3>/', views.TaskSaveQuestionOptionsAPIView.as_view()),
+    path('api/TaskNewQuestionBody/', views.TaskNewQuestionBodyAPIView.as_view()),
+    path('api/theme/<int:pk>/', views.ThemeView.as_view()),
+    path('api/theme_nums/', views.ThemeNumView.as_view()),
+    path('api/SaveTestResult/', views.SaveTestResults.as_view()),
+    path('api/TestStatisticByUser/', views.TestByUserView.as_view()),
+    path('api/TestStatisticByTheme/', views.TestByThemeView.as_view()),
+    path('api/SaveLogRecord/', views.SaveLogAction.as_view()),
+
 ]

@@ -172,14 +172,13 @@ class TaskManager(models.Manager):
 
 class Task(models.Model):
     item = models.ForeignKey(ThemeItem, on_delete=models.CASCADE, null=True, related_name='tasks_knowledge')
-    num = models.PositiveSmallIntegerField(default=0, help_text='генерира се автоматично')
     text = models.TextField('Въпрос', default='', blank=True, help_text='Формулировка (текст) на въпроса')
     type = models.PositiveSmallIntegerField(choices=TASK_TYPE, default=TYPE1, help_text='тип на въпроса')
     level = models.PositiveSmallIntegerField(choices=LEVEL_TYPE, default=LEVEL1, help_text='ниво на въпроса по Блум')
     school = models.ManyToManyField(School, verbose_name='id на училище в което се ползва', blank=True)
     picture = models.ImageField('Картинка', upload_to='task_pics', blank=True)
     group = models.PositiveSmallIntegerField(default=0, help_text='0 - ако не е групирано')
-
+    author = models.ForeignKey(School, on_delete=models.CASCADE, related_name='author_id', default=1)
     objects = TaskManager()
 
     def __str__(self):
@@ -219,12 +218,12 @@ class TaskItem(models.Model):
 
 """ 
 ***************************************
-        Логове
+        Логове 
 ***************************************
 """
 class Log(models.Model):
-    user_id = models.IntegerField('id на потрбител', default=0)
-    user_name = models.CharField('име на потрбител', max_length=50, default='', null=True)
+    user_id = models.IntegerField('id на потребител', default=0)
+    user_name = models.CharField('име на потребител', max_length=50, default='', null=True)
     action = models.CharField('Действие', max_length=200, default='')
     date = models.DateTimeField('дата и час', default=timezone.now, null=True)
 
@@ -234,3 +233,25 @@ class Log(models.Model):
     class Meta:
         verbose_name = 'Действие'
         verbose_name_plural = 'Действия'
+
+
+
+""" 
+***************************************
+        Статистика 
+***************************************
+"""
+class Test(models.Model):
+    user_id = models.IntegerField('id на потрбител', default=0)
+    user_name = models.CharField('id на потрбител', max_length=50, default='', null=True)
+    theme = models.PositiveSmallIntegerField('номер на тема', default=0)
+    points = models.PositiveSmallIntegerField('получени точки', default=0)
+    time = models.IntegerField('продължителност', default=0)
+    date = models.DateTimeField('дата и час', default=datetime.now, null=True)
+
+    def __str__(self):
+        return self.user_name
+
+    class Meta:
+        verbose_name = 'Тест'
+        verbose_name_plural = 'Тестове'

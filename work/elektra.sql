@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране:  7 фев 2025 в 17:15
+-- Време на генериране:  8 фев 2025 в 10:41
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -124,7 +124,11 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (57, 'Can add Въпрос - опция', 15, 'add_taskitem'),
 (58, 'Can change Въпрос - опция', 15, 'change_taskitem'),
 (59, 'Can delete Въпрос - опция', 15, 'delete_taskitem'),
-(60, 'Can view Въпрос - опция', 15, 'view_taskitem');
+(60, 'Can view Въпрос - опция', 15, 'view_taskitem'),
+(61, 'Can add Тест', 16, 'add_test'),
+(62, 'Can change Тест', 16, 'change_test'),
+(63, 'Can delete Тест', 16, 'delete_test'),
+(64, 'Can view Тест', 16, 'view_test');
 
 -- --------------------------------------------------------
 
@@ -306,6 +310,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (10, 'main', 'specialty'),
 (11, 'main', 'task'),
 (15, 'main', 'taskitem'),
+(16, 'main', 'test'),
 (12, 'main', 'theme'),
 (14, 'main', 'themeitem'),
 (13, 'main', 'userprofile'),
@@ -353,7 +358,10 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (21, 'main', '0003_school_logo_userprofile_gender_and_more', '2025-01-04 20:03:23.676098'),
 (22, 'main', '0004_alter_school_logo', '2025-01-04 20:13:35.286383'),
 (23, 'main', '0005_remove_theme_remark_theme_specialty', '2025-02-05 14:23:22.738554'),
-(24, 'main', '0006_remove_task_mark_green_remove_task_mark_red_and_more', '2025-02-07 16:12:25.744066');
+(24, 'main', '0006_remove_task_mark_green_remove_task_mark_red_and_more', '2025-02-07 16:12:25.744066'),
+(25, 'main', '0007_task_author', '2025-02-07 20:18:12.552904'),
+(26, 'main', '0008_remove_task_num', '2025-02-08 08:38:03.647454'),
+(27, 'main', '0009_test_alter_log_user_id_alter_log_user_name', '2025-02-08 09:39:45.945876');
 
 -- --------------------------------------------------------
 
@@ -574,13 +582,13 @@ INSERT INTO `main_specialty` (`id`, `professional_field_num`, `professional_fiel
 DROP TABLE IF EXISTS `main_task`;
 CREATE TABLE `main_task` (
   `id` bigint(20) NOT NULL,
-  `num` smallint(5) UNSIGNED NOT NULL CHECK (`num` >= 0),
   `text` longtext NOT NULL,
   `type` smallint(5) UNSIGNED NOT NULL CHECK (`type` >= 0),
   `level` smallint(5) UNSIGNED NOT NULL CHECK (`level` >= 0),
   `picture` varchar(100) NOT NULL,
   `group` smallint(5) UNSIGNED NOT NULL CHECK (`group` >= 0),
-  `item_id` bigint(20) DEFAULT NULL
+  `item_id` bigint(20) DEFAULT NULL,
+  `author_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -613,6 +621,23 @@ CREATE TABLE `main_task_school` (
   `id` bigint(20) NOT NULL,
   `task_id` bigint(20) NOT NULL,
   `school_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура на таблица `main_test`
+--
+
+DROP TABLE IF EXISTS `main_test`;
+CREATE TABLE `main_test` (
+  `id` bigint(20) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_name` varchar(50) DEFAULT NULL,
+  `theme` smallint(5) UNSIGNED NOT NULL CHECK (`theme` >= 0),
+  `points` smallint(5) UNSIGNED NOT NULL CHECK (`points` >= 0),
+  `time` int(11) NOT NULL,
+  `date` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -926,7 +951,8 @@ ALTER TABLE `main_specialty`
 --
 ALTER TABLE `main_task`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `main_task_item_id_1d36f96a_fk_main_themeitem_id` (`item_id`);
+  ADD KEY `main_task_item_id_1d36f96a_fk_main_themeitem_id` (`item_id`),
+  ADD KEY `main_task_author_id_020b13fa_fk_main_school_id` (`author_id`);
 
 --
 -- Индекси за таблица `main_taskitem`
@@ -942,6 +968,12 @@ ALTER TABLE `main_task_school`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `main_task_school_task_id_school_id_1c972fe8_uniq` (`task_id`,`school_id`),
   ADD KEY `main_task_school_school_id_e5d27546_fk_main_school_id` (`school_id`);
+
+--
+-- Индекси за таблица `main_test`
+--
+ALTER TABLE `main_test`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индекси за таблица `main_theme`
@@ -986,7 +1018,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `auth_user`
@@ -1016,13 +1048,13 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `main_documents`
@@ -1070,6 +1102,12 @@ ALTER TABLE `main_taskitem`
 -- AUTO_INCREMENT for table `main_task_school`
 --
 ALTER TABLE `main_task_school`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `main_test`
+--
+ALTER TABLE `main_test`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
@@ -1139,6 +1177,7 @@ ALTER TABLE `main_school_specialities`
 -- Ограничения за таблица `main_task`
 --
 ALTER TABLE `main_task`
+  ADD CONSTRAINT `main_task_author_id_020b13fa_fk_main_school_id` FOREIGN KEY (`author_id`) REFERENCES `main_school` (`id`),
   ADD CONSTRAINT `main_task_item_id_1d36f96a_fk_main_themeitem_id` FOREIGN KEY (`item_id`) REFERENCES `main_themeitem` (`id`);
 
 --
