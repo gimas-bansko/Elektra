@@ -55,7 +55,7 @@ class ThemeSerializer(serializers.ModelSerializer):
 class ThemeNumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Theme
-        fields = ('num', 'title')
+        fields = "__all__"
 
 
 class TestSerializer(serializers.ModelSerializer):

@@ -14,15 +14,18 @@
 {% endblock %}
 
 {% block main_content %}
+{% verbatim %}
             <!-- Main content -->
             <div id="app" class="rbt-main-content">
                 <div class="rbt-daynamic-page-content">
                     <!-- Start Breadcarumb area  -->
                     <div class="chatenai-separator">
+                        {% endverbatim %}
                         <img class="w-100 separator-dark"
                              src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
                         <img class="w-100 separator-light"
                              src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
+                        {% verbatim %}
                     </div>
                     <div class="breadcrumb-area breadcarumb-style1 pt--30 pb--30">
                         <div class="container">
@@ -41,28 +44,27 @@
                     </div>
                     <!-- End Breadcarumb area  -->
                     <div class="chatenai-separator">
+                        {% endverbatim %}
                         <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
                         <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
+                        {% verbatim %}
                     </div>
 
                     <!-- Dashboard Center Content -->
                     <div class="rbt-dashboard-content">
                         <div class="content-page">
-                            <div class="chat-box-list pt--30" id="chatContainer">
+                            <div class="chat-box-list pt--30" id="chatContainer"
+                                 v-for="(theme_item, idx) in theme">
                                 <!-- ****************
                                      Точка от темата
-                                        (подтема)
                                      ****************-->
                                 <!-- Заглавна част -->
                                 <div class="chat-box author-speech bg-flashlight">
                                     <div class="inner">
                                         <div class="chat-section">
                                             <div class="chat-content">
-                                                <h6 class="title">1. Оператори – видове. Синтаксис на операторите – за
-                                                    въвеждане, извеждане, присвояване</h6>
-                                                <p>Критерии за оценяване: <br>Дефинира понятието „микропроцесор“, пояснява
-                                                    разликата между CISC и RISC процесорите, проследява хронологично
-                                                    развитието на процесорите. </p>
+                                                <h6 class="title">{{theme_item.item}}. {{theme_item.title}}</h6>
+                                                <p>Критерии за оценяване: <br>{{theme_item.criterion}} </p>
                                                 <!-- Start Pricing Compare Detailed  -->
                                                 <div class="rainbow-pricing-detailed-area mt--60">
                                                     <div class="row">
@@ -93,10 +95,10 @@
                                                                     <tbody>
                                                                         <tr>
                                                                             <td>по НИП</td>
-                                                                            <td>2</td>
-                                                                            <td>0</td>
-                                                                            <td>0</td>
-                                                                            <td>2</td>
+                                                                            <td>{{theme_item.knowledge}}</td>
+                                                                            <td>{{theme_item.comprehension}}</td>
+                                                                            <td>{{theme_item.application}}</td>
+                                                                            <td>{{theme_item.analysis}}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>в БД</td>
@@ -109,7 +111,11 @@
                                                                         <tr>
                                                                             <td></td>
                                                                             <td>
-                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                                <button data-bs-toggle="modal" data-bs-target="#editQuestionModal"
+                                                                                        class="react-btn btn-default btn-small btn-border"
+                                                                                @click="question.item=10">
+                                                                                        Добави
+                                                                                </button>
                                                                             </td>
                                                                             <td>
                                                                                 <a class="btn-default btn-border" href="#">Добави</a>
@@ -132,7 +138,6 @@
                                     </div>
                                 </div>
                                 <!-- списък на въпросите на подтемата по нива на Блум -->
-                                <!-- Въпрос тип 1 - затворен без картинка-->
                                 <div class="chat-box ai-speech bg-flashlight">
                                     <div class="inner top-flashlight leftside light-xl">
                                         <div class="chat-section generate-section">
@@ -282,6 +287,7 @@
                             </ul>
                             <div id="my_switcher" class="my_switcher">
                                 <ul>
+                                    {% endverbatim %}
                                     <li>
                                         <a href="javascript: void(0);" data-theme="light" class="setColor light">
                                             <img src="{% static 'assets/images/light/switch/sun-01.svg' %}" alt="Sun images"><span title="Light Mode"> Light</span>
@@ -293,6 +299,7 @@
                                         Dark</span>
                                         </a>
                                     </li>
+                                    {% verbatim %}
                                 </ul>
                             </div>
                         </div>
@@ -302,76 +309,12 @@
                     <div class="rbt-right-side-panel popup-dashboardright-section">
 
                         <div class="right-side-top">
-                            <h5>Филтър:</h5>
-                            <div class="row">
-                            <nav class="chatenai-tab">
-                                <div class="tab-btn-grp nav nav-tabs text-center justify-content-center" id="nav-tab" role="tablist">
-                                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
-                                        Всички
-                                    </button>
-                                    <button class="nav-link with-badge" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
-                                        само за училището
-                                    </button>
-                                </div>
-                            </nav></div>
-                            <ul class="chat-history-list">
-                                    <li class="history-box active">
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                        Знание <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.3)&nbsp; </span>
-                                    </li>
-                                    <li class="history-box active">
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                        Разбиране <span style="background-color: red; color: black;"> &nbsp;2 (мин.3)&nbsp; </span>
-                                    </li>
-                                    <li class="history-box active">
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                        Анализ <span style="background-color: green; color: black;"> &nbsp;9 (мин.3)&nbsp; </span>
-                                    </li>
-                                </ul>
-                            <a class="btn-default bg-solid-primary" data-bs-toggle="modal" data-bs-target="#newchatModal">
-                                <span class="icon"><i class="feather-plus-circle"></i></span>
-                                <span>Промени филтъра</span>
-                            </a>
-                        </div>
-                        <div class="right-side-bottom">
                             <h6 class="title">Съдържание на темата:</h6>
-
-                            <div class="chat-history-section has-show-more">
-                                <h6 class="title">1. Оператори – видове. Синтаксис на операторите – за въвеждане,
-                                    извеждане, присвояване</h6>
+                        </div>
+                        <div class="right-side-bottom mb--200">
+                            <div class="chat-history-section"
+                                 v-for="(theme_item, idx) in theme">
+                                <h6 class="title">{{theme_item.item}}. {{theme_item.title}}</h6>
                                 <ul class="chat-history-list">
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -386,7 +329,8 @@
                                                 <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
                                             </ul>
                                         </div>
-                                        Знание <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.3)&nbsp; </span>
+                                        Знание
+                                        <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.{{theme_item.knowledge}})&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -401,7 +345,8 @@
                                                 <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
                                             </ul>
                                         </div>
-                                        Разбиране <span style="background-color: red; color: black;"> &nbsp;2 (мин.3)&nbsp; </span>
+                                        Разбиране
+                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.{{theme_item.comprehension}})&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -416,623 +361,79 @@
                                                 <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
                                             </ul>
                                         </div>
-                                        Анализ <span style="background-color: green; color: black;"> &nbsp;9 (мин.3)&nbsp; </span>
+                                        Приложение
+                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.{{theme_item.application}})&nbsp; </span>
+                                    </li>
+                                    <li class="history-box active">
+                                        <div class="dropdown history-box-dropdown">
+                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="feather-more-horizontal"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
+                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                            </ul>
+                                        </div>
+                                        Анализ
+                                        <span style="background-color: green; color: black;"> &nbsp;9 (мин.{{theme_item.analysis}})&nbsp; </span>
                                     </li>
                                 </ul>
-                            </div>
-
-                            <div class="chat-history-section has-show-more">
-                                <h6 class="title">Yesterday</h6>
-                                <ul class="chat-history-list has-show-more-inner-content">
-                                    <li class="history-box">
-                                        How to write a code
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Form Html CSS JS
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        HTML Shortcurt Methode
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Best way to maintain code Quality
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        ChatenAI Defination
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Your last Question
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Unique Shortcurt Methode
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Generate a circle Image
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="rbt-show-more-btn">Show More</div>
-                            </div>
-
-                            <div class="chat-history-section has-show-more">
-                                <h6 class="title">Previous 7 days</h6>
-                                <ul class="chat-history-list has-show-more-inner-content">
-                                    <li class="history-box">
-                                        User Assistant Request
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Funtion Js
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Generate a Image
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Best way to maintain code Quality
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        ChatenAI Defination
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Your last Question
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Business Shortcurt Methode
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Best way to maintain Remote Team
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="rbt-show-more-btn">Show More</div>
-                            </div>
-
-                            <div class="chat-history-section mb--100 has-show-more">
-                                <h6 class="title">November</h6>
-                                <ul class="chat-history-list has-show-more-inner-content">
-                                    <li class="history-box">
-                                        AI writing: Free Trial
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Your last Question
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Education Shortcurt Methode
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        1992 Environment Policy
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Senior UX/UI Design
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Your last Question
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Dark Mode Html CSS JS
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="history-box">
-                                        Best way to maintain code Quality
-                                        <div class="dropdown history-box-dropdown">
-                                            <button type="button" class="more-info-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="feather-more-horizontal"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="rbt-show-more-btn">Show More</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+{% endverbatim %}
 {% endblock %}
 
 {% block modals %}
+{% verbatim %}
+
         <!--New Chat Section Modal HTML -->
-        <div id="selectTheme" class="modal rbt-modal-box copy-modal fade" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content wrapper top-flashlight light-xl">
-                    <div class="section-title text-center mb--30 sal-animate" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
-                        <h3 class="title mb--0 w-600">Unlock the power of AI</h3>
-                    </div>
-                    <div class="genarator-section">
-                        <ul class="genarator-card-group">
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/text.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Text Generator</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="image-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/photo.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Image Generator</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="image-editor.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/photo-editor.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Photo Editor</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="code-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/code-editor.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Code Generator</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/text-voice.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Text to speech</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/voice.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Speech to text</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="vedio-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/video-camera.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Vedio Generator</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="genarator-card disabled" tabindex="-1">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/website-design.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Website Generator</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <span class="rainbow-badge-card">Coming</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="code-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/code-editor.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">HTML Generator</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card disabled" tabindex="-1">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/document.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Chat with Documents</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <span class="rainbow-badge-card">Coming</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="email-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/email.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Email Writer</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="genarator-card disabled" tabindex="-1">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <div class="img-bar">
-                                                <img src="assets/images/generator-icon/lyrics.png" alt="AI Generator">
-                                            </div>
-                                            <h5 class="title">Lyrics Generator</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <span class="rainbow-badge-card">Coming</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <button class="close-button" data-bs-dismiss="modal">
-                        <i class="feather-x"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!--Like Section Modal HTML -->
-        <div id="likeModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
+        <div id="editQuestionModal" class="modal rbt-modal-box dislike-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
                 <div class="modal-content wrapper top-flashlight leftside light-xl">
-                    <h5 class="title">Provide additional feedback</h5>
-                    <div class="chat-form">
-                        <div class="border-gradient text-form">
-                            <textarea rows="6" placeholder="Send a message..."></textarea>
-                        </div>
-                    </div>
-                    <div class="bottom-btn mt--20">
-                        <a class="btn-default btn-small round" href="#">Send Feedback</a>
-                    </div>
-                    <button class="close-button" data-bs-dismiss="modal">
-                        <i class="feather-x"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+                    <h5 class="title">{{ editMode }}</h5>
+                    <button class="close-button" data-bs-dismiss="modal"><i class="feather-x"></i></button>
 
-        <!--DisLike Section Modal HTML -->
-        <div id="dislikeModal" class="modal rbt-modal-box dislike-modal fade" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content wrapper top-flashlight leftside light-xl">
-                    <h5 class="title">Why do you like this response?</h5>
-                    <select class="form-select" multiple aria-label="multiple select example">
-                        <option selected>Irrelevant</option>
+                                        <div class="btn-grp">
+                                            <div class="left-side-btn dropup">
+                                                <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                        class="feather-thumbs-up"></i></button>
+                                                <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                        class="feather-thumbs-down"></i></button>
+                                                <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
+                                                        class="feather-share"></i></button>
+                                                <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="feather-more-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i
+                                                                class="feather-copy"></i> Copy</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i
+                                                                class="feather-tag"></i> Pin Chat</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i
+                                                                class="feather-file-text"></i> Rename</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item delete-item" href="#"><i
+                                                                class="feather-trash-2"></i> Delete Chat</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="right-side-btn">
+                                                <button class="react-btn btn-default btn-small btn-border">
+                                                    <i class="feather-repeat"></i><span>Regenerate</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+
+
+                    <select class="form-select" >
+                        <option selected value="1">Irrelevant</option>
                         <option value="2">Offensive</option>
                         <option value="3">Not Correct</option>
                     </select>
@@ -1043,50 +444,228 @@
                         </div>
                     </div>
                     <div class="bottom-btn mt--20">
-                        <a class="btn-default btn-small round" href="#">Send Feedback</a>
-                    </div>
-                    <button class="close-button" data-bs-dismiss="modal">
-                        <i class="feather-x"></i>
-                    </button>
+                            <a class="btn-default btn-small round" href="#">Send Feedback</a>
+                        </div>
                 </div>
             </div>
         </div>
 
-        <!--Share Section Modal HTML -->
-        <div id="shareModal" class="modal rbt-modal-box share-modal fade" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content wrapper modal-small top-flashlight leftside light-xl">
-                    <h5 class="title">Share</h5>
-                    <ul class="social-icon social-default transparent-with-border mb--20">
-                        <li data-sal="slide-up" data-sal-duration="400" data-sal-delay="200"><a href="https://www.facebook.com/">
-                                <i class="feather-facebook"></i>
-                            </a>
-                        </li>
-                        <li data-sal="slide-up" data-sal-duration="400" data-sal-delay="300"><a href="https://www.twitter.com">
-                                <i class="feather-twitter"></i>
-                            </a>
-                        </li>
-                        <li data-sal="slide-up" data-sal-duration="400" data-sal-delay="400"><a href="https://www.instagram.com/">
-                                <i class="feather-instagram"></i>
-                            </a>
-                        </li>
-                        <li data-sal="slide-up" data-sal-duration="400" data-sal-delay="500"><a href="https://www.linkdin.com/">
-                                <i class="feather-linkedin"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="chat-form">
-                        <div class="border-gradient text-form d-flex align-items-center">
-                            <input type="text" class="copy-link-input" value="https://www.youtube.com/" readonly>
-                            <button class="btn-default bg-solid-primary" type="submit">Copy</button>
+        <!--Like Section Modal HTML -->
+<div class="modal fade" id="editQuestionModal1" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">{{ editMode }}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <!-- Въпрос от затворен тип -->
+                <div class="card card-header-actions mx-auto mb-4"
+                     :class="{'border-cyan': current_level==1,
+                              'border-blue': current_level==2,
+                              'border-purple': current_level==3,
+                              'border-pink': current_level==4,
+                              }">
+                    <div class="card-header">
+                        Въпрос #{{ question.id }}
+                        <!-- маркери -->
+                        <div>
+                            <button class="btn btn-icon"
+                                    :class="question.mark_red ? 'btn-danger': 'btn-light'"
+                                    type="button" @click="question.mark_red=!question.mark_red">
+                                <i data-feather="alert-triangle" ></i>
+                            </button>
+                            <button class="btn btn-icon ml-2"
+                                    :class="question.mark_yellow ? 'btn-warning': 'btn-light'"
+                                    type="button" @click="question.mark_yellow=!question.mark_yellow">
+                                <i data-feather="repeat"></i>
+                            </button>
+                            <button class="btn btn-icon ml-2"
+                                    :class="question.mark_green ? 'btn-success': 'btn-light'"
+                                    type="button" @click="question.mark_green=!question.mark_green">
+                                <i data-feather="check"></i>
+                            </button>
+                        </div>
+                        <!-- тип на въпроса -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-cyan dropdown-toggle"
+                                    id="dropdownMenuButtonM"
+                                    type="button"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                Тип на въпроса
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right bg-gray-400" aria-labelledby="dropdownMenuButtonM">
+                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=1">
+                                    Въпрос от затворен тип с един или два верни отговора
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=2">
+                                    Въпрос от затворен тип с един или два верни отговора с картинка
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=3">
+                                    Въпрос със съпоставяне
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=4">
+                                    Въпрос за съпоставяне на елементи от картинка със зададени опции
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=5">
+                                    Въпрос с отворен отговор, който във формулировката си съдържа отговора или
+                                    &nbsp;<br>еднозначно го определя и/или предполага
+                                </a>
+                            </div>
+                        </div>
+                        <!-- точки (ниво) -->
+                        <div>
+                           <span
+                                   class="btn"
+                                   :class="{'btn-outline-cyan': current_level==1,
+                                            'btn-outline-blue': current_level==2,
+                                            'btn-outline-purple': current_level==3,
+                                            'btn-outline-pink': current_level==4,
+                                            }">
+                               {{2*current_level}} т.</span>
                         </div>
                     </div>
-                    <button class="close-button" data-bs-dismiss="modal">
-                        <i class="feather-x"></i>
-                    </button>
+                    <div class="card-body">
+                        <!-- група -->
+                        <div class="row">
+                            <div class="col-lg-10"></div>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">Група</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-sm"
+                                           v-model="question.group">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Картинка -->
+                        <label v-if="(question.type==2)||(question.type==4)">Снимка/Схема/Диаграма:</label>
+                        <div class="row" v-if="(question.type==2)||(question.type==4)">
+                            <div class="col-lg-8">
+                                <img v-if="question.picture" :src="question.picture" width="360">
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="exampleFormControlFile1">графичен файл (.png; .jpg; .bmp)</label>
+                                    <input type="file"
+                                           class="form-control-file"
+                                           id="exampleFormControlFile1"
+                                           @change="onImageChange($event)">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Формулировка на въпроса -->
+                        <div class="form-group mb-2">
+                            <label for="exampleFormControlTextarea1">Формулировка на въпроса:</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" v-model="question.text"> </textarea>
+                        </div>
+                        <!-- Отговори -->
+                        <label v-if="question.type==3">Редове:</label>
+                        <label v-else-if="question.type==4">Опции:</label>
+                        <label v-else>Отговори:</label>
+                        <div class="card  card-header-actions mb-3" v-for="(option, idx) in question.options">
+                            <!-- Отговор -->
+                            <div class="card-header">
+                                <h3 v-if="question.type==3">Ред {{idx + 1}}</h3>
+                                <h3 v-else-if="question.type==4">Опция {{idx + 1}}</h3>
+                                <h3 v-else="question.type==4">Отговор {{idx + 1}}</h3>
+                                <div>
+                                    <button class="btn btn-outline-danger" type="button" @click="deleteOption(idx)">Премахни</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- Отговор  Варианти 1 и 2 - Въпрос от затворен тип със или без картинка -->
+                                <div class="row" v-if="question.type<3">
+                                    <div class="form-group col-lg-2">
+                                        <label for="leading_char">№/буква</label>
+                                        <input type="text" class="form-control" id="leading_char" maxlength="4" size="4" v-model="option.leading_char">
+                                    </div>
+
+                                    <div class="custom-control custom-checkbox col-lg-2 align-items-end" style="margin-top: 2.5rem;">
+                                        <input class="custom-control-input" :id="'customCheck'+idx" type="checkbox" v-model="option.checked">
+                                        <label class="custom-control-label" :for="'customCheck'+idx">вярно</label>
+                                    </div>
+                                    <div class="form-group col-lg-8">
+                                        <label for="text">текст</label>
+                                        <input type="text" class="form-control" id="text" v-model="option.text">
+                                    </div>
+                                </div>
+                                <!-- Отговор  Вариант 3 - Въпрос за съпоставяне -->
+                                <div class="row" v-else-if="question.type==3">
+                                    <div class="form-group col-lg-2">
+                                        <label for="leading_char3">№/буква</label>
+                                        <input type="text" class="form-control" id="leading_char3" maxlength="4" size="4" v-model="option.leading_char">
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="text3">текст</label>
+                                        <input type="text" class="form-control" id="text3" v-model="option.text">
+                                    </div>
+                                    <div class="form-group col-lg-1"></div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="value3">отговор</label>
+                                        <input type="text" class="form-control" id="value3" v-model="option.value">
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="valueName3">опция</label>
+                                        <input type="text" class="form-control" id="valueName3" v-model="option.value_name">
+                                    </div>
+                                </div>
+                                <!-- Отговор  Вариант 4 - Въпрос за съпоставяне от картинка -->
+                                <div class="row" v-else-if="question.type==4">
+                                    <div class="form-group col-lg-1"></div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="value4">отговор</label>
+                                        <input type="text" class="form-control" id="value4" v-model="option.value">
+                                    </div>
+                                    <div class="form-group col-lg-9">
+                                        <label for="valueName4">опция</label>
+                                        <input type="text" class="form-control" id="valueName4" v-model="option.value_name">
+                                    </div>
+                                </div>
+                                <!-- Отговор  Вариант 5 - Въпрос от отворен тип -->
+                                <div class="row" v-else>
+                                    <div class="form-group col-lg-2"></div>
+                                    <div class="form-group col-lg-8">
+                                        <label for="text5">текст</label>
+                                        <input type="text" class="form-control" id="text5" v-model="option.value">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Ако няма отговор -->
+                        <div class="card  card-header-actions mb-3">
+                            <div class="card-header">
+                                ___
+                                <div>
+                                    <button class="btn btn-outline-success" type="button" @click="addEmptyOption">Добави отговор</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" type="button" data-dismiss="modal" @click="reloadItem()">Затвори</button>
+                <button class="btn btn-success" type="button" data-dismiss="modal" @click="save()">&nbsp;Запази&nbsp;</button>
+            </div>
         </div>
+    </div>
+</div>
+
+        <!--DisLike Section Modal HTML -->
+
+        <!--Share Section Modal HTML -->
+{% endverbatim %}
 {% endblock %}
 
 {% block page_script %}

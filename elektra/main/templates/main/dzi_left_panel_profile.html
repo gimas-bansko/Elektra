@@ -21,8 +21,11 @@
                                     <div class="rbt-sm-separator"></div>
                                     <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                                         <li>Тема:</li>
-                                        <li style="font-size: 12px;">№ 18 - Процеси, нишки, алгоритми за планиране и управление на паметта в
-                                            операционната система (ОС)</li>
+                                        {% verbatim %}
+                                        <li style="font-size: 12px;">
+                                            Тема {{ listOfThemes[theme_num].num }}: {{ listOfThemes[theme_num].title }}
+                                        </li>
+                                        {% endverbatim %}
                                     </ul>
                                     {% endif %}
                                 </nav>

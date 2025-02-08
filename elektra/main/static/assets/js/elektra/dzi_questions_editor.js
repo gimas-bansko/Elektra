@@ -32,7 +32,9 @@ const App = {
                         }
                     ],
                     },
-        theme: []
+        theme: [],
+        listOfThemes: [],
+        user:{},
         }
      },
     methods:{
@@ -47,10 +49,10 @@ const App = {
             formData.append('picture', file)
             let url = ''
             const lvl=this.current_level
-            if (lvl == 1){url = '/diki/api/TaskKnowledgeFile/'}
-            else if (lvl == 2){url = '/diki/api/TaskComprehensionFile/'}
-            else if (lvl == 3){url = '/diki/api/TaskApplicationFile/'}
-            else if (lvl == 4){url = '/diki/api/TaskAnalysisFile/'}
+            if (lvl == 1){url = '/api/TaskKnowledgeFile/'}
+            else if (lvl == 2){url = '/api/TaskComprehensionFile/'}
+            else if (lvl == 3){url = '/api/TaskApplicationFile/'}
+            else if (lvl == 4){url = '/api/TaskAnalysisFile/'}
             axios.post(url, formData, {headers: {'X-CSRFToken':CSRF_TOKEN, 'Content-Type': 'multipart/form-data'}})
             txt = 'Променена/качена картинка (тема '+this.theme_num+'; въпрос id='+this.question.id+')'
             this.sendLogRecord(txt)
@@ -83,7 +85,7 @@ const App = {
             const vm=this
             axios({
                 method:'POST',
-                url:'/diki/api/TaskNewQuestionBody/',
+                url:'/api/TaskNewQuestionBody/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -100,7 +102,7 @@ const App = {
                 console.log('response ', response.data)
                 const theme_num_id=$("#theme_num_id").text();
                 const id=response.data
-                axios.get('/diki/api/theme_items/'+theme_num_id)
+                axios.get('/api/theme_items/'+theme_num_id)
                     .then(function(response){
                         vm.theme = response.data
                         console.log('level=', lvl,' item=',itm, 'new id=', id)
@@ -139,7 +141,7 @@ const App = {
             vm = this
             axios({
                 method:'POST',
-                url:'/diki/api/TaskDelete/',
+                url:'/api/TaskDelete/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -165,7 +167,7 @@ const App = {
             vm = this
             axios({
                 method:'POST',
-                url:'/diki/api/TaskSaveQuestionOption/'+this.current_level+'/'+this.question.options[i].id+'/'+this.question.id+'/',
+                url:'/api/TaskSaveQuestionOption/'+this.current_level+'/'+this.question.options[i].id+'/'+this.question.id+'/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -195,7 +197,7 @@ const App = {
             vm = this
             axios({
                 method:'POST',
-                url:'/diki/api/TaskSaveQuestionBody/'+this.current_level+'/',
+                url:'/api/TaskSaveQuestionBody/'+this.current_level+'/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -231,7 +233,7 @@ const App = {
             /* 1. премахвам изтритите опции на въпроса*/
             axios({
                 method:'POST',
-                url:'/diki/api/TaskDelItem/',
+                url:'/api/TaskDelItem/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -254,9 +256,7 @@ const App = {
         },
         reloadItem(){
             const vm = this;
-            const theme_num_id=$("#theme_num_id").text();
-            vm.theme_num=theme_num_id
-            axios.get('/diki/api/theme_items/'+theme_num_id)
+            axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id)
             .then(function(response){
                 vm.theme = response.data
                 })
@@ -265,7 +265,7 @@ const App = {
             const vm=this
             axios({
                 method:'POST',
-                url:'/diki/api/SaveLogRecord/',
+                url:'/api/SaveLogRecord/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -277,18 +277,31 @@ const App = {
                 }
             })
         },
+        loadThemes(spec_id){
+            const vm = this;
+            axios.get('/api/theme_nums/'+spec_id) // темите са различни за всяка специалност
+            .then(function(response){
+                vm.listOfThemes = response.data
+                let i=0
+                for (th of vm.listOfThemes){
+                    if (th.num == vm.user.theme){ vm.theme_num = i}
+                    i+=1
+                    }
+                vm.reloadItem()
+            })
+        },
+        loadUserDetails(){
+            const vm = this;
+            axios.get('/api/context/')
+            .then(function(response){
+                vm.user = response.data
+                vm.loadThemes(vm.user.theme)
+            })
+        }
     },
     created: function(){
-        this.reloadItem();
-        /*
-        const vm = this;
-        const theme_num_id=$("#theme_num_id").text();
-        axios.get('/diki/api/theme_items/'+theme_num_id)
-        .then(function(response){
-            vm.theme = response.data
-        })
-        */
+        this.loadUserDetails();
     }
 }
 
-Vue.createApp(App).mount('#app')
+Vue.createApp(App).mount('#main')

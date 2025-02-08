@@ -162,6 +162,20 @@ def dzi_settings(request):
                API
 ***************************************
 """
+class UserDataAPIView(APIView):
+    def get(self, request):
+        user = request.user
+        user_profile = user.userprofile
+        context = {
+            'user_nick': user.username,
+            'user_name': user.first_name + ' ' + user.last_name,
+            'user_level_text': USER_LEVEL[user_profile.access_level - 1][1],
+            'user_level_num': user_profile.access_level,
+            'school': user_profile.school.id,
+            'theme': user_profile.session_theme,
+            'speciality': user_profile.speciality.id,
+        }
+        return Response(context)
 
 # ************************************************
 #                 ВЪПРОСИ
@@ -266,8 +280,8 @@ class ThemeView(APIView):
 
 
 class ThemeNumView(APIView):
-    def get(self, request):
-        queryset = Theme.objects.all()
+    def get(self, request, spec):
+        queryset = Theme.objects.filter(specialty=spec).order_by('num')
         serializer = ThemeNumSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 

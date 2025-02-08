@@ -171,7 +171,7 @@ class TaskManager(models.Manager):
 
 
 class Task(models.Model):
-    item = models.ForeignKey(ThemeItem, on_delete=models.CASCADE, null=True, related_name='tasks_knowledge')
+    item = models.ForeignKey(ThemeItem, on_delete=models.CASCADE, null=True, related_name='tasks')
     text = models.TextField('Въпрос', default='', blank=True, help_text='Формулировка (текст) на въпроса')
     type = models.PositiveSmallIntegerField(choices=TASK_TYPE, default=TYPE1, help_text='тип на въпроса')
     level = models.PositiveSmallIntegerField(choices=LEVEL_TYPE, default=LEVEL1, help_text='ниво на въпроса по Блум')
