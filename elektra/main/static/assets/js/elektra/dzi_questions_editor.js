@@ -38,6 +38,47 @@ const App = {
         }
      },
     methods:{
+        verifyQuestionQty(level, idx, value){
+            if (checkQuestionsQty(level, idx)==value){return true}
+            else {return false}
+        },
+        checkQuestionsQty(level, idx){
+            let q=0
+            let th = this.theme[idx]
+            if (level==1){
+                if ((th.q_knowledge==0)&&(th.knowledge==0)) {q=0}
+                else if (th.q_knowledge<th.knowledge) {q=1}
+                else if (th.q_knowledge<2*th.knowledge) {q=2}
+                else {q=3}
+                }
+            if (level==2){
+                if ((th.q_comprehension==0)&&(th.comprehension==0)) {q=0}
+                else if (th.q_comprehension<th.comprehension) {q=1}
+                else if (th.q_comprehension<2*th.comprehension) {q=2}
+                else {q=3}
+                }
+            if (level==3){
+                if ((th.q_application==0)&&(th.application==0)) {q=0}
+                else if (th.q_application<th.application) {q=1}
+                else if (th.q_application<2*th.application) {q=2}
+                else {q=3}
+                }
+            if (level==4){
+                if ((th.q_analysis==0)&&(th.analysis==0)) {q=0}
+                else if (th.q_analysis<th.analysis) {q=1}
+                else if (th.q_analysis<2*th.analysis) {q=2}
+                else {q=3}
+                }
+            return q
+        },
+        getLevelName(level){
+            let name=''
+            if (level==1){name='знание'}
+            if (level==2){name='разбиране'}
+            if (level==3){name='приложение'}
+            if (level==4){name='анализ'}
+            return name
+        },
         onImageChange(e){
             const file = e.target.files[0]
             this.question.picture = URL.createObjectURL(file)
@@ -98,13 +139,11 @@ const App = {
                 }
             })
             .then(response => {
-                console.log('success - item was created');
-                console.log('response ', response.data)
-                const theme_num_id=$("#theme_num_id").text();
-                const id=response.data
-                axios.get('/api/theme_items/'+theme_num_id)
+                const id = response.data
+                axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id)
                     .then(function(response){
                         vm.theme = response.data
+                        vm.countThemeQuestions()
                         console.log('level=', lvl,' item=',itm, 'new id=', id)
                         txt = 'Създаден нов въпрос по тема '+vm.theme_num+' ; въпрос id='+vm.question.id+')'
                         vm.sendLogRecord(txt)
@@ -114,6 +153,20 @@ const App = {
             .catch(error => {
                 throw("Error: ",error);
             })
+        },
+        countThemeQuestions(){
+            this.theme.forEach((th) => {
+                th.q_knowledge=0
+                th.q_comprehension=0
+                th.q_application=0
+                th.q_analysis=0
+                th.tasks.forEach((qst) => {
+                    if (qst.level==1){th.q_knowledge+=1}
+                    else if (qst.level==2){th.q_comprehension+=1}
+                    else if (qst.level==3){th.q_application+=1}
+                    else {th.q_analysis+=1}
+                    });
+                });
         },
         addEmptyOption(){
             let newOption = {
@@ -259,6 +312,7 @@ const App = {
             axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id)
             .then(function(response){
                 vm.theme = response.data
+                vm.countThemeQuestions()
                 })
         },
         sendLogRecord(txt){
@@ -282,10 +336,8 @@ const App = {
             axios.get('/api/theme_nums/'+spec_id) // темите са различни за всяка специалност
             .then(function(response){
                 vm.listOfThemes = response.data
-                let i=0
-                for (th of vm.listOfThemes){
-                    if (th.num == vm.user.theme){ vm.theme_num = i}
-                    i+=1
+                for (i=0; i< vm.listOfThemes.length; i++){
+                    if (vm.listOfThemes[i].num == vm.user.theme){ vm.theme_num = i}
                     }
                 vm.reloadItem()
             })
@@ -295,7 +347,7 @@ const App = {
             axios.get('/api/context/')
             .then(function(response){
                 vm.user = response.data
-                vm.loadThemes(vm.user.theme)
+                vm.loadThemes(vm.user.speciality)
             })
         }
     },

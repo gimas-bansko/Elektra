@@ -54,7 +54,7 @@
                     <div class="rbt-dashboard-content">
                         <div class="content-page">
                             <div class="chat-box-list pt--30" id="chatContainer"
-                                 v-for="(theme_item, idx) in theme">
+                                 v-for="(item, item_idx) in theme">
                                 <!-- ****************
                                      Точка от темата
                                      ****************-->
@@ -63,10 +63,10 @@
                                     <div class="inner">
                                         <div class="chat-section">
                                             <div class="chat-content">
-                                                <h6 class="title">{{theme_item.item}}. {{theme_item.title}}</h6>
-                                                <p>Критерии за оценяване: <br>{{theme_item.criterion}} </p>
+                                                <h6 class="title">{{item.item}}. {{item.title}}</h6>
+                                                <p>Критерии за оценяване: <br>{{item.criterion}} </p>
                                                 <!-- Start Pricing Compare Detailed  -->
-                                                <div class="rainbow-pricing-detailed-area mt--60">
+                                                <div class="rainbow-pricing-detailed-area">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="section-title text-left mb--30" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
@@ -95,25 +95,39 @@
                                                                     <tbody>
                                                                         <tr>
                                                                             <td>по НИП</td>
-                                                                            <td>{{theme_item.knowledge}}</td>
-                                                                            <td>{{theme_item.comprehension}}</td>
-                                                                            <td>{{theme_item.application}}</td>
-                                                                            <td>{{theme_item.analysis}}</td>
+                                                                            <td>{{item.knowledge}}</td>
+                                                                            <td>{{item.comprehension}}</td>
+                                                                            <td>{{item.application}}</td>
+                                                                            <td>{{item.analysis}}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>в БД</td>
-                                                                            <td class="bg-color-good">2</td>
-                                                                            <td class="bg-color-mid">0</td>
-                                                                            <td class="bg-color-bad">0</td>
-                                                                            <td>2</td>
+                                                                            <td :class="{'bg-color-good': checkQuestionsQty(1, item_idx)==3,
+                                                                                         'bg-color-mid': checkQuestionsQty(1, item_idx)==2,
+                                                                                         'bg-color-bad': checkQuestionsQty(1, item_idx)==1,
+                                                                                         }">
+                                                                                {{item.q_knowledge}}</td>
+                                                                            <td :class="{'bg-color-good': checkQuestionsQty(2, item_idx)==3,
+                                                                                         'bg-color-mid': checkQuestionsQty(2, item_idx)==2,
+                                                                                         'bg-color-bad': checkQuestionsQty(2, item_idx)==1,
+                                                                                         }">
+                                                                                {{item.q_comprehension}}</td>
+                                                                            <td :class="{'bg-color-good': checkQuestionsQty(3, item_idx)==3,
+                                                                                         'bg-color-mid': checkQuestionsQty(3, item_idx)==2,
+                                                                                         'bg-color-bad': checkQuestionsQty(3, item_idx)==1,
+                                                                                         }">
+                                                                                {{item.q_application}}</td>
+                                                                            <td :class="{'bg-color-good': checkQuestionsQty(4, item_idx)==3,
+                                                                                         'bg-color-mid': checkQuestionsQty(4, item_idx)==2,
+                                                                                         'bg-color-bad': checkQuestionsQty(4, item_idx)==1,
+                                                                                         }">
+                                                                                {{item.q_analysis}}</td>
                                                                         </tr>
-
                                                                         <tr>
                                                                             <td></td>
-                                                                            <td>
-                                                                                <button data-bs-toggle="modal" data-bs-target="#editQuestionModal"
-                                                                                        class="react-btn btn-default btn-small btn-border"
-                                                                                @click="question.item=10">
+                                                                            <td><!-- data-bs-toggle="modal" data-bs-target="#editQuestionModal" -->
+                                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                                        @click="make_new_q(item.id, 1)">
                                                                                         Добави
                                                                                 </button>
                                                                             </td>
@@ -138,121 +152,132 @@
                                     </div>
                                 </div>
                                 <!-- списък на въпросите на подтемата по нива на Блум -->
-                                <div class="chat-box ai-speech bg-flashlight">
-                                    <div class="inner top-flashlight leftside light-xl">
-                                        <div class="chat-section generate-section">
-                                            <div class="chat-content">
-                                                <h6 class="title color-text-off mb--0">Въпрос №13</h6>
-                                                <div class="reaction-section">
-                                                    <div class="btn-grp">
-                                                        <div class="left-side-btn dropup">
-                                                            <button class="react-btn btn-default btn-small btn-border  bg-color-warning">
-                                                                <i class="feather-thumbs-up"></i> 10 </button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal"
-                                                                    class="react-btn btn-default btn-small btn-border bg-color-danger">
-                                                                <i class="feather-thumbs-down"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal"
-                                                                    class="react-btn btn-default btn-small btn-border bg-color-success">
-                                                                <i class="feather-share"></i></button>
-                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="feather-more-vertical"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-copy"></i> Copy</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-tag"></i> Pin Chat</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-file-text"></i> Rename</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item delete-item" href="#"><i
-                                                                            class="feather-trash-2"></i> Delete Chat</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="right-side-btn">
-                                                            <button class="react-btn btn-default btn-small btn-border">
-                                                                <i class="feather-repeat"></i><span>Regenerate</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                           </div>
+                                <div v-for="level in 4" :key="level">
+                                    <div class="chat-box ai-speech bg-flashlight mt--10" v-if="checkQuestionsQty(level, item_idx)==0">
+                                        <div class="inner top-flashlight leftside light-xl">
+                                            <div class="chat-section generate-section">
+                                                <div class="chat-content">
+                                                    <h6 class="title color-text-off mb--0">Няма създадени въпроси от ниво {{ getLevelName(level) }}</h6>
+                                               </div>
+                                            </div>
                                         </div>
-                                        <div class="chat-section">
-                                            <div class="chat-content">
-                                                <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
-                                                </h6>
-                                                <p class="mb--20">Въпрос тип 1 - затворен без картинка.</p>
-                                                <p>За да видим едномерен масив в Python можем да използваме синтаксиса
-                                                    на срезовете за едномерен масив. Открийте с array[::-1] как ще
-                                                    направим това:</p>
-                                                <div class="row">
-                                                    <div class="col-lg-1"></div>
-                                                    <div class="col-lg-11">
-                                                        <div class="rbt-checkbox-wrapper">
-                                                            <input id="rbt-checkbox-1" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                            <label for="rbt-checkbox-1">
-                                                                <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="rbt-checkbox-wrapper">
-                                                            <input id="rbt-checkbox-2" name="rbt-checkbox-1" type="checkbox" checked disabled>
-                                                            <label for="rbt-checkbox-2">
-                                                                <span class="color-Ok">а. ще върнем масива в оригиналната последователност</span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="rbt-checkbox-wrapper">
-                                                            <input id="rbt-checkbox-3" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                            <label for="rbt-checkbox-3">
-                                                                <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="rbt-checkbox-wrapper">
-                                                            <input id="rbt-checkbox-4" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                            <label for="rbt-checkbox-4">
-                                                                <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                            </label>
+                                    </div>
+                                    <div class="chat-box ai-speech bg-flashlight mt--10" v-else>
+                                        <div class="inner top-flashlight leftside light-xl">
+                                            <div class="chat-section generate-section">
+                                                <div class="chat-content">
+                                                    <h6 class="title color-text-off mb--0">Въпрос №13/{{level}}</h6>
+                                                    <div class="reaction-section">
+                                                        <div class="btn-grp">
+                                                            <div class="left-side-btn dropup">
+                                                                <button class="react-btn btn-default btn-small btn-border  bg-color-warning">
+                                                                    <i class="feather-thumbs-up"></i> 10 </button>
+                                                                <button data-bs-toggle="modal" data-bs-target="#dislikeModal"
+                                                                        class="react-btn btn-default btn-small btn-border bg-color-danger">
+                                                                    <i class="feather-thumbs-down"></i></button>
+                                                                <button data-bs-toggle="modal" data-bs-target="#shareModal"
+                                                                        class="react-btn btn-default btn-small btn-border bg-color-success">
+                                                                    <i class="feather-share"></i></button>
+                                                                <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="feather-more-vertical"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="feather-copy"></i> Copy</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="feather-tag"></i> Pin Chat</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="feather-file-text"></i> Rename</a>
+                                                                    </li>
+                                                                    <li><a class="dropdown-item delete-item" href="#"><i
+                                                                                class="feather-trash-2"></i> Delete Chat</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="right-side-btn">
+                                                                <button class="react-btn btn-default btn-small btn-border">
+                                                                    <i class="feather-repeat"></i><span>Regenerate</span>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="reaction-section">
-                                                    <div class="btn-grp">
-                                                        <div class="left-side-btn dropup">
-                                                            <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-up"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-thumbs-down"></i></button>
-                                                            <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                    class="feather-share"></i></button>
-                                                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="feather-more-vertical"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-copy"></i> Copy</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-tag"></i> Pin Chat</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i
-                                                                            class="feather-file-text"></i> Rename</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item delete-item" href="#"><i
-                                                                            class="feather-trash-2"></i> Delete Chat</a>
-                                                                </li>
-                                                            </ul>
+                                               </div>
+                                            </div>
+                                            <div class="chat-section">
+                                                <div class="chat-content">
+                                                    <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
+                                                    </h6>
+                                                    <p class="mb--20">Въпрос тип 1 - затворен без картинка.</p>
+                                                    <p>За да видим едномерен масив в Python можем да използваме синтаксиса
+                                                        на срезовете за едномерен масив. Открийте с array[::-1] как ще
+                                                        направим това:</p>
+                                                    <div class="row">
+                                                        <div class="col-lg-1"></div>
+                                                        <div class="col-lg-11">
+                                                            <div class="rbt-checkbox-wrapper">
+                                                                <input id="rbt-checkbox-1" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                                <label for="rbt-checkbox-1">
+                                                                    <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="rbt-checkbox-wrapper">
+                                                                <input id="rbt-checkbox-2" name="rbt-checkbox-1" type="checkbox" checked disabled>
+                                                                <label for="rbt-checkbox-2">
+                                                                    <span class="color-Ok">а. ще върнем масива в оригиналната последователност</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="rbt-checkbox-wrapper">
+                                                                <input id="rbt-checkbox-3" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                                <label for="rbt-checkbox-3">
+                                                                    <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="rbt-checkbox-wrapper">
+                                                                <input id="rbt-checkbox-4" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                                <label for="rbt-checkbox-4">
+                                                                    <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                                </label>
+                                                            </div>
                                                         </div>
-                                                        <div class="right-side-btn">
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-danger">
-                                                                <i class="feather-repeat"></i><span>Изтрий</span>
-                                                            </button>
-                                                            &nbsp
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-warning">
-                                                                <i class="feather-repeat"></i><span>Копирай</span>
-                                                            </button>
-                                                            &nbsp
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-success">
-                                                                <i class="feather-repeat"></i><span>Промени</span>
-                                                            </button>
+                                                    </div>
+                                                    <div class="reaction-section">
+                                                        <div class="btn-grp">
+                                                            <div class="left-side-btn dropup">
+                                                                <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                        class="feather-thumbs-up"></i></button>
+                                                                <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                        class="feather-thumbs-down"></i></button>
+                                                                <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                        class="feather-share"></i></button>
+                                                                <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="feather-more-vertical"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="feather-copy"></i> Copy</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="feather-tag"></i> Pin Chat</a></li>
+                                                                    <li><a class="dropdown-item" href="#"><i
+                                                                                class="feather-file-text"></i> Rename</a>
+                                                                    </li>
+                                                                    <li><a class="dropdown-item delete-item" href="#"><i
+                                                                                class="feather-trash-2"></i> Delete Chat</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="right-side-btn">
+                                                                <button class="react-btn btn-default btn-small btn-border bg-color-danger">
+                                                                    <i class="feather-repeat"></i><span>Изтрий</span>
+                                                                </button>
+                                                                &nbsp
+                                                                <button class="react-btn btn-default btn-small btn-border bg-color-warning">
+                                                                    <i class="feather-repeat"></i><span>Копирай</span>
+                                                                </button>
+                                                                &nbsp
+                                                                <button class="react-btn btn-default btn-small btn-border bg-color-success">
+                                                                    <i class="feather-repeat"></i><span>Промени</span>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

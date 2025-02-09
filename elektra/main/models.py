@@ -165,8 +165,12 @@ class ImageField(models.ImageField):
 
 # Въпроси - формулировка
 class TaskManager(models.Manager):
-    def create_task(self, itm):
-        item = self.create(item=itm)
+    def create_task(self, itm, ath, lvl, schools=None ):
+        item = self.create(item=itm, author=ath, level=lvl)
+
+        # Добавяне на училищата към ManyToManyField, ако са подадени
+        if schools:
+            item.school.set(schools)  # Използваме set() за ManyToManyField при създаване и add за добавяне
         return item
 
 
@@ -178,7 +182,8 @@ class Task(models.Model):
     school = models.ManyToManyField(School, verbose_name='id на училище в което се ползва', blank=True)
     picture = models.ImageField('Картинка', upload_to='task_pics', blank=True)
     group = models.PositiveSmallIntegerField(default=0, help_text='0 - ако не е групирано')
-    author = models.ForeignKey(School, on_delete=models.CASCADE, related_name='author_id', default=1)
+    author = models.ForeignKey(School, on_delete=models.CASCADE, related_name='author_id', default=1) # автор е училището, в което е потребителя, който създава въпроса
+
     objects = TaskManager()
 
     def __str__(self):
