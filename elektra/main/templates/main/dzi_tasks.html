@@ -14,18 +14,15 @@
 {% endblock %}
 
 {% block main_content %}
-{% verbatim %}
             <!-- Main content -->
             <div class="rbt-main-content">
                 <div class="rbt-daynamic-page-content">
                     <!-- Start Breadcarumb area  -->
                     <div class="chatenai-separator">
-                        {% endverbatim %}
                         <img class="w-100 separator-dark"
                              src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
                         <img class="w-100 separator-light"
                              src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
-                        {% verbatim %}
                     </div>
                     <div class="breadcrumb-area breadcarumb-style1 pt--30 pb--30">
                         <div class="container">
@@ -44,12 +41,10 @@
                     </div>
                     <!-- End Breadcarumb area  -->
                     <div class="chatenai-separator">
-                        {% endverbatim %}
                         <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
                         <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
-                        {% verbatim %}
                     </div>
-
+{% verbatim %}
                     <!-- Dashboard Center Content -->
                     <div class="rbt-dashboard-content">
                         <div class="content-page">
@@ -59,13 +54,13 @@
                                      Точка от темата
                                      ****************-->
                                 <!-- Заглавна част -->
+<!-- ********************************************************************************** -->
                                 <div class="chat-box author-speech bg-flashlight">
                                     <div class="inner">
                                         <div class="chat-section">
                                             <div class="chat-content">
-                                                <h6 class="title">{{item.item}}. {{item.title}}</h6>
-                                                <p>Критерии за оценяване: <br>{{item.criterion}} </p>
-                                                <!-- Start Pricing Compare Detailed  -->
+                                                <h6 class="title">[[item.item]]. [[item.title]]</h6>
+                                                <p>Критерии за оценяване: <br>[[item.criterion]] </p>
                                                 <div class="rainbow-pricing-detailed-area">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -95,33 +90,33 @@
                                                                     <tbody>
                                                                         <tr>
                                                                             <td>по НИП</td>
-                                                                            <td>{{item.knowledge}}</td>
-                                                                            <td>{{item.comprehension}}</td>
-                                                                            <td>{{item.application}}</td>
-                                                                            <td>{{item.analysis}}</td>
+                                                                            <td>[[item.knowledge]]</td>
+                                                                            <td>[[item.comprehension]]</td>
+                                                                            <td>[[item.application]]</td>
+                                                                            <td>[[item.analysis]]</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>в БД</td>
-                                                                            <td :class="{'bg-color-good': checkQuestionsQty(1, item_idx)==3,
-                                                                                         'bg-color-mid': checkQuestionsQty(1, item_idx)==2,
-                                                                                         'bg-color-bad': checkQuestionsQty(1, item_idx)==1,
+                                                                            <td :class="{'bg-color-good': verifyQuestionQty(1, item_idx, 3),
+                                                                                         'bg-color-mid': verifyQuestionQty(1, item_idx, 2),
+                                                                                         'bg-color-bad': verifyQuestionQty(1, item_idx, 1),
                                                                                          }">
-                                                                                {{item.q_knowledge}}</td>
-                                                                            <td :class="{'bg-color-good': checkQuestionsQty(2, item_idx)==3,
-                                                                                         'bg-color-mid': checkQuestionsQty(2, item_idx)==2,
-                                                                                         'bg-color-bad': checkQuestionsQty(2, item_idx)==1,
+                                                                                [[item.q_knowledge]]</td>
+                                                                            <td :class="{'bg-color-good': verifyQuestionQty(2, item_idx, 3),
+                                                                                         'bg-color-mid': verifyQuestionQty(2, item_idx, 2),
+                                                                                         'bg-color-bad': verifyQuestionQty(2, item_idx, 1),
                                                                                          }">
-                                                                                {{item.q_comprehension}}</td>
-                                                                            <td :class="{'bg-color-good': checkQuestionsQty(3, item_idx)==3,
-                                                                                         'bg-color-mid': checkQuestionsQty(3, item_idx)==2,
-                                                                                         'bg-color-bad': checkQuestionsQty(3, item_idx)==1,
+                                                                                [[item.q_comprehension]]</td>
+                                                                            <td :class="{'bg-color-good': verifyQuestionQty(3, item_idx, 3),
+                                                                                         'bg-color-mid': verifyQuestionQty(3, item_idx, 2),
+                                                                                         'bg-color-bad': verifyQuestionQty(3, item_idx, 1),
                                                                                          }">
-                                                                                {{item.q_application}}</td>
-                                                                            <td :class="{'bg-color-good': checkQuestionsQty(4, item_idx)==3,
-                                                                                         'bg-color-mid': checkQuestionsQty(4, item_idx)==2,
-                                                                                         'bg-color-bad': checkQuestionsQty(4, item_idx)==1,
+                                                                                [[item.q_application]]</td>
+                                                                            <td :class="{'bg-color-good': verifyQuestionQty(4, item_idx, 3),
+                                                                                         'bg-color-mid': verifyQuestionQty(4, item_idx, 2),
+                                                                                         'bg-color-bad': verifyQuestionQty(4, item_idx, 1),
                                                                                          }">
-                                                                                {{item.q_analysis}}</td>
+                                                                                [[item.q_analysis]]</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>
@@ -158,7 +153,7 @@
                                         <div class="inner top-flashlight leftside light-xl">
                                             <div class="chat-section generate-section">
                                                 <div class="chat-content">
-                                                    <h6 class="title color-text-off mb--0">Няма създадени въпроси от ниво {{ getLevelName(level) }}</h6>
+                                                    <h6 class="title color-text-off mb--0">Няма създадени въпроси от ниво [[getLevelName(level)]]</h6>
                                                </div>
                                             </div>
                                         </div>
@@ -170,7 +165,7 @@
                                                 <div class="inner top-flashlight leftside light-xl">
                                                     <div class="chat-section generate-section">
                                                         <div class="chat-content">
-                                                            <h5 class="title color-text-off mb--0">Въпрос #{{ qst.id }}</h5>
+                                                            <h5 class="title color-text-off mb--0">Въпрос #[[qst.id]]</h5>
                                                             <div class="reaction-section">
                                                                 <div class="btn-grp">
                                                                     <div class="left-side-btn dropup">
@@ -205,7 +200,7 @@
                                                     </div>
                                                     <div class="chat-section">
                                                         <div class="chat-content">
-                                                            <p class="mb--20">{{ qst.text }}</p>
+                                                            <p class="mb--20">[[ qst.text ]]</p>
                                                             <div class="row">
                                                                 <div class="col-lg-1"></div>
                                                                 <div class="col-lg-11">
@@ -283,6 +278,7 @@
                                         </div>
                                     </div>
                                 </div>
+<!-- ********************************************************************************** -->
                             </div>
                         </div>
 
@@ -337,7 +333,7 @@
                         <div class="right-side-bottom mb--200">
                             <div class="chat-history-section"
                                  v-for="(theme_item, idx) in theme">
-                                <h6 class="title">{{theme_item.item}}. {{theme_item.title}}</h6>
+                                <h6 class="title">[[theme_item.item]]. [[theme_item.title]]</h6>
                                 <ul class="chat-history-list">
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -353,7 +349,7 @@
                                             </ul>
                                         </div>
                                         Знание
-                                        <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.{{theme_item.knowledge}})&nbsp; </span>
+                                        <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.[[theme_item.knowledge]])&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -369,7 +365,7 @@
                                             </ul>
                                         </div>
                                         Разбиране
-                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.{{theme_item.comprehension}})&nbsp; </span>
+                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.[[theme_item.comprehension]])&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -385,7 +381,7 @@
                                             </ul>
                                         </div>
                                         Приложение
-                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.{{theme_item.application}})&nbsp; </span>
+                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.[[theme_item.application]])&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -401,36 +397,36 @@
                                             </ul>
                                         </div>
                                         Анализ
-                                        <span style="background-color: green; color: black;"> &nbsp;9 (мин.{{theme_item.analysis}})&nbsp; </span>
+                                        <span style="background-color: green; color: black;"> &nbsp;9 (мин.[[theme_item.analysis]])&nbsp; </span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+{% endverbatim %}
                 </div>
             </div>
-{% endverbatim %}
 {% endblock %}
 
 {% block modals %}
+        <!-- Редактиране на въпрос -->
+        <div id="editQuestionModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
 {% verbatim %}
-
-        <!--Modal HTML редактиране на въпрос -->
-       <div id="editQuestionModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content wrapper top-flashlight leftside light-xl">
                     <!-- Заглавна част - параметри на въпроса -->
                     <h5 class="title"
-                     :class="{'color-level-1': question.level==1,
-                              'color-level-2': question.level==2,
-                              'color-level-3': question.level==3,
-                              'color-level-4': question.level==4,
-                              }">Въпрос #{{ question.id }}</h5>
+                        :class="{'color-level-1': question.level==1,
+                                 'color-level-2': question.level==2,
+                                 'color-level-3': question.level==3,
+                                 'color-level-4': question.level==4,
+                                }">
+                        Въпрос #[[ question.id ]]</h5>
                     <div class="row mb--20">
                         <div class="col-lg-4 col-md-4 col-sm-4 col-12">
                             <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false" >
-                                 Равнище по Блум <i class="feather-more-vertical"></i>
+                                Равнище по Блум <i class="feather-more-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item color-level-1" href="#">Знание (2т.)</a></li>
@@ -440,116 +436,108 @@
                             </ul>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-12" style="text-align: center;">
-                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-expanded="false" >
-                                Тип на въпроса <i class="feather-more-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item"  @click="question.type=1"><i
-                                            class="feather-server"></i> Въпрос от затворен тип с един или два верни отговора</a></li>
-                                <li><a class="dropdown-item"  @click="question.type=2"><i
-                                            class="feather-image"></i> Въпрос от затворен тип с един или два верни отговора с картинка</a></li>
-                                <li><a class="dropdown-item"  @click="question.type=3"><i
-                                            class="feather-shuffle"></i> Въпрос със съпоставяне</a>
-                                </li>
-                                <li><a class="dropdown-item delete-item"  @click="question.type=4"><i
-                                            class="feather-film"></i> Въпрос за съпоставяне на елементи от картинка със зададени опции</a>
-                                </li>
-                                <li><a class="dropdown-item delete-item"  @click="question.type=5"><i
-                                            class="feather-edit"></i> Въпрос с отворен отговор</a>
-                                </li>
-                            </ul>
-                        </div>
+                           <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                   data-bs-toggle="dropdown" aria-expanded="false" >
+                               Тип на въпроса <i class="feather-more-vertical"></i>
+                           </button>
+                           <ul class="dropdown-menu">
+                               <li><a class="dropdown-item"  @click="question.type=1"><i
+                                           class="feather-server"></i> Въпрос от затворен тип с един или два верни отговора</a></li>
+                               <li><a class="dropdown-item"  @click="question.type=2"><i
+                                           class="feather-image"></i> Въпрос от затворен тип с един или два верни отговора с картинка</a></li>
+                               <li><a class="dropdown-item"  @click="question.type=3"><i
+                                           class="feather-shuffle"></i> Въпрос със съпоставяне</a>
+                               </li>
+                               <li><a class="dropdown-item delete-item"  @click="question.type=4"><i
+                                           class="feather-film"></i> Въпрос за съпоставяне на елементи от картинка със зададени опции</a>
+                               </li>
+                               <li><a class="dropdown-item delete-item"  @click="question.type=5"><i
+                                           class="feather-edit"></i> Въпрос с отворен отговор</a>
+                               </li>
+                           </ul>
+                       </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-12 " style="text-align: right;">
-                            <span
-                                   class="react-btn btn-default btn-small btn-border"
-                                   :class="{'color-level-1': question.level==1,
-                                            'color-level-2': question.level==2,
-                                            'color-level-3': question.level==3,
-                                            'color-level-4': question.level==4,
-                                            }">
-                               Ниво {{getLevelName(question.level)}} - {{2*question.level}} т.</span>
-                        </div>
+                           <span class="react-btn btn-default btn-small btn-border"
+                                 :class="{'color-level-1': question.level==1,
+                                          'color-level-2': question.level==2,
+                                          'color-level-3': question.level==3,
+                                          'color-level-4': question.level==4,
+                                          }">
+                                 Ниво [[getLevelName(question.level)]] - [[2*question.level]] т.</span>
+                       </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-12"></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-8 d-flex align-items-center justify-content-end">
-                            <div class="form-group">
-                                <label>Група</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-4">
-                            <div class="form-group">
-                                <input id="lastname" type="text" v-model="question.group">
-                            </div>
-                        </div>
-                    </div>
+                       <div class="col-lg-6 col-md-6 col-sm-6 col-12"></div>
+                       <div class="col-lg-4 col-md-4 col-sm-4 col-8 d-flex align-items-center justify-content-end">
+                           <div class="form-group">
+                               <label>Група</label>
+                           </div>
+                       </div>
+                       <div class="col-lg-2 col-md-2 col-sm-2 col-4">
+                           <div class="form-group">
+                               <input id="lastname" type="text" v-model="question.group">
+                           </div>
+                       </div>
+                   </div>
                     <!-- Картинка -->
                     <label v-if="(question.type==2)||(question.type==4)">Снимка/Схема/Диаграма:</label>
                     <div class="row" v-if="(question.type==2)||(question.type==4)">
-                        <div class="col-lg-7">
-                            <img v-if="question.picture" :src="question.picture" width="360">
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="form-icon icon-plus"
-                                 data-bs-toggle="tooltip"
-                                 data-bs-placement="top"
-                                 data-bs-custom-class="custom-tooltip"
-                                 data-bs-title="Choose File">
+                       <div class="col-lg-7">
+                           <img v-if="question.picture" :src="question.picture" width="360">
+                       </div>
+                       <div class="col-lg-5">
+                           <div class="form-icon icon-plus"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Choose File">
                                 <label for="imageInput">графичен файл (.png; .jpg; .bmp)</label>
                                 <input type="file"
                                        id="imageInput"
                                        class="input-file"
                                        @change="onImageChange($event)">
                                 <i class="feather-plus-circle"> xxxxxxxxx </i>
-                            </div>
-
-                        </div>
-                    </div>
+                           </div>
+                       </div>
+                   </div>
                     <!-- Формулировка на въпроса -->
                     <div class="chat-form">
-                        <div class="border-gradient text-form">
-                            <div class="form-group ml--10">
-                                <label for="qt">Формулировка на въпроса:</label>
-                                <textarea id="qt" rows="5"  v-model="question.text"></textarea>
-                            </div>
-                        </div>
-                    </div>
+                       <div class="border-gradient text-form">
+                           <div class="form-group ml--10">
+                               <label for="qt">Формулировка на въпроса:</label>
+                               <textarea id="qt" rows="5"  v-model="question.text"></textarea>
+                           </div>
+                       </div>
+                   </div>
 
                     <!-- бутон горе ляво - затваряне на прозореца -->
                     <button class="close-button" data-bs-dismiss="modal">
-                        <i class="feather-x"></i>
-                    </button>
+                       <i class="feather-x"></i>
+                   </button>
                     <!-- footer - бутони за отказ/запис -->
                     <div class="row mt--20">
-                        <div class="col-lg-2 col-md-2">
-                        </div>
-                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
-                            <div class="btn-grp">
-                                <button class="react-btn btn-default btn-small btn-border bg-color-danger"
-                                        data-bs-dismiss="modal">
-                                    <i class="feather-x"></i><span>&nbspОткажи</span>
-                                </button>
-                                &nbsp
-                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
-                                         data-bs-dismiss="modal">
-                                    <i class="feather-check"></i><span>&nbspЗапази</span>
-                                </button>
-                        </div>
-                    </div>
-                </div>
+                       <div class="col-lg-2 col-md-2">
+                       </div>
+                       <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                           <div class="btn-grp">
+                               <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                       data-bs-dismiss="modal">
+                                   <i class="feather-x"></i><span>&nbspОткажи</span>
+                               </button>
+                               &nbsp
+                               <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                       data-bs-dismiss="modal">
+                                   <i class="feather-check"></i><span>&nbspЗапази</span>
+                               </button>
+                       </div>
+                   </div>
+               </div>
                 </div>
             </div>
-        </div>
-
-        <!--DisLike Section Modal HTML -->
-
-        <!--Share Section Modal HTML -->
 {% endverbatim %}
+       </div>
 {% endblock %}
 
 {% block page_script %}
-<!--
-    <script src="{% static 'assets/js/elektra/dzi_dashboard.js' %}"></script>
--->
+    <script src="{% static 'assets/js/elektra/dzi_questions_editor.js' %}"></script>
 {% endblock %}

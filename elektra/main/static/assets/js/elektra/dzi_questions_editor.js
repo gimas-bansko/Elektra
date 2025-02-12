@@ -2,42 +2,83 @@ const EDIT_NEW_QUESTION='Създаване на нов въпрос'
 const EDIT_OLD_QUESTION='Редактиране на въпрос'
 
 const App = {
+    delimiters: ['[[', ']]'], // Променяме синтаксиса на [[ ]]
     data() {
-     return {
-        flagNewItem: false,
-        editMode: EDIT_NEW_QUESTION,
-        current_level:0,
-        current_item: 0,
-        theme_num:0,
-        question: {
+        return {
+            flagNewItem: false,
+            editMode: EDIT_NEW_QUESTION,
+            current_level:0,
+            current_item: 0,
+            theme_num:0,
+            question: {
+                id: 1,
+                text: "Въпрос от ниво знание на тема 1 точка 1",
+                type: 1,
+                picture: null,
+                group: 0,
+                item: 1,
+                mark_red: false,
+                mark_green: true,
+                mark_yellow: true,
+                deletedOptions:[],
+                options: [{
                     id: 1,
-                    text: "Въпрос от ниво знание на тема 1 точка 1",
-                    type: 1,
-                    picture: null,
-                    group: 0,
-                    item: 1,
-                    mark_red: false,
-                    mark_green: true,
-                    mark_yellow: true,
-                    deletedOptions:[],
-                    options: [
-                        {
-                            id: 1,
-                            leading_char: "3",
-                            text: "опция 1 на въпрос 1",
-                            value: "",
-                            value_name: "",
-                            checked: true,
-                            task: 1
-                        }
-                    ],
-                    },
-        theme: [],
-        listOfThemes: [],
-        user:{},
-        }
-     },
+                    leading_char: "3",
+                    text: "опция 1 на въпрос 1",
+                    value: "",
+                    value_name: "",
+                    checked: true,
+                    task: 1
+                    }
+                ],
+                },
+            theme: [],
+            listOfThemes: [],
+            user:{},
+            }
+    },
     methods:{
+        verifyQuestionQty(level, idx, value){
+            if (this.checkQuestionsQty(level, idx)==value){return true}
+            else {return false}
+        },
+        checkQuestionsQty(level, idx){
+            let q=0
+            let th = this.theme[idx]
+            if (level==1){
+                if ((th.q_knowledge==0)&&(th.knowledge==0)) {q=0}
+                else if (th.q_knowledge<th.knowledge) {q=1}
+                else if (th.q_knowledge<2*th.knowledge) {q=2}
+                else {q=3}
+                }
+            if (level==2){
+                if ((th.q_comprehension==0)&&(th.comprehension==0)) {q=0}
+                else if (th.q_comprehension<th.comprehension) {q=1}
+                else if (th.q_comprehension<2*th.comprehension) {q=2}
+                else {q=3}
+                }
+            if (level==3){
+                if ((th.q_application==0)&&(th.application==0)) {q=0}
+                else if (th.q_application<th.application) {q=1}
+                else if (th.q_application<2*th.application) {q=2}
+                else {q=3}
+                }
+            if (level==4){
+                if ((th.q_analysis==0)&&(th.analysis==0)) {q=0}
+                else if (th.q_analysis<th.analysis) {q=1}
+                else if (th.q_analysis<2*th.analysis) {q=2}
+                else {q=3}
+                }
+            return q
+        },
+        getLevelName(level){
+            let name=''
+            if (level==1){name='знание'}
+            if (level==2){name='разбиране'}
+            if (level==3){name='приложение'}
+            if (level==4){name='анализ'}
+            return name
+        },
         onImageChange(e){
             const file = e.target.files[0]
             this.question.picture = URL.createObjectURL(file)
@@ -48,7 +89,7 @@ const App = {
             formData.append('id', this.question.id)
             formData.append('picture', file)
             let url = ''
-            const lvl=this.current_level
+            const lvl=this.question.level
             if (lvl == 1){url = '/api/TaskKnowledgeFile/'}
             else if (lvl == 2){url = '/api/TaskComprehensionFile/'}
             else if (lvl == 3){url = '/api/TaskApplicationFile/'}
@@ -61,7 +102,7 @@ const App = {
             const vm = this;
             vm.flagNewItem = false
             vm.current_item = vm.theme[itm].id
-            vm.current_level = lvl
+            vm.question.level = lvl
             vm.question.item = itm
             let lvl_name = ' от ниво '
             console.log('EDIT: level=', lvl,' item=',itm, 'new id=', id)
@@ -98,13 +139,11 @@ const App = {
                 }
             })
             .then(response => {
-                console.log('success - item was created');
-                console.log('response ', response.data)
-                const theme_num_id=$("#theme_num_id").text();
-                const id=response.data
-                axios.get('/api/theme_items/'+theme_num_id)
+                const id = response.data
+                axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id)
                     .then(function(response){
                         vm.theme = response.data
+                        vm.countThemeQuestions()
                         console.log('level=', lvl,' item=',itm, 'new id=', id)
                         txt = 'Създаден нов въпрос по тема '+vm.theme_num+' ; въпрос id='+vm.question.id+')'
                         vm.sendLogRecord(txt)
@@ -114,6 +153,20 @@ const App = {
             .catch(error => {
                 throw("Error: ",error);
             })
+        },
+        countThemeQuestions(){
+            this.theme.forEach((th) => {
+                th.q_knowledge=0
+                th.q_comprehension=0
+                th.q_application=0
+                th.q_analysis=0
+                th.tasks.forEach((qst) => {
+                    if (qst.level==1){th.q_knowledge+=1}
+                    else if (qst.level==2){th.q_comprehension+=1}
+                    else if (qst.level==3){th.q_application+=1}
+                    else {th.q_analysis+=1}
+                    });
+                });
         },
         addEmptyOption(){
             let newOption = {
@@ -167,7 +220,7 @@ const App = {
             vm = this
             axios({
                 method:'POST',
-                url:'/api/TaskSaveQuestionOption/'+this.current_level+'/'+this.question.options[i].id+'/'+this.question.id+'/',
+                url:'/api/TaskSaveQuestionOption/'+this.question.level+'/'+this.question.options[i].id+'/'+this.question.id+'/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -197,7 +250,7 @@ const App = {
             vm = this
             axios({
                 method:'POST',
-                url:'/api/TaskSaveQuestionBody/'+this.current_level+'/',
+                url:'/api/TaskSaveQuestionBody/'+this.question.level+'/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -241,7 +294,7 @@ const App = {
                     'Content-Type': 'application/json',
                 },
                 data:{
-                    level: this.current_level,
+                    level: this.question.level,
                     ids: this.question.deletedOptions,
                 }
             })
@@ -256,9 +309,10 @@ const App = {
         },
         reloadItem(){
             const vm = this;
-            axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id)
+            axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id+'/')
             .then(function(response){
                 vm.theme = response.data
+                vm.countThemeQuestions()
                 })
         },
         sendLogRecord(txt){
@@ -279,13 +333,12 @@ const App = {
         },
         loadThemes(spec_id){
             const vm = this;
-            axios.get('/api/theme_nums/'+spec_id) // темите са различни за всяка специалност
+            axios.get('/api/theme_nums/'+spec_id+'/') // темите са различни за всяка специалност
             .then(function(response){
                 vm.listOfThemes = response.data
-                let i=0
-                for (th of vm.listOfThemes){
-                    if (th.num == vm.user.theme){ vm.theme_num = i}
-                    i+=1
+                for (i=0; i< vm.listOfThemes.length; i++){
+                    console.log(vm.listOfThemes[i].num)
+                    if (vm.listOfThemes[i].num == vm.user.theme){ vm.theme_num = i}
                     }
                 vm.reloadItem()
             })
@@ -295,7 +348,7 @@ const App = {
             axios.get('/api/context/')
             .then(function(response){
                 vm.user = response.data
-                vm.loadThemes(vm.user.theme)
+                vm.loadThemes(vm.user.speciality)
             })
         }
     },

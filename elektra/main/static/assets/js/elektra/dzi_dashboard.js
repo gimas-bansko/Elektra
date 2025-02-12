@@ -1,6 +1,6 @@
 const App = {
     data() {
-     return {
+        return {
         points_total:60,
         status: 0, //0 - начално положение; 1 -  тече тест; 2 - край на теста и показваме резултата
         timer: {
@@ -13,7 +13,7 @@ const App = {
         theme: {},
         ast:'-****-'
         }
-     },
+    },
 
     methods: {
     },
