@@ -203,15 +203,9 @@ class TaskDelItemAPIView(APIView):
 class TaskNewQuestionBodyAPIView(APIView):
     def post(self, request):
         level = request.data['level']
-
         item = request.data['item']
         itm = ThemeItem.objects.filter(id=item).get()
-
-        user = request.user
-        sch = user.userprofile.school
-        school = School.objects.filter(id=sch).get()
-
-        task = Task.objects.create_task(itm, school, level, schools=[school])
+        task = Task.objects.create_task(itm)
         task.save()
         return Response(task.id)
 
