@@ -16,7 +16,7 @@
 {% block main_content %}
 {% verbatim %}
             <!-- Main content -->
-            <div id="app" class="rbt-main-content">
+            <div class="rbt-main-content">
                 <div class="rbt-daynamic-page-content">
                     <!-- Start Breadcarumb area  -->
                     <div class="chatenai-separator">
@@ -153,6 +153,7 @@
                                 </div>
                                 <!-- списък на въпросите на подтемата по нива на Блум -->
                                 <div v-for="level in 4" :key="level">
+                                    <!-- ако няма въпроси от това ниво -->
                                     <div class="chat-box ai-speech bg-flashlight mt--10" v-if="checkQuestionsQty(level, item_idx)==0">
                                         <div class="inner top-flashlight leftside light-xl">
                                             <div class="chat-section generate-section">
@@ -162,121 +163,118 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="chat-box ai-speech bg-flashlight mt--10" v-else>
-                                        <div class="inner top-flashlight leftside light-xl">
-                                            <div class="chat-section generate-section">
-                                                <div class="chat-content">
-                                                    <h6 class="title color-text-off mb--0">Въпрос №13/{{level}}</h6>
-                                                    <div class="reaction-section">
-                                                        <div class="btn-grp">
-                                                            <div class="left-side-btn dropup">
-                                                                <button class="react-btn btn-default btn-small btn-border  bg-color-warning">
-                                                                    <i class="feather-thumbs-up"></i> 10 </button>
-                                                                <button data-bs-toggle="modal" data-bs-target="#dislikeModal"
-                                                                        class="react-btn btn-default btn-small btn-border bg-color-danger">
-                                                                    <i class="feather-thumbs-down"></i></button>
-                                                                <button data-bs-toggle="modal" data-bs-target="#shareModal"
-                                                                        class="react-btn btn-default btn-small btn-border bg-color-success">
-                                                                    <i class="feather-share"></i></button>
-                                                                <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    <i class="feather-more-vertical"></i>
-                                                                </button>
-                                                                <ul class="dropdown-menu">
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="feather-copy"></i> Copy</a></li>
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="feather-tag"></i> Pin Chat</a></li>
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="feather-file-text"></i> Rename</a>
-                                                                    </li>
-                                                                    <li><a class="dropdown-item delete-item" href="#"><i
-                                                                                class="feather-trash-2"></i> Delete Chat</a>
-                                                                    </li>
-                                                                </ul>
+                                    <!-- ако има въпроси от това ниво -->
+                                    <div  v-else>
+                                        <div v-for="qst in item.tasks">
+                                            <div class="chat-box ai-speech bg-flashlight mt--10" v-if="qst.level==level" >
+                                                <div class="inner top-flashlight leftside light-xl">
+                                                    <div class="chat-section generate-section">
+                                                        <div class="chat-content">
+                                                            <h5 class="title color-text-off mb--0">Въпрос #{{ qst.id }}</h5>
+                                                            <div class="reaction-section">
+                                                                <div class="btn-grp">
+                                                                    <div class="left-side-btn dropup">
+                                                                        <button class="react-btn btn-default btn-small btn-border  bg-color-warning">
+                                                                            <i class="feather-thumbs-up"></i> 10 </button>
+                                                                        <button data-bs-toggle="modal" data-bs-target="#dislikeModal"
+                                                                                class="react-btn btn-default btn-small btn-border bg-color-danger">
+                                                                            <i class="feather-thumbs-down"></i></button>
+                                                                        <button data-bs-toggle="modal" data-bs-target="#shareModal"
+                                                                                class="react-btn btn-default btn-small btn-border bg-color-success">
+                                                                            <i class="feather-share"></i></button>
+                                                                        <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <i class="feather-more-vertical"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="dropdown-item" href="#"><i
+                                                                                        class="feather-copy"></i> Copy</a></li>
+                                                                            <li><a class="dropdown-item" href="#"><i
+                                                                                        class="feather-tag"></i> Pin Chat</a></li>
+                                                                            <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
+                                                                            <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="right-side-btn">
+                                                                        <button class="react-btn btn-default btn-small btn-border">
+                                                                            <i class="feather-repeat"></i><span>Regenerate</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="right-side-btn">
-                                                                <button class="react-btn btn-default btn-small btn-border">
-                                                                    <i class="feather-repeat"></i><span>Regenerate</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                       </div>
                                                     </div>
-                                               </div>
-                                            </div>
-                                            <div class="chat-section">
-                                                <div class="chat-content">
-                                                    <h6 class="title">ChatenAI <span class="rainbow-badge-card">Bot</span>
-                                                    </h6>
-                                                    <p class="mb--20">Въпрос тип 1 - затворен без картинка.</p>
-                                                    <p>За да видим едномерен масив в Python можем да използваме синтаксиса
-                                                        на срезовете за едномерен масив. Открийте с array[::-1] как ще
-                                                        направим това:</p>
-                                                    <div class="row">
-                                                        <div class="col-lg-1"></div>
-                                                        <div class="col-lg-11">
-                                                            <div class="rbt-checkbox-wrapper">
-                                                                <input id="rbt-checkbox-1" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                                <label for="rbt-checkbox-1">
-                                                                    <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                                </label>
+                                                    <div class="chat-section">
+                                                        <div class="chat-content">
+                                                            <p class="mb--20">{{ qst.text }}</p>
+                                                            <div class="row">
+                                                                <div class="col-lg-1"></div>
+                                                                <div class="col-lg-11">
+                                                                    <div class="rbt-checkbox-wrapper">
+                                                                        <input id="rbt-checkbox-1" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                                        <label for="rbt-checkbox-1">
+                                                                            <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="rbt-checkbox-wrapper">
+                                                                        <input id="rbt-checkbox-2" name="rbt-checkbox-1" type="checkbox" checked disabled>
+                                                                        <label for="rbt-checkbox-2">
+                                                                            <span class="color-Ok">а. ще върнем масива в оригиналната последователност</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="rbt-checkbox-wrapper">
+                                                                        <input id="rbt-checkbox-3" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                                        <label for="rbt-checkbox-3">
+                                                                            <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="rbt-checkbox-wrapper">
+                                                                        <input id="rbt-checkbox-4" name="rbt-checkbox-1" type="checkbox" disabled>
+                                                                        <label for="rbt-checkbox-4">
+                                                                            <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="rbt-checkbox-wrapper">
-                                                                <input id="rbt-checkbox-2" name="rbt-checkbox-1" type="checkbox" checked disabled>
-                                                                <label for="rbt-checkbox-2">
-                                                                    <span class="color-Ok">а. ще върнем масива в оригиналната последователност</span>
-                                                                </label>
-                                                            </div>
-                                                            <div class="rbt-checkbox-wrapper">
-                                                                <input id="rbt-checkbox-3" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                                <label for="rbt-checkbox-3">
-                                                                    <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                                </label>
-                                                            </div>
-                                                            <div class="rbt-checkbox-wrapper">
-                                                                <input id="rbt-checkbox-4" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                                <label for="rbt-checkbox-4">
-                                                                    <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="reaction-section">
-                                                        <div class="btn-grp">
-                                                            <div class="left-side-btn dropup">
-                                                                <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                        class="feather-thumbs-up"></i></button>
-                                                                <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                        class="feather-thumbs-down"></i></button>
-                                                                <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                        class="feather-share"></i></button>
-                                                                <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    <i class="feather-more-vertical"></i>
-                                                                </button>
-                                                                <ul class="dropdown-menu">
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="feather-copy"></i> Copy</a></li>
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="feather-tag"></i> Pin Chat</a></li>
-                                                                    <li><a class="dropdown-item" href="#"><i
-                                                                                class="feather-file-text"></i> Rename</a>
-                                                                    </li>
-                                                                    <li><a class="dropdown-item delete-item" href="#"><i
-                                                                                class="feather-trash-2"></i> Delete Chat</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="right-side-btn">
-                                                                <button class="react-btn btn-default btn-small btn-border bg-color-danger">
-                                                                    <i class="feather-repeat"></i><span>Изтрий</span>
-                                                                </button>
-                                                                &nbsp
-                                                                <button class="react-btn btn-default btn-small btn-border bg-color-warning">
-                                                                    <i class="feather-repeat"></i><span>Копирай</span>
-                                                                </button>
-                                                                &nbsp
-                                                                <button class="react-btn btn-default btn-small btn-border bg-color-success">
-                                                                    <i class="feather-repeat"></i><span>Промени</span>
-                                                                </button>
+                                                            <div class="reaction-section">
+                                                                <div class="btn-grp">
+                                                                    <div class="left-side-btn dropup">
+                                                                        <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                                class="feather-thumbs-up"></i></button>
+                                                                        <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                                class="feather-thumbs-down"></i></button>
+                                                                        <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
+                                                                                class="feather-share"></i></button>
+                                                                        <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <i class="feather-more-vertical"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li><a class="dropdown-item" href="#"><i
+                                                                                        class="feather-copy"></i> Copy</a></li>
+                                                                            <li><a class="dropdown-item" href="#"><i
+                                                                                        class="feather-tag"></i> Pin Chat</a></li>
+                                                                            <li><a class="dropdown-item" href="#"><i
+                                                                                        class="feather-file-text"></i> Rename</a>
+                                                                            </li>
+                                                                            <li><a class="dropdown-item delete-item" href="#"><i
+                                                                                        class="feather-trash-2"></i> Delete Chat</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="right-side-btn">
+                                                                        <button class="react-btn btn-default btn-small btn-border bg-color-danger">
+                                                                            <i class="feather-repeat"></i><span>Изтрий</span>
+                                                                        </button>
+                                                                        &nbsp
+                                                                        <button class="react-btn btn-default btn-small btn-border bg-color-warning">
+                                                                            <i class="feather-repeat"></i><span>Копирай</span>
+                                                                        </button>
+                                                                        &nbsp
+                                                                        <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                                                                data-bs-toggle="modal" data-bs-target="#editQuestionModal" >
+                                                                            <i class="feather-repeat"></i><span>Промени</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -417,275 +415,132 @@
 {% block modals %}
 {% verbatim %}
 
-        <!--New Chat Section Modal HTML -->
-        <div id="editQuestionModal" class="modal rbt-modal-box dislike-modal fade" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <!--Modal HTML редактиране на въпрос -->
+       <div id="editQuestionModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content wrapper top-flashlight leftside light-xl">
-                    <h5 class="title">{{ editMode }}</h5>
-                    <button class="close-button" data-bs-dismiss="modal"><i class="feather-x"></i></button>
-
-                                        <div class="btn-grp">
-                                            <div class="left-side-btn dropup">
-                                                <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                        class="feather-thumbs-up"></i></button>
-                                                <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                        class="feather-thumbs-down"></i></button>
-                                                <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                        class="feather-share"></i></button>
-                                                <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="feather-more-vertical"></i>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#"><i
-                                                                class="feather-copy"></i> Copy</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i
-                                                                class="feather-tag"></i> Pin Chat</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i
-                                                                class="feather-file-text"></i> Rename</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item delete-item" href="#"><i
-                                                                class="feather-trash-2"></i> Delete Chat</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="right-side-btn">
-                                                <button class="react-btn btn-default btn-small btn-border">
-                                                    <i class="feather-repeat"></i><span>Regenerate</span>
-                                                </button>
-                                            </div>
-                                        </div>
-
-
-
-                    <select class="form-select" >
-                        <option selected value="1">Irrelevant</option>
-                        <option value="2">Offensive</option>
-                        <option value="3">Not Correct</option>
-                    </select>
-                    <div class="chat-form">
-                        <h6 class="title">Provide your feedback</h6>
-                        <div class="border-gradient text-form">
-                            <textarea rows="6" placeholder="Send a message..."></textarea>
-                        </div>
-                    </div>
-                    <div class="bottom-btn mt--20">
-                            <a class="btn-default btn-small round" href="#">Send Feedback</a>
-                        </div>
-                </div>
-            </div>
-        </div>
-
-        <!--Like Section Modal HTML -->
-<div class="modal fade" id="editQuestionModal1" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">{{ editMode }}</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-            </div>
-            <div class="modal-body">
-                <!-- Въпрос от затворен тип -->
-                <div class="card card-header-actions mx-auto mb-4"
-                     :class="{'border-cyan': current_level==1,
-                              'border-blue': current_level==2,
-                              'border-purple': current_level==3,
-                              'border-pink': current_level==4,
-                              }">
-                    <div class="card-header">
-                        Въпрос #{{ question.id }}
-                        <!-- маркери -->
-                        <div>
-                            <button class="btn btn-icon"
-                                    :class="question.mark_red ? 'btn-danger': 'btn-light'"
-                                    type="button" @click="question.mark_red=!question.mark_red">
-                                <i data-feather="alert-triangle" ></i>
+                    <!-- Заглавна част - параметри на въпроса -->
+                    <h5 class="title"
+                     :class="{'color-level-1': question.level==1,
+                              'color-level-2': question.level==2,
+                              'color-level-3': question.level==3,
+                              'color-level-4': question.level==4,
+                              }">Въпрос #{{ question.id }}</h5>
+                    <div class="row mb--20">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" >
+                                 Равнище по Блум <i class="feather-more-vertical"></i>
                             </button>
-                            <button class="btn btn-icon ml-2"
-                                    :class="question.mark_yellow ? 'btn-warning': 'btn-light'"
-                                    type="button" @click="question.mark_yellow=!question.mark_yellow">
-                                <i data-feather="repeat"></i>
-                            </button>
-                            <button class="btn btn-icon ml-2"
-                                    :class="question.mark_green ? 'btn-success': 'btn-light'"
-                                    type="button" @click="question.mark_green=!question.mark_green">
-                                <i data-feather="check"></i>
-                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item color-level-1" href="#">Знание (2т.)</a></li>
+                                <li><a class="dropdown-item color-level-2" href="#">Разбиране (4т.)</a></li>
+                                <li><a class="dropdown-item color-level-3" href="#">Приложение (6т.)</a></li>
+                                <li><a class="dropdown-item color-level-4" href="#">Анализ (8т.)</a></li>
+                            </ul>
                         </div>
-                        <!-- тип на въпроса -->
-                        <div class="dropdown">
-                            <button class="btn btn-outline-cyan dropdown-toggle"
-                                    id="dropdownMenuButtonM"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                Тип на въпроса
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-12" style="text-align: center;">
+                            <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" >
+                                Тип на въпроса <i class="feather-more-vertical"></i>
                             </button>
-                            <div class="dropdown-menu dropdown-menu-right bg-gray-400" aria-labelledby="dropdownMenuButtonM">
-                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=1">
-                                    Въпрос от затворен тип с един или два верни отговора
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=2">
-                                    Въпрос от затворен тип с един или два верни отговора с картинка
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=3">
-                                    Въпрос със съпоставяне
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=4">
-                                    Въпрос за съпоставяне на елементи от картинка със зададени опции
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item dropdown-notifications-item" type="button" @click="question.type=5">
-                                    Въпрос с отворен отговор, който във формулировката си съдържа отговора или
-                                    &nbsp;<br>еднозначно го определя и/или предполага
-                                </a>
-                            </div>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item"  @click="question.type=1"><i
+                                            class="feather-server"></i> Въпрос от затворен тип с един или два верни отговора</a></li>
+                                <li><a class="dropdown-item"  @click="question.type=2"><i
+                                            class="feather-image"></i> Въпрос от затворен тип с един или два верни отговора с картинка</a></li>
+                                <li><a class="dropdown-item"  @click="question.type=3"><i
+                                            class="feather-shuffle"></i> Въпрос със съпоставяне</a>
+                                </li>
+                                <li><a class="dropdown-item delete-item"  @click="question.type=4"><i
+                                            class="feather-film"></i> Въпрос за съпоставяне на елементи от картинка със зададени опции</a>
+                                </li>
+                                <li><a class="dropdown-item delete-item"  @click="question.type=5"><i
+                                            class="feather-edit"></i> Въпрос с отворен отговор</a>
+                                </li>
+                            </ul>
                         </div>
-                        <!-- точки (ниво) -->
-                        <div>
-                           <span
-                                   class="btn"
-                                   :class="{'btn-outline-cyan': current_level==1,
-                                            'btn-outline-blue': current_level==2,
-                                            'btn-outline-purple': current_level==3,
-                                            'btn-outline-pink': current_level==4,
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-12 " style="text-align: right;">
+                            <span
+                                   class="react-btn btn-default btn-small btn-border"
+                                   :class="{'color-level-1': question.level==1,
+                                            'color-level-2': question.level==2,
+                                            'color-level-3': question.level==3,
+                                            'color-level-4': question.level==4,
                                             }">
-                               {{2*current_level}} т.</span>
+                               Ниво {{getLevelName(question.level)}} - {{2*question.level}} т.</span>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <!-- група -->
-                        <div class="row">
-                            <div class="col-lg-10"></div>
-                            <div class="col-lg-2">
-                                <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">Група</span>
-                                    </div>
-                                    <input type="text"
-                                           class="form-control"
-                                           aria-label="Sizing example input"
-                                           aria-describedby="inputGroup-sizing-sm"
-                                           v-model="question.group">
-                                </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-12"></div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-8 d-flex align-items-center justify-content-end">
+                            <div class="form-group">
+                                <label>Група</label>
                             </div>
                         </div>
-                        <!-- Картинка -->
-                        <label v-if="(question.type==2)||(question.type==4)">Снимка/Схема/Диаграма:</label>
-                        <div class="row" v-if="(question.type==2)||(question.type==4)">
-                            <div class="col-lg-8">
-                                <img v-if="question.picture" :src="question.picture" width="360">
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="exampleFormControlFile1">графичен файл (.png; .jpg; .bmp)</label>
-                                    <input type="file"
-                                           class="form-control-file"
-                                           id="exampleFormControlFile1"
-                                           @change="onImageChange($event)">
-                                </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-4">
+                            <div class="form-group">
+                                <input id="lastname" type="text" v-model="question.group">
                             </div>
                         </div>
-                        <!-- Формулировка на въпроса -->
-                        <div class="form-group mb-2">
-                            <label for="exampleFormControlTextarea1">Формулировка на въпроса:</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" v-model="question.text"> </textarea>
+                    </div>
+                    <!-- Картинка -->
+                    <label v-if="(question.type==2)||(question.type==4)">Снимка/Схема/Диаграма:</label>
+                    <div class="row" v-if="(question.type==2)||(question.type==4)">
+                        <div class="col-lg-7">
+                            <img v-if="question.picture" :src="question.picture" width="360">
                         </div>
-                        <!-- Отговори -->
-                        <label v-if="question.type==3">Редове:</label>
-                        <label v-else-if="question.type==4">Опции:</label>
-                        <label v-else>Отговори:</label>
-                        <div class="card  card-header-actions mb-3" v-for="(option, idx) in question.options">
-                            <!-- Отговор -->
-                            <div class="card-header">
-                                <h3 v-if="question.type==3">Ред {{idx + 1}}</h3>
-                                <h3 v-else-if="question.type==4">Опция {{idx + 1}}</h3>
-                                <h3 v-else="question.type==4">Отговор {{idx + 1}}</h3>
-                                <div>
-                                    <button class="btn btn-outline-danger" type="button" @click="deleteOption(idx)">Премахни</button>
-                                </div>
+                        <div class="col-lg-5">
+                            <div class="form-icon icon-plus"
+                                 data-bs-toggle="tooltip"
+                                 data-bs-placement="top"
+                                 data-bs-custom-class="custom-tooltip"
+                                 data-bs-title="Choose File">
+                                <label for="imageInput">графичен файл (.png; .jpg; .bmp)</label>
+                                <input type="file"
+                                       id="imageInput"
+                                       class="input-file"
+                                       @change="onImageChange($event)">
+                                <i class="feather-plus-circle"> xxxxxxxxx </i>
                             </div>
-                            <div class="card-body">
-                                <!-- Отговор  Варианти 1 и 2 - Въпрос от затворен тип със или без картинка -->
-                                <div class="row" v-if="question.type<3">
-                                    <div class="form-group col-lg-2">
-                                        <label for="leading_char">№/буква</label>
-                                        <input type="text" class="form-control" id="leading_char" maxlength="4" size="4" v-model="option.leading_char">
-                                    </div>
 
-                                    <div class="custom-control custom-checkbox col-lg-2 align-items-end" style="margin-top: 2.5rem;">
-                                        <input class="custom-control-input" :id="'customCheck'+idx" type="checkbox" v-model="option.checked">
-                                        <label class="custom-control-label" :for="'customCheck'+idx">вярно</label>
-                                    </div>
-                                    <div class="form-group col-lg-8">
-                                        <label for="text">текст</label>
-                                        <input type="text" class="form-control" id="text" v-model="option.text">
-                                    </div>
-                                </div>
-                                <!-- Отговор  Вариант 3 - Въпрос за съпоставяне -->
-                                <div class="row" v-else-if="question.type==3">
-                                    <div class="form-group col-lg-2">
-                                        <label for="leading_char3">№/буква</label>
-                                        <input type="text" class="form-control" id="leading_char3" maxlength="4" size="4" v-model="option.leading_char">
-                                    </div>
-                                    <div class="form-group col-lg-3">
-                                        <label for="text3">текст</label>
-                                        <input type="text" class="form-control" id="text3" v-model="option.text">
-                                    </div>
-                                    <div class="form-group col-lg-1"></div>
-                                    <div class="form-group col-lg-2">
-                                        <label for="value3">отговор</label>
-                                        <input type="text" class="form-control" id="value3" v-model="option.value">
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="valueName3">опция</label>
-                                        <input type="text" class="form-control" id="valueName3" v-model="option.value_name">
-                                    </div>
-                                </div>
-                                <!-- Отговор  Вариант 4 - Въпрос за съпоставяне от картинка -->
-                                <div class="row" v-else-if="question.type==4">
-                                    <div class="form-group col-lg-1"></div>
-                                    <div class="form-group col-lg-2">
-                                        <label for="value4">отговор</label>
-                                        <input type="text" class="form-control" id="value4" v-model="option.value">
-                                    </div>
-                                    <div class="form-group col-lg-9">
-                                        <label for="valueName4">опция</label>
-                                        <input type="text" class="form-control" id="valueName4" v-model="option.value_name">
-                                    </div>
-                                </div>
-                                <!-- Отговор  Вариант 5 - Въпрос от отворен тип -->
-                                <div class="row" v-else>
-                                    <div class="form-group col-lg-2"></div>
-                                    <div class="form-group col-lg-8">
-                                        <label for="text5">текст</label>
-                                        <input type="text" class="form-control" id="text5" v-model="option.value">
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <!-- Формулировка на въпроса -->
+                    <div class="chat-form">
+                        <div class="border-gradient text-form">
+                            <div class="form-group ml--10">
+                                <label for="qt">Формулировка на въпроса:</label>
+                                <textarea id="qt" rows="5"  v-model="question.text"></textarea>
                             </div>
                         </div>
-                        <!-- Ако няма отговор -->
-                        <div class="card  card-header-actions mb-3">
-                            <div class="card-header">
-                                ___
-                                <div>
-                                    <button class="btn btn-outline-success" type="button" @click="addEmptyOption">Добави отговор</button>
-                                </div>
-                            </div>
+                    </div>
+
+                    <!-- бутон горе ляво - затваряне на прозореца -->
+                    <button class="close-button" data-bs-dismiss="modal">
+                        <i class="feather-x"></i>
+                    </button>
+                    <!-- footer - бутони за отказ/запис -->
+                    <div class="row mt--20">
+                        <div class="col-lg-2 col-md-2">
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                            <div class="btn-grp">
+                                <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                        data-bs-dismiss="modal">
+                                    <i class="feather-x"></i><span>&nbspОткажи</span>
+                                </button>
+                                &nbsp
+                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                         data-bs-dismiss="modal">
+                                    <i class="feather-check"></i><span>&nbspЗапази</span>
+                                </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger" type="button" data-dismiss="modal" @click="reloadItem()">Затвори</button>
-                <button class="btn btn-success" type="button" data-dismiss="modal" @click="save()">&nbsp;Запази&nbsp;</button>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
         <!--DisLike Section Modal HTML -->
 
@@ -694,5 +549,5 @@
 {% endblock %}
 
 {% block page_script %}
-    <script src="{% static 'assets/js/elektra/dzi_questions_editor.js' %}"></script>
+    <script src="{% static 'assets/js/elektra/dzi_dashboard.js' %}"></script>
 {% endblock %}

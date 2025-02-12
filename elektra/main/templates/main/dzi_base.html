@@ -4,7 +4,7 @@
 {% include 'main/head.html' %}
 <body>
 
-    <main id='main' class="page-wrapper rbt-dashboard-page">
+    <main id="main" class="page-wrapper rbt-dashboard-page">
         <div class="rbt-panel-wrapper">
             <header class="rbt-dashboard-header rainbow-header header-default header-left-align rbt-fluid-header">
                 <div class="container-fluid position-relative">
@@ -130,12 +130,12 @@
         </div>
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    {% include 'main/js.html' %}
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 {% block page_script %}
     <!-- място за локалните скриптове -->
 {% endblock %}
-    {% include 'main/js.html' %}
+
 </body>
 </html>

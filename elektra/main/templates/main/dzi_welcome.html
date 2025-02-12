@@ -43,7 +43,9 @@
                                 <!-- ChatenAI Generator -->
                                 <div class="rainbow-generartor-section rainbow-section-gap">
                                     <div class="section-title text-center sal-animate" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
-                                        <h4 class="subtitle "><span class="theme-gradient">Електра</span></h4>
+                                        {% verbatim %}
+                                        <h4 class="subtitle "><span class="theme-gradient">Електра {{ ast }}</span></h4>
+                                        {% endverbatim %}
                                         <p class="description b1">ще Ви помогне при подготовка за провеждане
                                             на държавния изпит за придобиване на трета степен на професионална квалификация
                                             (част по теория на специалността, форма - писмен тест) по специалност код
@@ -158,7 +160,6 @@
                 </div>
             </div>
         </div>
-
 {% endblock %}
 
 {% block page_script %}
