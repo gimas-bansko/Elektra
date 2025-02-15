@@ -9352,12 +9352,12 @@ input[type=search] i {
   border-color: var(--color-primary);
 }
 .form-group textarea {
-  min-height: 193px;
+  /* min-height: 193px; */
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius);
   resize: none;
   padding: 15px;
-  font-size: 16px;
+  font-size: 12px;
 }
 .form-group textarea:focus {
   border-color: var(--color-primary);
@@ -20300,7 +20300,7 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
   }
 }
 .chat-box .inner .chat-section .chat-content .reaction-section .btn-grp .react-btn.show {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-alt);
   border-color: var(--color-primary);
 }
 .chat-box .inner .chat-section .chat-content .video-popup.frame-image {
@@ -22082,4 +22082,16 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
   transition: all 0.3s ease;
   border: none;
   outline: none;
+}
+
+.cb-ok-align {
+    margin-top: 3.5rem;
+}
+
+.chat-box-edit {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: var(--radius);
+  background-color: var(--color-blackest);
+  position: relative;
 }

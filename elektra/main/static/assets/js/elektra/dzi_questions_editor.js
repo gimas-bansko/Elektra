@@ -14,6 +14,7 @@ const App = {
                 id: 1,
                 text: "Въпрос от ниво знание на тема 1 точка 1",
                 type: 1,
+                level:1,
                 picture: null,
                 group: 0,
                 item: 1,
@@ -25,10 +26,21 @@ const App = {
                     id: 1,
                     leading_char: "3",
                     text: "опция 1 на въпрос 1",
-                    value: "",
-                    value_name: "",
+                    value: "4",
+                    value_name: "value_name 2",
                     checked: true,
-                    task: 1
+                    task: 1,
+                    collapsed:false
+                    },
+                    {
+                    id: 2,
+                    leading_char: "4",
+                    text: "опция 2 на въпрос 1",
+                    value: "3",
+                    value_name: "value_name 1",
+                    checked: false,
+                    task: 1,
+                    collapsed:true
                     }
                 ],
                 },
@@ -177,8 +189,21 @@ const App = {
                             value_name: "",
                             checked: false,
                             task:this.question.id,
+                            collapsed:true
                         }
             this.question.options.push(newOption)
+            this.flagNewItem = true
+        },
+        copyOption(idx){
+            // Създавам копие на елемент с индекс idx
+            let copyOfOption = { ...this.question.options[idx] }; // или Object.assign({}, options[0])
+
+            // Променям `id`, за да е уникален (ако е необходимо)
+            copyOfOption.id = 0; // Уникален ID за копието
+
+            // Вмъквам копието след елемент с индекс idx
+            this.question.options.splice(idx+1, 0, copyOfOption);
+
             this.flagNewItem = true
         },
         deleteOption(idx){
@@ -337,7 +362,6 @@ const App = {
             .then(function(response){
                 vm.listOfThemes = response.data
                 for (i=0; i< vm.listOfThemes.length; i++){
-                    console.log(vm.listOfThemes[i].num)
                     if (vm.listOfThemes[i].num == vm.user.theme){ vm.theme_num = i}
                     }
                 vm.reloadItem()

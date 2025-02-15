@@ -48,13 +48,12 @@
                     <!-- Dashboard Center Content -->
                     <div class="rbt-dashboard-content">
                         <div class="content-page">
+                            <!-- ****************
+                                 Точки от темата
+                                 ****************-->
                             <div class="chat-box-list pt--30" id="chatContainer"
                                  v-for="(item, item_idx) in theme">
-                                <!-- ****************
-                                     Точка от темата
-                                     ****************-->
                                 <!-- Заглавна част -->
-<!-- ********************************************************************************** -->
                                 <div class="chat-box author-speech bg-flashlight">
                                     <div class="inner">
                                         <div class="chat-section">
@@ -165,37 +164,32 @@
                                                 <div class="inner top-flashlight leftside light-xl">
                                                     <div class="chat-section generate-section">
                                                         <div class="chat-content">
-                                                            <h5 class="title color-text-off mb--0">Въпрос #[[qst.id]]</h5>
-                                                            <div class="reaction-section">
-                                                                <div class="btn-grp">
-                                                                    <div class="left-side-btn dropup">
-                                                                        <button class="react-btn btn-default btn-small btn-border  bg-color-warning">
-                                                                            <i class="feather-thumbs-up"></i> 10 </button>
-                                                                        <button data-bs-toggle="modal" data-bs-target="#dislikeModal"
-                                                                                class="react-btn btn-default btn-small btn-border bg-color-danger">
-                                                                            <i class="feather-thumbs-down"></i></button>
-                                                                        <button data-bs-toggle="modal" data-bs-target="#shareModal"
-                                                                                class="react-btn btn-default btn-small btn-border bg-color-success">
-                                                                            <i class="feather-share"></i></button>
-                                                                        <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <i class="feather-more-vertical"></i>
-                                                                        </button>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li><a class="dropdown-item" href="#"><i
-                                                                                        class="feather-copy"></i> Copy</a></li>
-                                                                            <li><a class="dropdown-item" href="#"><i
-                                                                                        class="feather-tag"></i> Pin Chat</a></li>
-                                                                            <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                                            <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div class="right-side-btn">
-                                                                        <button class="react-btn btn-default btn-small btn-border">
-                                                                            <i class="feather-repeat"></i><span>Regenerate</span>
-                                                                        </button>
-                                                                    </div>
+<!-- ********************************************************************************** -->
+                                                            <!-- Заглавна част - параметри на въпроса -->
+                                                            <h5 class="title"
+                                                                :class="{'color-level-1': qst.level==1,
+                                                                         'color-level-2': qst.level==2,
+                                                                         'color-level-3': qst.level==3,
+                                                                         'color-level-4': qst.level==4,
+                                                                        }">
+                                                                Въпрос #[[ qst.id ]]</h5>
+                                                            <div class="row mb--20">
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+                                                                    Група: [[ qst.group ]]
                                                                 </div>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-12" style="text-align: center;">
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-12 " style="text-align: right;">
+                                                                   <span class="react-btn btn-default btn-small btn-border"
+                                                                         :class="{'color-level-1': question.level==1,
+                                                                                  'color-level-2': question.level==2,
+                                                                                  'color-level-3': question.level==3,
+                                                                                  'color-level-4': question.level==4,
+                                                                                  }">
+                                                                         Въпрос от ниво [[getLevelName(question.level)]] - [[2*question.level]] т.</span>
+                                                               </div>
                                                             </div>
+<!-- ********************************************************************************** -->
                                                        </div>
                                                     </div>
                                                     <div class="chat-section">
@@ -278,7 +272,6 @@
                                         </div>
                                     </div>
                                 </div>
-<!-- ********************************************************************************** -->
                             </div>
                         </div>
 
@@ -429,10 +422,10 @@
                                 Равнище по Блум <i class="feather-more-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item color-level-1" href="#">Знание (2т.)</a></li>
-                                <li><a class="dropdown-item color-level-2" href="#">Разбиране (4т.)</a></li>
-                                <li><a class="dropdown-item color-level-3" href="#">Приложение (6т.)</a></li>
-                                <li><a class="dropdown-item color-level-4" href="#">Анализ (8т.)</a></li>
+                                <li><a class="dropdown-item color-level-1" @click="question.level=1">Знание (2т.)</a></li>
+                                <li><a class="dropdown-item color-level-2" @click="question.level=2">Разбиране (4т.)</a></li>
+                                <li><a class="dropdown-item color-level-3" @click="question.level=3">Приложение (6т.)</a></li>
+                                <li><a class="dropdown-item color-level-4" @click="question.level=4">Анализ (8т.)</a></li>
                             </ul>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-12" style="text-align: center;">
@@ -441,11 +434,11 @@
                                Тип на въпроса <i class="feather-more-vertical"></i>
                            </button>
                            <ul class="dropdown-menu">
-                               <li><a class="dropdown-item"  @click="question.type=1"><i
+                               <li><a class="dropdown-item delete-item"  @click="question.type=1"><i
                                            class="feather-server"></i> Въпрос от затворен тип с един или два верни отговора</a></li>
-                               <li><a class="dropdown-item"  @click="question.type=2"><i
+                               <li><a class="dropdown-item delete-item"  @click="question.type=2"><i
                                            class="feather-image"></i> Въпрос от затворен тип с един или два верни отговора с картинка</a></li>
-                               <li><a class="dropdown-item"  @click="question.type=3"><i
+                               <li><a class="dropdown-item delete-item"  @click="question.type=3"><i
                                            class="feather-shuffle"></i> Въпрос със съпоставяне</a>
                                </li>
                                <li><a class="dropdown-item delete-item"  @click="question.type=4"><i
@@ -475,7 +468,7 @@
                        </div>
                        <div class="col-lg-2 col-md-2 col-sm-2 col-4">
                            <div class="form-group">
-                               <input id="lastname" type="text" v-model="question.group">
+                               <input id="groupNum" type="text" v-model="question.group">
                            </div>
                        </div>
                    </div>
@@ -488,7 +481,7 @@
                        <div class="col-lg-5">
                            <div class="form-icon icon-plus"
                                 data-bs-toggle="tooltip"
-                                data-bs-placement="top"
+                                data-bs-placement="bottom"
                                 data-bs-custom-class="custom-tooltip"
                                 data-bs-title="Choose File">
                                 <label for="imageInput">графичен файл (.png; .jpg; .bmp)</label>
@@ -496,7 +489,6 @@
                                        id="imageInput"
                                        class="input-file"
                                        @change="onImageChange($event)">
-                                <i class="feather-plus-circle"> xxxxxxxxx </i>
                            </div>
                        </div>
                    </div>
@@ -509,6 +501,186 @@
                            </div>
                        </div>
                    </div>
+                    <!-- Отговори -->
+                    <div class="row mt--20">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-12">
+                            <label v-if="question.type==3">Редове:</label>
+                            <label v-else-if="question.type==4">Опции:</label>
+                            <label v-else>Отговори:</label>
+                        </div>
+                    </div>
+                    <div class="chat-box-edit bg-flashlight mt--10" v-for="(option, idx) in question.options">
+                        <div class="inner top-flashlight leftside light-xl">
+                            <div class="chat-section generate-section">
+                                <div class="chat-content">
+                                    <div class="row">
+                                       <div class="col-lg-5 col-md-5 col-sm-5 col-12 d-flex align-items-center">
+                                            <span v-if="question.type==3">Ред [[idx + 1]]</span>
+                                            <span v-else-if="question.type==4">Опция [[idx + 1]]</span>
+                                            <span v-else="question.type==4">Отговор [[idx + 1]]</span>
+                                       </div>
+                                       <div class="col-lg-3 col-md-3 col-sm-3 col-6" style="text-align: right;">
+                                           <div class="btn-grp">
+                                               <button class="react-btn btn-default btn-small btn-border"
+                                                       style="color: green; border-color: #013401;" @click="copyOption(idx)">
+                                                   <i class="feather-x"></i><span>&nbspДублирай</span>
+                                               </button>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-3 col-md-3 col-sm-3 col-6" style="text-align: right;">
+                                           <div class="btn-grp">
+                                               <button class="react-btn btn-default btn-small btn-border"
+                                                       style="color: red; border-color: #5c0000d4;" @click="deleteOption(idx)">
+                                                   <i class="feather-x"></i><span>&nbspПремахни</span>
+                                               </button>
+                                           </div>
+                                       </div>
+                                       <div class="col-lg-1 col-md-1 col-sm-1 col-2">
+                                           <div class="btn-grp">
+                                               <button class="react-btn btn-default btn-small btn-border" @click="option.collapsed=!option.collapsed">
+                                                   <i class="feather-chevrons-down" style="margin-left: -6px;" v-if="!option.collapsed"></i>
+                                                   <i class="feather-chevrons-up" style="margin-left: -6px;" v-else></i>
+                                               </button>
+                                           </div>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-section">
+                                <div class="chat-content">
+                                    <!-- Отговор  Варианти 1 и 2 - Въпрос от затворен тип със или без картинка -->
+                                    <div class="row" v-if="(question.type<3)&&(option.collapsed)">
+                                        <div class="form-group col-lg-2">
+                                            <label :for="'editV1C1'+idx">№/буква</label>
+                                            <input type="text" class="form-control"
+                                                   :id="'editV1C1'+idx" maxlength="4" size="4" v-model="option.leading_char">
+                                        </div>
+                                        <div class="custom-control custom-checkbox col-lg-2 align-items-end cb-ok-align"
+                                             :class="{'color-Ok':option.checked, 'color-No':!option.checked,}">
+                                            <input class="custom-control-input" :id="'editV1C2'+idx" type="checkbox" v-model="option.checked">
+                                            <label class="custom-control-label d-flex align-items-center" :for="'editV1C2'+idx">вярно</label>
+                                        </div>
+                                        <div class="form-group col-lg-8">
+                                            <label :for="'editV1C3'+idx">текст</label>
+                                            <input type="text" class="form-control" :id="'editV1C3'+idx" v-model="option.text">
+                                        </div>
+                                    </div>
+                                    <div class="row" v-if="(question.type<3)&&(!option.collapsed)">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-11">
+                                            <div class="rbt-checkbox-wrapper">
+                                                <input :id="'editV1C4'+idx"
+                                                       type="checkbox" disabled
+                                                       :checked="option.checked">
+                                                <label :for="'editV1C4'+idx">
+                                                    <span :class="{'color-Ok': option.checked, 'color-No': !option.checked}">
+                                                        [[ option.leading_char+'. '+option.text]]</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Отговор  Вариант 3 - Въпрос за съпоставяне -->
+                                    <div class="row" v-else-if="(question.type==3)&&(option.collapsed)">
+                                        <div class="form-group col-lg-2">
+                                            <label :for="'editV3C1'+idx">№/буква</label>
+                                            <input type="text" class="form-control" :id="'editV3C1'+idx" maxlength="4" size="4" v-model="option.leading_char">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label :for="'editV3C2'+idx">текст</label>
+                                            <input type="text" class="form-control" :id="'editV3C2'+idx" v-model="option.text">
+                                        </div>
+                                        <div class="form-group col-lg-1"></div>
+                                        <div class="form-group col-lg-2">
+                                            <label :for="'editV3C3'+idx">отговор</label>
+                                            <input type="text" class="form-control" :id="'editV3C3'+idx" v-model="option.value">
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label :for="'editV3C4'+idx">опция</label>
+                                            <input type="text" class="form-control" :id="'editV3C4'+idx" v-model="option.value_name">
+                                        </div>
+                                    </div>
+                                    <div class="row mt--5" v-else-if="(question.type==3)&&(!option.collapsed)">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-4" style="display: flex; align-items: center;">
+                                            <span>[[ option.leading_char+'. '+option.text]]</span>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-1">
+                                           <div class="btn-grp">
+                                               <button class="react-btn btn-default btn-small btn-border">
+                                                   <span style="margin-left: -6px;">[[option.value]]</span>
+                                               </button>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-5" style="display: flex; align-items: center;">
+                                            <span >[[option.value_name]]</span>
+                                        </div>
+                                    </div>
+                                    <!-- Отговор  Вариант 4 - Въпрос за съпоставяне от картинка -->
+                                    <div class="row" v-else-if="(question.type==4)&&(option.collapsed)">
+                                        <div class="form-group col-lg-1"></div>
+                                        <div class="form-group col-lg-2">
+                                            <label :for="'editV4C1'+idx">отговор</label>
+                                            <input type="text" class="form-control" :id="'editV4C1'+idx" v-model="option.value">
+                                        </div>
+                                        <div class="form-group col-lg-9">
+                                            <label :for="'editV4C2'+idx">опция</label>
+                                            <input type="text" class="form-control" :id="'editV4C2'+idx" v-model="option.value_name">
+                                        </div>
+                                    </div>
+                                    <div class="row mt--5" v-else-if="(question.type==4)&&(!option.collapsed)">
+                                        <div class="form-group col-lg-1"></div>
+                                        <div class="col-lg-1">
+                                           <div class="btn-grp">
+                                               <button class="react-btn btn-default btn-small btn-border">
+                                                   <span style="margin-left: -6px;">[[option.value]]</span>
+                                               </button>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-10" style="display: flex; align-items: center;">
+                                            <span >[[option.value_name]]</span>
+                                        </div>
+                                    </div>
+                                    <!-- Отговор  Вариант 5 - Въпрос от отворен тип -->
+                                    <div class="row" v-else-if="(question.type==5)&&(option.collapsed)">
+                                        <div class="form-group col-lg-2"></div>
+                                        <div class="form-group col-lg-8">
+                                            <label :for="'editV5C1'+idx">текст</label>
+                                            <input type="text" class="form-control" :id="'editV5C1'+idx" v-model="option.value">
+                                        </div>
+                                    </div>
+                                    <div class="row" v-else-if="(question.type==5)&&(!option.collapsed)">
+                                        <div class="form-group col-lg-2"></div>
+                                        <div class="form-group col-lg-8">
+                                            <span> [[option.value]] </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- добавяне на отговор -->
+                    <div class="chat-box-edit bg-flashlight mt--10">
+                        <div class="inner top-flashlight leftside light-xl">
+                            <div class="chat-section generate-section">
+                                <div class="chat-content">
+                                    <div class="row">
+                                       <div class="col-lg-12 col-md-12 col-sm-12 col-12" style="text-align: right;">
+                                           <div class="btn-grp">
+                                               <button class="react-btn btn-default btn-small btn-border"
+                                                       style="color: green; border-color: #013401;" @click="addEmptyOption()">
+                                                   <i class="feather-x"></i>
+                                                   <span v-if="question.type==3">&nbspДобави ред</span>
+                                                   <span v-else-if="question.type==4">&nbspДобави опция</span>
+                                                   <span v-else>&nbspДобави отговор</span>
+                                               </button>
+                                           </div>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- бутон горе ляво - затваряне на прозореца -->
                     <button class="close-button" data-bs-dismiss="modal">
