@@ -48,9 +48,7 @@
                     <!-- Dashboard Center Content -->
                     <div class="rbt-dashboard-content">
                         <div class="content-page">
-                            <!-- ****************
-                                 Точки от темата
-                                 ****************-->
+                            <!-- Точки от темата  -->
                             <div class="chat-box-list pt--30" id="chatContainer"
                                  v-for="(item, item_idx) in theme">
                                 <!-- Заглавна част -->
@@ -121,18 +119,31 @@
                                                                             <td></td>
                                                                             <td><!-- data-bs-toggle="modal" data-bs-target="#editQuestionModal" -->
                                                                                 <button class="react-btn btn-default btn-small btn-border"
-                                                                                        @click="make_new_q(item.id, 1)">
+                                                                                        @click="make_new_q(item.id, 1)"
+                                                                                        data-bs-toggle="modal" data-bs-target="#editQuestionModal">
                                                                                         Добави
                                                                                 </button>
                                                                             </td>
                                                                             <td>
-                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                                        @click="make_new_q(item.id, 2)"
+                                                                                        data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                                                                                        Добави
+                                                                                </button>
                                                                             </td>
                                                                             <td>
-                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                                        @click="make_new_q(item.id, 3)"
+                                                                                        data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                                                                                        Добави
+                                                                                </button>
                                                                             </td>
                                                                             <td>
-                                                                                <a class="btn-default btn-border" href="#">Добави</a>
+                                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                                        @click="make_new_q(item.id, 4)"
+                                                                                        data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                                                                                        Добави
+                                                                                </button>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -146,9 +157,9 @@
                                     </div>
                                 </div>
                                 <!-- списък на въпросите на подтемата по нива на Блум -->
-                                <div v-for="level in 4" :key="level">
+                                <div v-for="level in 4" :key="level"   :id="'T'+item_idx+'L'+level">
                                     <!-- ако няма въпроси от това ниво -->
-                                    <div class="chat-box ai-speech bg-flashlight mt--10" v-if="checkQuestionsQty(level, item_idx)==0">
+                                    <div class="chat-box ai-speech bg-flashlight mt--10" v-if="getQuestionsQty(level, item_idx)==0">
                                         <div class="inner top-flashlight leftside light-xl">
                                             <div class="chat-section generate-section">
                                                 <div class="chat-content">
@@ -159,112 +170,185 @@
                                     </div>
                                     <!-- ако има въпроси от това ниво -->
                                     <div  v-else>
-                                        <div v-for="qst in item.tasks">
-                                            <div class="chat-box ai-speech bg-flashlight mt--10" v-if="qst.level==level" >
+                                        <div v-for="(qst, qst_idx) in item.tasks">
+                                            <div class="chat-box ai-speech bg-flashlight mt--10"
+                                                 v-if="(qst.level==level)&&(haveToShow(item_idx, qst_idx))">
+                                                <!-- показвам всички въпроси от тема/точка/ниво (theme/item/level) qst -->
                                                 <div class="inner top-flashlight leftside light-xl">
+                                                    <!-- Заглавна част - параметри на въпроса -->
                                                     <div class="chat-section generate-section">
                                                         <div class="chat-content">
-<!-- ********************************************************************************** -->
-                                                            <!-- Заглавна част - параметри на въпроса -->
-                                                            <h5 class="title"
+                                                            <!-- Заглавен ред -->
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                    <h5 class="title"
                                                                 :class="{'color-level-1': qst.level==1,
                                                                          'color-level-2': qst.level==2,
                                                                          'color-level-3': qst.level==3,
                                                                          'color-level-4': qst.level==4,
                                                                         }">
                                                                 Въпрос #[[ qst.id ]]</h5>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="text-align: right;">
+                                                                    <span style="font-size:9px; color: #C231A1;" v-if="qst.showLevel==-1"> Не се използва във Вашето училище</span>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Група/Ниво -->
                                                             <div class="row mb--20">
                                                                 <div class="col-lg-4 col-md-4 col-sm-4 col-12">
-                                                                    Група: [[ qst.group ]]
+                                                                    <span v-if="qst.group>0">Група: [[ qst.group ]]</span>
                                                                 </div>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-12" style="text-align: center;">
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="text-align: center;">
                                                                 </div>
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-12 " style="text-align: right;">
+                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 " style="text-align: right;">
                                                                    <span class="react-btn btn-default btn-small btn-border"
-                                                                         :class="{'color-level-1': question.level==1,
-                                                                                  'color-level-2': question.level==2,
-                                                                                  'color-level-3': question.level==3,
-                                                                                  'color-level-4': question.level==4,
+                                                                         :class="{'color-level-1': qst.level==1,
+                                                                                  'color-level-2': qst.level==2,
+                                                                                  'color-level-3': qst.level==3,
+                                                                                  'color-level-4': qst.level==4,
                                                                                   }">
-                                                                         Въпрос от ниво [[getLevelName(question.level)]] - [[2*question.level]] т.</span>
+                                                                         Въпрос от ниво [[getLevelName(qst.level)]] - [[2*qst.level]] т.</span>
                                                                </div>
                                                             </div>
-<!-- ********************************************************************************** -->
                                                        </div>
                                                     </div>
+                                                    <!-- Въпрос -->
                                                     <div class="chat-section">
-                                                        <div class="chat-content">
+                                                        <!-- Въпрос тип 1 - изброени отговори без картинка -->
+                                                        <div class="chat-content" v-if="qst.type==1">
                                                             <p class="mb--20">[[ qst.text ]]</p>
                                                             <div class="row">
                                                                 <div class="col-lg-1"></div>
                                                                 <div class="col-lg-11">
-                                                                    <div class="rbt-checkbox-wrapper">
-                                                                        <input id="rbt-checkbox-1" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                                        <label for="rbt-checkbox-1">
-                                                                            <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="rbt-checkbox-wrapper">
-                                                                        <input id="rbt-checkbox-2" name="rbt-checkbox-1" type="checkbox" checked disabled>
-                                                                        <label for="rbt-checkbox-2">
-                                                                            <span class="color-Ok">а. ще върнем масива в оригиналната последователност</span>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="rbt-checkbox-wrapper">
-                                                                        <input id="rbt-checkbox-3" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                                        <label for="rbt-checkbox-3">
-                                                                            <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="rbt-checkbox-wrapper">
-                                                                        <input id="rbt-checkbox-4" name="rbt-checkbox-1" type="checkbox" disabled>
-                                                                        <label for="rbt-checkbox-4">
-                                                                            <span class="color-No">а. ще върнем масива в оригиналната последователност</span>
+                                                                    <!-- Опции/отговори -->
+                                                                    <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
+                                                                        <input :id="'option_'+item.id+'_'+qst.id+'_'+option.id"
+                                                                               type="checkbox" disabled :checked="option.checked">
+                                                                        <label :for="'option_'+item.id+'_'+qst.id+'_'+option.id">
+                                                                            <span :class="{'color-No': !option.checked, 'color-Ok': option.checked}">[[ option.leading_char ]]. [[ option.text ]]</span>
                                                                         </label>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="reaction-section">
-                                                                <div class="btn-grp">
-                                                                    <div class="left-side-btn dropup">
-                                                                        <button data-bs-toggle="modal" data-bs-target="#likeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                                class="feather-thumbs-up"></i></button>
-                                                                        <button data-bs-toggle="modal" data-bs-target="#dislikeModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                                class="feather-thumbs-down"></i></button>
-                                                                        <button data-bs-toggle="modal" data-bs-target="#shareModal" class="react-btn btn-default btn-small btn-border"><i
-                                                                                class="feather-share"></i></button>
-                                                                        <button type="button" class="react-btn btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <i class="feather-more-vertical"></i>
-                                                                        </button>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li><a class="dropdown-item" href="#"><i
-                                                                                        class="feather-copy"></i> Copy</a></li>
-                                                                            <li><a class="dropdown-item" href="#"><i
-                                                                                        class="feather-tag"></i> Pin Chat</a></li>
-                                                                            <li><a class="dropdown-item" href="#"><i
-                                                                                        class="feather-file-text"></i> Rename</a>
-                                                                            </li>
-                                                                            <li><a class="dropdown-item delete-item" href="#"><i
-                                                                                        class="feather-trash-2"></i> Delete Chat</a>
-                                                                            </li>
-                                                                        </ul>
+                                                        </div>
+                                                        <!-- Въпрос тип 2 - изброени отговори с картинка -->
+                                                        <div class="chat-content" v-else-if="qst.type==2">
+                                                            <div class="row">
+                                                                <!-- картинка и текст -->
+                                                                <div class="row mb--10" v-if="qst.textWrap=='n'">
+                                                                    <p class="mb--10">[[ qst.text ]]</p>
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
                                                                     </div>
-                                                                    <div class="right-side-btn">
-                                                                        <button class="react-btn btn-default btn-small btn-border bg-color-danger">
-                                                                            <i class="feather-repeat"></i><span>Изтрий</span>
-                                                                        </button>
-                                                                        &nbsp
-                                                                        <button class="react-btn btn-default btn-small btn-border bg-color-warning">
-                                                                            <i class="feather-repeat"></i><span>Копирай</span>
-                                                                        </button>
-                                                                        &nbsp
-                                                                        <button class="react-btn btn-default btn-small btn-border bg-color-success"
-                                                                                data-bs-toggle="modal" data-bs-target="#editQuestionModal" >
-                                                                            <i class="feather-repeat"></i><span>Промени</span>
-                                                                        </button>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='s'">
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                    <p class="mt--10">[[ qst.text ]]</p>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='e'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.text ]]
+                                                                    </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='w'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.text ]]
+                                                                    </div>
+                                                                </div>
+                                                                <!-- отговори -->
+                                                                <div class="row">
+                                                                    <div class="col-lg-1"></div>
+                                                                    <div class="col-lg-11">
+                                                                        <!-- Опции/отговори -->
+                                                                        <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
+                                                                            <input :id="'option_'+item.id+'_'+qst.id+'_'+option.id"
+                                                                                   type="checkbox" disabled :checked="option.checked">
+                                                                            <label :for="'option_'+item.id+'_'+qst.id+'_'+option.id">
+                                                                                <span :class="{'color-No': !option.checked, 'color-Ok': option.checked}">[[ option.leading_char ]]. [[ option.text ]]</span>
+                                                                            </label>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <!-- Въпрос тип 3 - съпоставяне без картинка -->
+                                                        <div class="chat-content" v-if="qst.type==3">
+                                                            <p class="mb--20">[[ qst.text ]]</p>
+                                                            <div class="row">
+                                                                <div class="col-lg-1"></div>
+                                                                <div class="col-lg-11">
+                                                                    <!-- Опции/отговори -->
+                                                                    <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-5 d-flex align-items-center">
+                                                                                [[ option.leading_char ]]. [[ option.text ]]
+                                                                            </div>
+                                                                            <div class="col-lg-7 btn-grp">
+                                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                                        type="button"
+                                                                                        style="color: green; border-color: #013401;">
+                                                                                    [[ option.value ]]</button>&nbsp;
+                                                                                [[ option.value_name ]]
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- функционални бутони -->
+                                                    <div class="row mt--10">
+                                                        <!-- comments -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border"
+                                                                    style="font-size: 12px;">
+                                                                <i class="feather-file-plus"></i><span>&nbspКоментар&nbsp</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- do not accept -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-secondary"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==0">
+                                                                <i class="feather-upload-cloud"></i><span>&nbspИзключи&nbsp</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- accept -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-primary"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==-1">
+                                                                <i class="feather-download-cloud"></i><span>&nbspПолзвай</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- copy -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-warning"
+                                                                    style="font-size: 12px;">
+                                                                <i class="feather-copy"></i><span>&nbspКопирай&nbsp</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- delete -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1">
+                                                                <i class="feather-delete"></i><span>&nbspИзтрий&nbsp&nbsp</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- edit -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                                                    @click="make_q(item_idx, qst_idx)"
+                                                                    data-bs-toggle="modal" data-bs-target="#editQuestionModal"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1">
+                                                                <i class="feather-edit"></i><span>&nbspПромени</span>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -274,26 +358,28 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="rbt-static-bar collapse-width">
                             <!-- End Header Top Area  -->
                             <ul class="staticbar-btn-grp d-md-flex">
                                 <li>
                                     <button class="btn-default btn-small btn-border"
                                             data-bs-toggle="modal" data-bs-target="#selectTheme">
-                                        <span>Изберете друга тема</span>
+                                        <span>Избери друга тема</span>
                                     </button>
                                 </li>
                                 <li>
-                                    <a class="btn-default btn-small btn-border"
-                                            href="{% url 'start_test'%}">
-                                        <span>Покажи всички въпроси</span>
+                                    <a class="btn-default btn-small btn-border" @click="setShowMode(0)">
+                                        <span>Покажи всички</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="btn-default btn-small btn-border"
-                                            href="{% url 'start_test'%}">
-                                        <span>Покажи въпросите за училището</span>
+                                    <a class="btn-default btn-small btn-border" @click="setShowMode(2)">
+                                        <span>Покажи за училището</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn-default btn-small btn-border" @click="setShowMode(1)">
+                                        <span>Покажи неизползвани</span>
                                     </a>
                                 </li>
                             </ul>
@@ -334,15 +420,20 @@
                                                 <i class="feather-more-horizontal"></i>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                                <li><a class="dropdown-item"
+                                                       @click="make_new_q(theme_item.id, 1)"
+                                                       data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                                                    <i class="feather-file-plus"></i> Добави</a>
+                                                </li>
+                                                <li><a class="dropdown-item" :href="'#T'+idx+'L1'"><i class="feather-corner-up-left"></i> Покажи</a></li>
                                             </ul>
                                         </div>
                                         Знание
-                                        <span style="background-color: #ffbf00; color: black;"> &nbsp;4 (мин.[[theme_item.knowledge]])&nbsp; </span>
+                                        <span :class="{'bg-color-good': verifyQuestionQty(1, idx, 3),
+                                                       'bg-color-mid': verifyQuestionQty(1, idx, 2),
+                                                       'bg-color-bad': verifyQuestionQty(1, idx, 1),
+                                                      }">
+                                            &nbsp;[[theme_item.q_knowledge]] (мин.[[theme_item.knowledge]])&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -350,15 +441,20 @@
                                                 <i class="feather-more-horizontal"></i>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                                <li><a class="dropdown-item"
+                                                       @click="make_new_q(theme_item.id, 2)"
+                                                       data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                                                    <i class="feather-file-plus"></i> Добави</a>
+                                                </li>
+                                                <li><a class="dropdown-item" :href="'#T'+idx+'L2'"><i class="feather-corner-up-left"></i> Покажи</a></li>
                                             </ul>
                                         </div>
                                         Разбиране
-                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.[[theme_item.comprehension]])&nbsp; </span>
+                                        <span  :class="{'bg-color-good': verifyQuestionQty(2, idx, 3),
+                                                       'bg-color-mid': verifyQuestionQty(2, idx, 2),
+                                                       'bg-color-bad': verifyQuestionQty(2, idx, 1),
+                                                       }">
+                                            &nbsp;[[theme_item.q_comprehension]] (мин.[[theme_item.comprehension]])&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -366,15 +462,20 @@
                                                 <i class="feather-more-horizontal"></i>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                                <li><a class="dropdown-item"
+                                                       @click="make_new_q(theme_item.id, 3)"
+                                                       data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                                                    <i class="feather-file-plus"></i> Добави</a>
+                                                </li>
+                                                <li><a class="dropdown-item" :href="'#T'+idx+'L3'"><i class="feather-corner-up-left"></i> Покажи</a></li>
                                             </ul>
                                         </div>
                                         Приложение
-                                        <span style="background-color: red; color: black;"> &nbsp;2 (мин.[[theme_item.application]])&nbsp; </span>
+                                        <span :class="{'bg-color-good': verifyQuestionQty(3, idx, 3),
+                                                       'bg-color-mid': verifyQuestionQty(3, idx, 2),
+                                                       'bg-color-bad': verifyQuestionQty(3, idx, 1),
+                                                       }">
+                                            &nbsp;[[theme_item.q_application]] (мин.[[theme_item.application]])&nbsp; </span>
                                     </li>
                                     <li class="history-box active">
                                         <div class="dropdown history-box-dropdown">
@@ -382,15 +483,20 @@
                                                 <i class="feather-more-horizontal"></i>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"><i class="feather-refresh-cw"></i> Regenerate</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-tag"></i> Pin Chat</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-file-text"></i> Rename</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="feather-share-2"></i> Share</a></li>
-                                                <li><a class="dropdown-item delete-item" href="#"><i class="feather-trash-2"></i> Delete Chat</a></li>
+                                                <li><a class="dropdown-item"
+                                                       @click="make_new_q(theme_item.id, 4)"
+                                                       data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                                                    <i class="feather-file-plus"></i> Добави</a>
+                                                </li>
+                                                <li><a class="dropdown-item" :href="'#T'+idx+'L4'"><i class="feather-corner-up-left"></i> Покажи</a></li>
                                             </ul>
                                         </div>
                                         Анализ
-                                        <span style="background-color: green; color: black;"> &nbsp;9 (мин.[[theme_item.analysis]])&nbsp; </span>
+                                        <span  :class="{'bg-color-good': verifyQuestionQty(4, idx, 3),
+                                                       'bg-color-mid': verifyQuestionQty(4, idx, 2),
+                                                       'bg-color-bad': verifyQuestionQty(4, idx, 1),
+                                                       }">
+                                            &nbsp;[[theme_item.q_analysis]] (мин.[[theme_item.analysis]])&nbsp; </span>
                                     </li>
                                 </ul>
                             </div>
@@ -434,19 +540,16 @@
                                Тип на въпроса <i class="feather-more-vertical"></i>
                            </button>
                            <ul class="dropdown-menu">
-                               <li><a class="dropdown-item delete-item"  @click="question.type=1"><i
-                                           class="feather-server"></i> Въпрос от затворен тип с един или два верни отговора</a></li>
-                               <li><a class="dropdown-item delete-item"  @click="question.type=2"><i
-                                           class="feather-image"></i> Въпрос от затворен тип с един или два верни отговора с картинка</a></li>
-                               <li><a class="dropdown-item delete-item"  @click="question.type=3"><i
-                                           class="feather-shuffle"></i> Въпрос със съпоставяне</a>
-                               </li>
-                               <li><a class="dropdown-item delete-item"  @click="question.type=4"><i
-                                           class="feather-film"></i> Въпрос за съпоставяне на елементи от картинка със зададени опции</a>
-                               </li>
-                               <li><a class="dropdown-item delete-item"  @click="question.type=5"><i
-                                           class="feather-edit"></i> Въпрос с отворен отговор</a>
-                               </li>
+                               <li><a class="dropdown-item delete-item"  @click="question.type=1">
+                                   <i class="feather-server"></i> Въпрос от затворен тип с един или два верни отговора</a></li>
+                               <li><a class="dropdown-item delete-item"  @click="question.type=2">
+                                   <i class="feather-image"></i> Въпрос от затворен тип с един или два верни отговора с картинка</a></li>
+                               <li><a class="dropdown-item delete-item"  @click="question.type=3">
+                                   <i class="feather-shuffle"></i> Въпрос със съпоставяне</a></li>
+                               <li><a class="dropdown-item delete-item"  @click="question.type=4">
+                                   <i class="feather-film"></i> Въпрос за съпоставяне на елементи от картинка със зададени опции</a></li>
+                               <li><a class="dropdown-item delete-item"  @click="question.type=5">
+                                   <i class="feather-edit"></i> Въпрос с отворен отговор</a></li>
                            </ul>
                        </div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-12 " style="text-align: right;">
@@ -479,16 +582,46 @@
                            <img v-if="question.picture" :src="question.picture" width="360">
                        </div>
                        <div class="col-lg-5">
-                           <div class="form-icon icon-plus"
+                           Графичен файл (.png; .jpg; .bmp):
+                           <div class="row d-flex align-items-end" v-if="question.picture">
+                               [[ pictureFileName ]]
+                           </div>
+                           <div class="d-flex align-items-end" v-else>
+                               Няма прикачен файл
+                           </div>
+
+                           <div class="form-icon icon-plus mt--20"
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="bottom"
                                 data-bs-custom-class="custom-tooltip"
                                 data-bs-title="Choose File">
-                                <label for="imageInput">графичен файл (.png; .jpg; .bmp)</label>
+                                <label for="imageInput" class="custom-file-label">
+                                    <i class="feather-paperclip"></i> Прикачи&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
                                 <input type="file"
                                        id="imageInput"
                                        class="input-file"
-                                       @change="onImageChange($event)">
+                                       @change="onImageChange($event)"
+                                       style="display: none;">
+                           </div>
+
+                           <div class="dropdown history-box-dropdown mt--10">
+                               <button type="button" class="btn-default btn-small btn-border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Разположение на текста <i class="feather-more-horizontal"></i>
+                                </button>
+                               <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" @click="question.textWrap='n'">
+                                        Текста на въпроса е над графичния елемент</a>
+                                    </li>
+                                    <li><a class="dropdown-item" @click="question.textWrap='s'">
+                                        Текста на въпроса е под графичния елемент</a>
+                                    </li>
+                                    <li><a class="dropdown-item" @click="question.textWrap='e'">
+                                        Текста на въпроса е в ляво от графичния елемент</a>
+                                    </li>
+                                    <li><a class="dropdown-item" @click="question.textWrap='w'">
+                                        Текста на въпроса е в дясно от графичния елемент</a>
+                                    </li>
+                                </ul>
                            </div>
                        </div>
                    </div>
@@ -698,7 +831,7 @@
                                </button>
                                &nbsp
                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
-                                       data-bs-dismiss="modal">
+                                       data-bs-dismiss="modal" @click="save()">
                                    <i class="feather-check"></i><span>&nbspЗапази</span>
                                </button>
                        </div>

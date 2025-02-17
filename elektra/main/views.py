@@ -141,7 +141,7 @@ def user_context(request, title):
     return context
 
 def dzi_tasks(request):
-    return render(request, 'main/dzi_tasks.html', user_context(request,'въпроси ***'))
+    return render(request, 'main/dzi_tasks.html', user_context(request,'въпроси'))
 
 def dzi_users(request):
     context = user_context(request, 'потребители')
@@ -172,9 +172,9 @@ class UserDataAPIView(APIView):
             'user_name': user.first_name + ' ' + user.last_name,
             'user_level_text': USER_LEVEL[user_profile.access_level - 1][1],
             'user_level_num': user_profile.access_level,
-            'school': user_profile.school.id,
+            'school':  user_profile.school.id if user_profile.school else 0,
             'theme': user_profile.session_theme,
-            'speciality': user_profile.speciality.id,
+            'speciality': user_profile.speciality.id if user_profile.speciality else 0,
         }
         return Response(context)
 
@@ -194,7 +194,6 @@ class TaskDelTaskAPIView(APIView):
 # Премахване на опция към въпрос
 class TaskDelItemAPIView(APIView):
     def post(self, request):
-        level = request.data['level']
         for option in request.data['ids']:
             TaskItem.objects.filter(id=option).delete()
         return Response(status=201)
@@ -207,13 +206,18 @@ class TaskNewQuestionBodyAPIView(APIView):
         item = request.data['item']
         itm = ThemeItem.objects.filter(id=item).get()
         task = Task.objects.create_task(itm)
+        task.level = level
+        author_id = request.data['author']
+        author = School.objects.get(id=author_id)
+        task.author = author
         task.save()
+        print(f'Автор: {author_id}')
         return Response(task.id)
 
 
 # Въпрос - запазване на тялото на въпроса
 class TaskSaveQuestionBodyAPIView(APIView):
-    def post(self, request, pk):
+    def post(self, request):
         data = TaskSaveTaskBodySerializer(data=request.data)
         if data.is_valid():
             data.save()
@@ -224,7 +228,7 @@ class TaskSaveQuestionBodyAPIView(APIView):
 
 # Въпрос - запазване на опциите на въпроса
 class TaskSaveQuestionOptionsAPIView(APIView):
-    def post(self, request, pk1, pk2, pk3):
+    def post(self, request, pk2, pk3):
         if pk2 == 0:  # вмъквам нова опция
             task_id = Task.objects.filter(id=pk3).get()
             option = TaskItem.objects.create_task(task_id)

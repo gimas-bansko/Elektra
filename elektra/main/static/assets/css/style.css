@@ -22095,3 +22095,21 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
   background-color: var(--color-blackest);
   position: relative;
 }
+/* Стилизиране на персонализирания бутон */
+.custom-file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Син цвят */
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 1px solid #0056b3;
+}
+
+.custom-file-label:hover {
+    background-color: #0056b3; /* По-тъмен син цвят при hover */
+}

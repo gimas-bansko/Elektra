@@ -71,7 +71,7 @@ class TaskSaveTaskBodySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('id', 'ids', 'text', 'type', 'level', 'group', 'mark_red', 'mark_green', 'mark_yellow')
+        fields = ('id', 'ids', 'text', 'type', 'level', 'group', 'textWrap')
 
     def create(self, validated_data):
         print('create')
@@ -80,9 +80,10 @@ class TaskSaveTaskBodySerializer(serializers.ModelSerializer):
         type_q = validated_data.get('type')
         level_q = validated_data.get('level')
         group = validated_data.get('group')
+        textWrap = validated_data.get('textWrap')
         test = Task.objects.update_or_create(
             id=validated_data.get("ids"),
-            defaults={'text': text, 'type': type_q, 'level': level_q, 'group': group})
+            defaults={'text': text, 'type': type_q, 'level': level_q, 'group': group, 'textWrap': textWrap})
         print('test=', test)
         return test
 

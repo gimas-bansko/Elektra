@@ -180,6 +180,8 @@ class Task(models.Model):
     group = models.PositiveSmallIntegerField(default=0, help_text='0 - ако не е групирано')
     author = models.ForeignKey(School, on_delete=models.CASCADE, related_name='author_id', default=1)
     objects = TaskManager()
+    textWrap = models.CharField('Разположение на текста', max_length=1, default='s', blank=True,
+                                help_text='Разположение на текста спрямо картинката (e,w,n,s)')
 
     def __str__(self):
         return self.text

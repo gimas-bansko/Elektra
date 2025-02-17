@@ -7,8 +7,8 @@ const App = {
         return {
             flagNewItem: false,
             editMode: EDIT_NEW_QUESTION,
-            current_level:0,
-            current_item: 0,
+            showMode:0, // '0' - всички, '1' - неизползвани в текущото училище, '2' - използвани в текущото училище
+            current_item: {theme_id:0, task_id:0},
             theme_num:0,
             question: {
                 id: 1,
@@ -18,11 +18,11 @@ const App = {
                 picture: null,
                 group: 0,
                 item: 1,
-                mark_red: false,
-                mark_green: true,
-                mark_yellow: true,
+                author: 1,
+                school: [],
                 deletedOptions:[],
-                options: [{
+                options: [
+                    {
                     id: 1,
                     leading_char: "3",
                     text: "опция 1 на въпрос 1",
@@ -32,27 +32,62 @@ const App = {
                     task: 1,
                     collapsed:false
                     },
-                    {
-                    id: 2,
-                    leading_char: "4",
-                    text: "опция 2 на въпрос 1",
-                    value: "3",
-                    value_name: "value_name 1",
-                    checked: false,
-                    task: 1,
-                    collapsed:true
-                    }
                 ],
+                showLevel:0, // '-1' - неизползван(чужд), '0' - използван(чужд), '1' - използван(свой)
+                textWrap:'n' // 'n'-отгоре; 'e'-от ляво; 'w'-от дясно; 's'-от долу;
                 },
             theme: [],
             listOfThemes: [],
             user:{},
+            temp_id:0,
             }
     },
+    computed: {
+        pictureFileName() {
+            if (this.question.picture) {
+                // Извличаме името на файла от URL
+                return this.question.picture.split('/').pop(); // Взема последната част от пътя
+            }
+            return null; // Ако няма картинка
+        }
+    },
     methods:{
+        setShowMode(mode){
+            this.showMode=mode
+            this.countThemeQuestions()
+        },
+        haveToShow(item_num, question_num){
+            if (this.showMode==0){return true;} //показвам всички
+            else if(this.showMode==1){ //показвам неизползваните
+                if(this.theme[item_num].tasks[question_num].showLevel==-1){return true;} //показвам го
+                else {return false;} //не го показвам
+                }
+            else { //показвам използваните
+                if(this.theme[item_num].tasks[question_num].showLevel>-1){return true;} //показвам го
+                else {return false;} //не го показвам
+                }
+        },
+        setShowLevel(vm){
+            for (th of vm.theme){
+                for (qst of th.tasks){
+                    if (qst.author==vm.user.school){qst.showLevel=1;}
+                    else if (qst.school.includes(vm.user.school)){qst.showLevel=0;}
+                    else {qst.showLevel=-1;}
+                    }
+                }
+        },
         verifyQuestionQty(level, idx, value){
             if (this.checkQuestionsQty(level, idx)==value){return true}
             else {return false}
+        },
+        getQuestionsQty(level, idx){
+            let q=0
+            let th = this.theme[idx]
+            if (level==1){q=th.q_knowledge;}
+            if (level==2){q=th.q_comprehension<th.comprehension;}
+            if (level==3){q=th.q_application<th.application;}
+            if (level==4){q=th.q_analysis;}
+            return q
         },
         checkQuestionsQty(level, idx){
             let q=0
@@ -94,46 +129,52 @@ const App = {
         onImageChange(e){
             const file = e.target.files[0]
             this.question.picture = URL.createObjectURL(file)
-            console.log('this.question.item='+this.question.item)
-            for (th of this.theme){console.log(th)}
             // this.theme[this.question.item].picture = URL.createObjectURL(file)
             let formData = new FormData();
             formData.append('id', this.question.id)
             formData.append('picture', file)
-            let url = ''
             const lvl=this.question.level
-            if (lvl == 1){url = '/api/TaskKnowledgeFile/'}
-            else if (lvl == 2){url = '/api/TaskComprehensionFile/'}
-            else if (lvl == 3){url = '/api/TaskApplicationFile/'}
-            else if (lvl == 4){url = '/api/TaskAnalysisFile/'}
+            let url =  'api/TaskFile/'
             axios.post(url, formData, {headers: {'X-CSRFToken':CSRF_TOKEN, 'Content-Type': 'multipart/form-data'}})
             txt = 'Променена/качена картинка (тема '+this.theme_num+'; въпрос id='+this.question.id+')'
             this.sendLogRecord(txt)
         },
-        make_q(itm, lvl, id){ // превключва въпрос в режим на редактиране
+        make_q(itm, id){ // превключва въпрос в режим на редактиране
             const vm = this;
             vm.flagNewItem = false
-            vm.current_item = vm.theme[itm].id
-            vm.question.level = lvl
-            vm.question.item = itm
-            let lvl_name = ' от ниво '
-            console.log('EDIT: level=', lvl,' item=',itm, 'new id=', id)
-            if (lvl == 1){
-                vm.question = vm.theme[itm].tasks_knowledge[id]
-                lvl_name += 'знание'
-            } else if (lvl == 2){
-                vm.question = vm.theme[itm].tasks_comprehension[id]
-                lvl_name += 'разбиране'
-            } else if (lvl == 3){
-                vm.question = vm.theme[itm].tasks_application[id]
-                lvl_name += 'приложение'
-            } else {
-                vm.question = vm.theme[itm].tasks_analysis[id]
-                lvl_name += 'анализ'
-            }
-            vm.editMode = EDIT_OLD_QUESTION + lvl_name
-            this.question.deletedOptions = []
+            vm.current_item.theme_id=itm
+            vm.current_item.task_id=id
+            vm.question.id=vm.theme[itm].tasks[id].id
+            vm.question.options=vm.theme[itm].tasks[id].options
+            vm.question.text=vm.theme[itm].tasks[id].text
+            vm.question.type=vm.theme[itm].tasks[id].type
+            vm.question.level=vm.theme[itm].tasks[id].level
+            vm.question.picture=vm.theme[itm].tasks[id].picture
+            vm.question.group=vm.theme[itm].tasks[id].group
+            vm.question.item=vm.theme[itm].tasks[id].item
+            vm.question.author=vm.theme[itm].tasks[id].author
+            vm.question.school=vm.theme[itm].tasks[id].school
+            vm.question.textWrap=vm.theme[itm].tasks[id].textWrap
+            vm.question.deletedOptions.length = 0;
+            vm.editMode = EDIT_OLD_QUESTION
         },
+        revert(){ // връща данните след редакция за визуализиране в списъка с данни
+            let itm = this.current_item.theme_id
+            let id = this.current_item.task_id
+            let qst = this.theme[itm].tasks[id]
+            qst.id=this.question.id
+            qst.options=this.question.options
+            qst.text = this.question.text
+            qst.type = this.question.type
+            qst.level = this.question.level
+            qst.picture = this.question.picture
+            qst.group = this.question.group
+            qst.item = this.question.item
+            qst.author = this.question.author
+            qst.school = this.question.school
+            qst.textWrap = this.question.textWrap
+        },
+
         make_new_q(itm, lvl){ // създава нов въпрос от съответното ниво към съответната точка от темата
             const vm=this
             axios({
@@ -148,17 +189,33 @@ const App = {
                 data:{
                     level: lvl,
                     item: itm,
+                    author: vm.user.school,
                 }
             })
             .then(response => {
-                const id = response.data
-                axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id)
+                vm.temp_id = response.data
+                axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id+'/')
                     .then(function(response){
                         vm.theme = response.data
                         vm.countThemeQuestions()
-                        console.log('level=', lvl,' item=',itm, 'new id=', id)
-                        txt = 'Създаден нов въпрос по тема '+vm.theme_num+' ; въпрос id='+vm.question.id+')'
+                        txt = 'Създаден нов въпрос по тема '+vm.theme_num+'; въпрос id='+vm.question.id+')'
                         vm.sendLogRecord(txt)
+                        // търся новия въпрос
+                        let i = 0
+                        for (th of vm.theme){
+                            let j = 0
+                            for (qst of th.tasks){
+                                if (qst.id==vm.temp_id){
+                                    vm.make_q(i, j)
+                                    i=-1
+                                    break
+                                    }
+                                j+=1
+                                }
+                            i+=1
+                            if(i<0){break;}
+                            }
+                        vm.setShowLevel(vm)
                     })
             // this.reloadItem()
             })
@@ -167,16 +224,29 @@ const App = {
             })
         },
         countThemeQuestions(){
+            function haveToShowLocal(vm, question_){
+                if (vm.showMode==0){return true;} //показвам всички
+                else if(vm.showMode==1){ //показвам неизползваните
+                    if(question_.showLevel==-1){return true;} //показвам го
+                    else {return false;} //не го показвам
+                    }
+                else { //показвам използваните
+                    if(question_.showLevel>-1){return true;} //показвам го
+                    else {return false;} //не го показвам
+                    }
+            }
             this.theme.forEach((th) => {
                 th.q_knowledge=0
                 th.q_comprehension=0
                 th.q_application=0
                 th.q_analysis=0
                 th.tasks.forEach((qst) => {
-                    if (qst.level==1){th.q_knowledge+=1}
-                    else if (qst.level==2){th.q_comprehension+=1}
-                    else if (qst.level==3){th.q_application+=1}
-                    else {th.q_analysis+=1}
+                    if(haveToShowLocal(this, qst)){
+                        if (qst.level==1){th.q_knowledge+=1}
+                        else if (qst.level==2){th.q_comprehension+=1}
+                        else if (qst.level==3){th.q_application+=1}
+                        else {th.q_analysis+=1}
+                        }
                     });
                 });
         },
@@ -207,10 +277,8 @@ const App = {
             this.flagNewItem = true
         },
         deleteOption(idx){
-            console.log(this.question.deletedOptions)
             if (this.question.options[idx].id>0){
                 this.question.deletedOptions[this.question.deletedOptions.length]=this.question.options[idx].id
-                console.log(this.question.deletedOptions.toString())
                 }
             this.question.options.splice(idx, 1)
             this.flagNewItem = true
@@ -232,7 +300,6 @@ const App = {
                 }
             })
             .then(response => {
-                console.log('success - item was deleted');
                 vm.reloadItem()
                 txt = 'Изтрит е въпрос от тема '+vm.theme_num+' ; въпрос id='+idn+')'
                 vm.sendLogRecord(txt)
@@ -245,7 +312,7 @@ const App = {
             vm = this
             axios({
                 method:'POST',
-                url:'/api/TaskSaveQuestionOption/'+this.question.level+'/'+this.question.options[i].id+'/'+this.question.id+'/',
+                url:'/api/TaskSaveQuestionOption/'+this.question.options[i].id+'/'+this.question.id+'/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -275,7 +342,7 @@ const App = {
             vm = this
             axios({
                 method:'POST',
-                url:'/api/TaskSaveQuestionBody/'+this.question.level+'/',
+                url:'/api/TaskSaveQuestionBody/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -287,19 +354,18 @@ const App = {
                     ids: this.question.id,
                     text: this.question.text,
                     type: this.question.type,
+                    level: this.question.level,
                     group: this.question.group,
-                    mark_red: this.question.mark_red,
-                    mark_green: this.question.mark_green,
-                    mark_yellow: this.question.mark_yellow,
+                    item: this.question.item,
+                    textWrap: this.question.textWrap,
                 }
             })
             .then(response => {
-                console.log('success - item was saved');
                 for (ggg=0; ggg < vm.question.options.length; ggg++){
-                    console.log(vm.question.options[ggg])
                     vm.saveOption(ggg)}
-                if(this.flagNewItem){
-                    this.flagNewItem = false
+                if(vm.flagNewItem){
+                    vm.flagNewItem = false
+                    console.log('извиквам vm.reloadItem()')
                     vm.reloadItem()
                     }
             })
@@ -308,6 +374,7 @@ const App = {
             })
         },
         save(){
+            const vm = this;
             /* 1. премахвам изтритите опции на въпроса*/
             axios({
                 method:'POST',
@@ -319,25 +386,25 @@ const App = {
                     'Content-Type': 'application/json',
                 },
                 data:{
-                    level: this.question.level,
                     ids: this.question.deletedOptions,
                 }
             })
             .then(response => {
-                console.log('success - item was deleted');
-                this.saveQuestionBody()
+                vm.saveQuestionBody()
             })
             .catch(error => {
                 throw("Error: ",error);
             })
-            /* още код */
+            this.revert()
         },
         reloadItem(){
             const vm = this;
             axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id+'/')
             .then(function(response){
+                console.log('vm.reloadItem() е получил отговор')
                 vm.theme = response.data
                 vm.countThemeQuestions()
+                vm.setShowLevel(vm)
                 })
         },
         sendLogRecord(txt){
