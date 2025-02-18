@@ -409,7 +409,8 @@
                                                         <!-- delete -->
                                                         <div class="col-lg-2 col-md-2 col-sm-2 col-6">
                                                             <button class="react-btn btn-default btn-small btn-border bg-color-danger"
-                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1">
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1"
+                                                                    @click="deleteTask(qst.id)">
                                                                 <i class="feather-delete"></i><span>&nbspИзтрий&nbsp&nbsp</span>
                                                             </button>
                                                         </div>

@@ -333,7 +333,7 @@ const App = {
             this.question.options.splice(idx, 1)
             this.flagNewItem = true
         },
-        deleteTask(idn,lvl){
+        deleteTask(idn){
             vm = this
             axios({
                 method:'POST',
@@ -346,7 +346,6 @@ const App = {
                 },
                 data:{
                     id: idn,
-                    level: lvl,
                 }
             })
             .then(response => {
