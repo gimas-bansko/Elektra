@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране:  8 фев 2025 в 10:41
+-- Време на генериране: 18 фев 2025 в 22:44
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -27,7 +27,6 @@ SET time_zone = "+00:00";
 -- Структура на таблица `auth_group`
 --
 
-DROP TABLE IF EXISTS `auth_group`;
 CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL
@@ -39,7 +38,6 @@ CREATE TABLE `auth_group` (
 -- Структура на таблица `auth_group_permissions`
 --
 
-DROP TABLE IF EXISTS `auth_group_permissions`;
 CREATE TABLE `auth_group_permissions` (
   `id` bigint(20) NOT NULL,
   `group_id` int(11) NOT NULL,
@@ -52,7 +50,6 @@ CREATE TABLE `auth_group_permissions` (
 -- Структура на таблица `auth_permission`
 --
 
-DROP TABLE IF EXISTS `auth_permission`;
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -128,7 +125,11 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (61, 'Can add Тест', 16, 'add_test'),
 (62, 'Can change Тест', 16, 'change_test'),
 (63, 'Can delete Тест', 16, 'delete_test'),
-(64, 'Can view Тест', 16, 'view_test');
+(64, 'Can view Тест', 16, 'view_test'),
+(65, 'Can add Коментар', 17, 'add_remark'),
+(66, 'Can change Коментар', 17, 'change_remark'),
+(67, 'Can delete Коментар', 17, 'delete_remark'),
+(68, 'Can view Коментар', 17, 'view_remark');
 
 -- --------------------------------------------------------
 
@@ -136,7 +137,6 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 -- Структура на таблица `auth_user`
 --
 
-DROP TABLE IF EXISTS `auth_user`;
 CREATE TABLE `auth_user` (
   `id` int(11) NOT NULL,
   `password` varchar(128) NOT NULL,
@@ -156,14 +156,14 @@ CREATE TABLE `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$600000$bAENMC2y6CBzHiVvZTa7sj$MP961DiZWk5LKNig+de4AKqeNf9wD+aKmJxqhxmyeGU=', '2025-02-05 19:02:04.857440', 1, 'superadmin', 'Георги', 'Бориков', 'ggborikov@abv.bg', 1, 1, '2024-12-29 17:32:38.000000'),
+(1, 'pbkdf2_sha256$600000$bAENMC2y6CBzHiVvZTa7sj$MP961DiZWk5LKNig+de4AKqeNf9wD+aKmJxqhxmyeGU=', '2025-02-18 20:39:39.699471', 1, 'superadmin', 'Георги', 'Бориков', 'ggborikov@abv.bg', 1, 1, '2024-12-29 17:32:38.000000'),
 (2, 'pbkdf2_sha256$600000$RWfc0Po5N9BUkizdDNHsIE$67D49ArZ/dLSqU4KFPLJWBiuSslah0gCNFCagSxXVdg=', NULL, 0, 'guestadmin', 'Гост', 'Админ', 'ga@ad.com', 0, 1, '2024-12-29 21:35:09.000000'),
-(3, 'pbkdf2_sha256$600000$PEevvgdmijM2ilQntfJs4g$ullQlEiWASWqqMTtkX7eq6rErh6GnKns/W3cRTV6YIY=', '2025-02-02 10:34:57.423937', 0, 'schooladmin1', 'Училищен', 'Админ', '', 0, 1, '2024-12-29 21:38:59.000000'),
+(3, 'pbkdf2_sha256$600000$PEevvgdmijM2ilQntfJs4g$ullQlEiWASWqqMTtkX7eq6rErh6GnKns/W3cRTV6YIY=', '2025-02-15 14:37:54.874361', 0, 'schooladmin1', 'Училищен', 'Админ', '', 0, 1, '2024-12-29 21:38:59.000000'),
 (4, 'pbkdf2_sha256$600000$Na4YoANjNOepAC37fCZz2I$c2jwxDw8oBet84B/aoFbvd91i5HKDLxniPSuJD2hkDk=', NULL, 0, 'teacher1', 'Учител', '1', '', 0, 1, '2024-12-29 21:40:28.000000'),
 (5, 'pbkdf2_sha256$600000$q8x1XojW1qkF40PJsicOQz$vmotFZ0od9zKMNmA9wibUBz0crHJXz12noZb9D4qscg=', '2024-12-30 15:34:38.037155', 0, 'teacher2', 'Учител', '2', '', 0, 1, '2024-12-29 21:40:55.000000'),
 (6, 'pbkdf2_sha256$600000$1bY0hDrKYA0R7qUdBAYwPR$/wrXG/7djhixTHJ8dt6Itqc2ES5NFRVfOmIWK8SUaWw=', NULL, 0, 'student1', 'Ученник', '1', '', 0, 1, '2024-12-29 21:41:11.000000'),
 (7, 'pbkdf2_sha256$600000$JeGmRVAFHowS0VnPnurjtR$s9r+PkOfMVeOk0phB4xwgIvvbqVpBZu4zefd9guzwh0=', NULL, 0, 'student2', 'Ученик', '2', '', 0, 1, '2024-12-29 21:41:28.000000'),
-(8, 'pbkdf2_sha256$600000$UVMIfVg53LiGDkJJhGHyj2$MfEf4n0TTcxyXVEzdfSIl/4Kh6wG0gW12qG/Kd+Fwx0=', NULL, 0, 'schooladmin2', 'Училищен', 'Админ2', '', 0, 1, '2024-12-29 21:43:33.000000');
+(8, 'pbkdf2_sha256$600000$UVMIfVg53LiGDkJJhGHyj2$MfEf4n0TTcxyXVEzdfSIl/4Kh6wG0gW12qG/Kd+Fwx0=', '2025-02-18 10:49:14.063654', 0, 'schooladmin2', 'Училищен', 'Админ2', '', 0, 1, '2024-12-29 21:43:33.000000');
 
 -- --------------------------------------------------------
 
@@ -171,7 +171,6 @@ INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `userna
 -- Структура на таблица `auth_user_groups`
 --
 
-DROP TABLE IF EXISTS `auth_user_groups`;
 CREATE TABLE `auth_user_groups` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -184,7 +183,6 @@ CREATE TABLE `auth_user_groups` (
 -- Структура на таблица `auth_user_user_permissions`
 --
 
-DROP TABLE IF EXISTS `auth_user_user_permissions`;
 CREATE TABLE `auth_user_user_permissions` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -197,7 +195,6 @@ CREATE TABLE `auth_user_user_permissions` (
 -- Структура на таблица `django_admin_log`
 --
 
-DROP TABLE IF EXISTS `django_admin_log`;
 CREATE TABLE `django_admin_log` (
   `id` int(11) NOT NULL,
   `action_time` datetime(6) NOT NULL,
@@ -279,7 +276,9 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (63, '2025-02-05 12:41:24.662702', '3', '3. Технически параметри на микропроцесорите', 3, '', 14, 1),
 (64, '2025-02-05 12:41:24.665963', '4', '4. Режими на работа на микропроцесорите', 3, '', 14, 1),
 (65, '2025-02-05 12:41:31.800743', '5', '5. Тенденции в развитието на микропроцесорите, съвместимост', 3, '', 14, 1),
-(66, '2025-02-05 12:41:52.985207', '1', 'Тема 1. Микропроцесор. Архитектура на микропроцесор', 3, '', 12, 1);
+(66, '2025-02-05 12:41:52.985207', '1', 'Тема 1. Микропроцесор. Архитектура на микропроцесор', 3, '', 12, 1),
+(67, '2025-02-15 16:33:03.381611', '2', 'ПГП гр. Някъде', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\\u0438\"]}}]', 9, 1),
+(68, '2025-02-15 16:34:40.674758', '2', 'ПГП гр. Някъде', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\\u0438\"]}}]', 9, 1);
 
 -- --------------------------------------------------------
 
@@ -287,7 +286,6 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 -- Структура на таблица `django_content_type`
 --
 
-DROP TABLE IF EXISTS `django_content_type`;
 CREATE TABLE `django_content_type` (
   `id` int(11) NOT NULL,
   `app_label` varchar(100) NOT NULL,
@@ -306,6 +304,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (5, 'contenttypes', 'contenttype'),
 (7, 'main', 'documents'),
 (8, 'main', 'log'),
+(17, 'main', 'remark'),
 (9, 'main', 'school'),
 (10, 'main', 'specialty'),
 (11, 'main', 'task'),
@@ -322,7 +321,6 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 -- Структура на таблица `django_migrations`
 --
 
-DROP TABLE IF EXISTS `django_migrations`;
 CREATE TABLE `django_migrations` (
   `id` bigint(20) NOT NULL,
   `app` varchar(255) NOT NULL,
@@ -361,7 +359,9 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (24, 'main', '0006_remove_task_mark_green_remove_task_mark_red_and_more', '2025-02-07 16:12:25.744066'),
 (25, 'main', '0007_task_author', '2025-02-07 20:18:12.552904'),
 (26, 'main', '0008_remove_task_num', '2025-02-08 08:38:03.647454'),
-(27, 'main', '0009_test_alter_log_user_id_alter_log_user_name', '2025-02-08 09:39:45.945876');
+(27, 'main', '0009_test_alter_log_user_id_alter_log_user_name', '2025-02-08 09:39:45.945876'),
+(28, 'main', '0010_task_textwrap_alter_task_item', '2025-02-16 19:47:18.496712'),
+(29, 'main', '0011_remark', '2025-02-18 20:22:38.622792');
 
 -- --------------------------------------------------------
 
@@ -369,7 +369,6 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 -- Структура на таблица `django_session`
 --
 
-DROP TABLE IF EXISTS `django_session`;
 CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
@@ -384,16 +383,18 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 ('21sh22a77rh34si6t8gfns7voclo9zfa', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tVcDq:7iyKYtIObV8sWGQnLdzNcXtQB-bIS4jN436eNbOuBaA', '2025-01-22 20:00:10.235656'),
 ('30emskj9uh6r4ei6hvktjk5vy3fdbovc', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUFbV:uouOqJmsaDReuSupFStz-keCGmqOcFqkShdsfDt-hNk', '2025-01-19 01:38:57.340694'),
 ('3ru5pv463wmorx95l7ebw670mclzfkq8', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUAOG:BmSidPGyYyAxTKPgzqUcOjIEefKwR4otkuFC2S8jNw0', '2025-01-18 20:04:56.430846'),
-('68kgmisyij3ra5xnkmzzdrg0h1bq8gyj', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tfkey:sHjY1M30j4acTjj8h4d9TyEIjzlgi25nEmcc_ONARhA', '2025-02-19 19:02:04.860445'),
 ('8mstj9f58xi14czbvnd70qat11v2cskj', 'e30:1tUBse:pdrhJabkhjQIc1vl2dTVa_-W0OgcmJIBZ0gB55qA0Gc', '2025-01-18 21:40:24.685498'),
 ('df9u2zir7nyvk0cyr7e8s99a7vpt30it', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUC4B:DUggkm-H9BZPSbjBaa4Bpduh9K-TqYsgCjDCGfdMjMo', '2025-01-18 21:52:19.757616'),
 ('dr803shmi80ajfgx539dzaa7vijt79ve', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUEuq:QANcjOaSqg-LmLU7z8XGZzGxd0S86Mph9139IrpsrVE', '2025-01-19 00:54:52.877419'),
 ('h1hz9wjgo5jq324vq0vfvtoqtsg9hv0h', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUAhd:r9RVWvaGYoj0XAjUqRQgxxvDb8bGxBtyQFM38aeRp8A', '2025-01-18 20:24:57.285524'),
 ('iqppbszl75bm1jzfqtdmmpyym5nvockj', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tTWVn:JaFKZPGmjnc_EGlQpIojCrSBbRrL1Fp1KAiq5ewddms', '2025-01-17 01:30:03.184676'),
+('jly2n0rdmjwr4zvm798deo5w5kuqhe5j', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tiIYH:9L6eB5hvjizQPjWN-PXYv9RHNLCFWV5c8iy4QgZT1ik', '2025-02-26 19:37:41.645653'),
 ('l4rsxt8r9edreck8mjbiocw72kxiyith', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tS1s1:7tT4KQbm4McDON9jJOzBXcYygyH3r1R34iQgekenYbc', '2025-01-12 22:34:49.613757'),
 ('mc01p662lmy6j84pzz6sx7bxrnbm8ho7', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tSzeg:pVsPc5IbeDT1fzuqP5BgkxuZXMrJCWhXwJ7WHEJKrFc', '2025-01-15 14:25:02.052397'),
 ('mhtgpirm4fge6zuqbj163dad66dyqwds', '.eJxVjDsOwjAQBe_iGlkbO_4sJX3OYK1_OIBsKU4qxN2RpRTQvpl5b-bo2Is7etrcGtmVSXb53TyFZ6oDxAfVe-Oh1X1bPR8KP2nnS4vpdTvdv4NCvYxaKfRI3lhAMcecSSjUkgTAhDBFSEnLDNLOWlDSmZQFY9AggPKoAvt8Ac1VNu0:1teXJZ:ViazKLmTKan7A6wbZYNnIWfBvtgMjGkvO2HMXVhsE9U', '2025-02-16 10:34:57.437078'),
+('oqhwjzi66nqvtlc23zxk8o9btio9d2lc', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tkUNX:_UztQo0zTfc-6jiMbuahIi7G6fuXO_3DCKy0eq-r9gg', '2025-03-04 20:39:39.703983'),
 ('pul6ra6t7qsyfia6bc9bup9kvwt15rqa', 'e30:1tUBqa:uC2hg0NIhfndIzVVqi5YI3hRB5U7e__xQABuE5gAt-8', '2025-01-18 21:38:16.378424'),
+('pxoxufs2gl4prdkii8du0dgclgpu2lif', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tgjvC:cD5sHctj79_DL2M6b1eId_3qRPcdkO6eBV-X375e3do', '2025-02-22 12:26:54.360796'),
 ('pzwm5erx2frykg6kmwkc6cykpemcfs83', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tRzD1:POrK6kLmN90kQWTtHnWoosZjhZcqnQIETPObHPZXigk', '2025-01-12 19:44:19.901785'),
 ('tz54oipwy1dbmmsciysur2b65ehlfbxa', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tS1ti:VfzIDthWanLwGbe_dFxTXsZfKmg5OMPx9Zk9HDqhe7A', '2025-01-12 22:36:34.874467'),
 ('zuy5o3kagr3p5v5o2a2e1617463tlfrz', '.eJxVjDsOwjAQBe_iGlkbO_4sJX3OYK1_OIBsKU4qxN2RpRTQvpl5b-bo2Is7etrcGtmVSXb53TyFZ6oDxAfVe-Oh1X1bPR8KP2nnS4vpdTvdv4NCvYxaKfRI3lhAMcecSSjUkgTAhDBFSEnLDNLOWlDSmZQFY9AggPKoAvt8Ac1VNu0:1tSgPj:GThGiHTGGvglDa2lw_h8Lo521dDVUIuTTM9UVzAF52U', '2025-01-14 17:52:19.666660');
@@ -404,7 +405,6 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 -- Структура на таблица `main_documents`
 --
 
-DROP TABLE IF EXISTS `main_documents`;
 CREATE TABLE `main_documents` (
   `id` bigint(20) NOT NULL,
   `title` varchar(200) NOT NULL,
@@ -426,7 +426,6 @@ INSERT INTO `main_documents` (`id`, `title`, `attachment`) VALUES
 -- Структура на таблица `main_log`
 --
 
-DROP TABLE IF EXISTS `main_log`;
 CREATE TABLE `main_log` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -496,7 +495,150 @@ INSERT INTO `main_log` (`id`, `user_id`, `user_name`, `action`, `date`) VALUES
 (54, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-02 13:44:51.785674'),
 (55, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-02 17:07:12.512169'),
 (56, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-02 18:51:25.707509'),
-(57, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-05 19:02:04.860445');
+(57, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-05 19:02:04.860445'),
+(58, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-08 10:34:25.172790'),
+(59, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-08 10:59:44.606976'),
+(60, 3, 'Училищен Админ', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-08 12:26:22.624925'),
+(61, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-08 12:26:54.353273'),
+(62, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-08 20:08:43.173647'),
+(63, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-08 21:10:07.322523'),
+(64, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-09 01:16:16.050320'),
+(65, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-09 01:19:00.468709'),
+(66, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 18:56:42.760489'),
+(67, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-11 20:15:24.488765'),
+(68, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-11 20:31:45.279996'),
+(69, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-11 20:34:36.240483'),
+(70, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-11 21:45:05.893980'),
+(71, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-11 21:45:43.260777'),
+(72, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 21:52:17.494606'),
+(73, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 21:54:15.105701'),
+(74, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 21:55:27.547760'),
+(75, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 21:59:43.445995'),
+(76, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 22:06:03.627121'),
+(77, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 22:06:46.260216'),
+(78, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 22:08:31.234690'),
+(79, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 22:30:52.604241'),
+(80, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-11 23:35:44.218992'),
+(81, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:08:58.376406'),
+(82, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:10:30.536272'),
+(83, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:11:31.681403'),
+(84, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:12:22.516778'),
+(85, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:13:36.855756'),
+(86, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:14:11.715111'),
+(87, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:25:34.725225'),
+(88, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:34:06.207295'),
+(89, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:52:35.093288'),
+(90, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 18:54:02.686574'),
+(91, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 19:21:52.338286'),
+(92, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 19:23:24.785608'),
+(93, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 19:24:22.097683'),
+(94, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 19:25:59.020155'),
+(95, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 19:32:36.823452'),
+(96, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 19:37:14.868389'),
+(97, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 19:37:41.642079'),
+(98, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 21:03:25.377865'),
+(99, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 21:10:46.640620'),
+(100, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-12 21:20:26.302833'),
+(101, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-12 23:16:28.263777'),
+(102, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-13 07:31:23.023290'),
+(103, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-13 07:31:28.652155'),
+(104, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-15 14:13:16.517631'),
+(105, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-15 14:13:16.517631'),
+(106, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=2)', '2025-02-15 14:15:43.224266'),
+(107, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=2)', '2025-02-15 14:17:20.284694'),
+(108, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-15 14:25:34.745886'),
+(109, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-15 14:25:34.746900'),
+(110, 3, 'Училищен Админ', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-15 14:35:15.163367'),
+(111, 3, 'Училищен Админ', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-15 14:37:54.881464'),
+(112, 3, 'Училищен Админ', 'Създаден нов въпрос по тема 0 ; въпрос id=1)', '2025-02-15 14:45:47.395172'),
+(113, 3, 'Училищен Админ', 'Създаден нов въпрос по тема 0 ; въпрос id=1)', '2025-02-15 15:45:31.188438'),
+(114, 3, 'Училищен Админ', 'Създаден нов въпрос по тема 0 ; въпрос id=1)', '2025-02-15 15:48:46.486974'),
+(115, 3, 'Училищен Админ', 'Създаден нов въпрос по тема 0 ; въпрос id=1)', '2025-02-15 16:09:19.907636'),
+(116, 3, 'Училищен Админ', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 16:13:45.599667'),
+(117, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-15 16:16:03.344409'),
+(118, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-15 16:28:11.234819'),
+(119, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-15 16:30:16.751624'),
+(120, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-15 16:35:10.313957'),
+(121, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 16:35:47.321315'),
+(122, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 16:41:24.146686'),
+(123, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 16:41:42.671455'),
+(124, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 16:44:29.616087'),
+(125, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 17:50:33.713211'),
+(126, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 17:56:11.972676'),
+(127, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 18:00:16.414762'),
+(128, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 18:07:27.948078'),
+(129, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 18:10:13.048415'),
+(130, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 18:17:21.943610'),
+(131, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 18:29:05.966297'),
+(132, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=19)', '2025-02-15 18:30:11.984707'),
+(133, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-15 18:48:20.168457'),
+(134, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-16 11:35:51.075343'),
+(135, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-16 12:00:54.270647'),
+(136, 8, 'Училищен Админ2', 'Променена/качена картинка (тема 0; въпрос id=17)', '2025-02-16 17:55:05.808696'),
+(137, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-16 17:56:23.479889'),
+(138, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-16 17:56:23.489731'),
+(139, 8, 'Училищен Админ2', 'Променена/качена картинка (тема 0; въпрос id=17)', '2025-02-16 19:14:20.212186'),
+(140, 8, 'Училищен Админ2', 'Променена/качена картинка (тема 0; въпрос id=17)', '2025-02-16 19:14:44.733008'),
+(141, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:51:39.217350'),
+(142, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:51:39.224658'),
+(143, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:51:48.494213'),
+(144, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:51:48.495287'),
+(145, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:57:19.232697'),
+(146, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:57:19.234608'),
+(147, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:57:37.014065'),
+(148, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=17)', '2025-02-17 00:57:37.023946'),
+(149, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=18)', '2025-02-17 01:32:34.446970'),
+(150, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=18)', '2025-02-17 01:32:34.465406'),
+(151, 8, 'Училищен Админ2', 'Променена/качена картинка (тема 0; въпрос id=20)', '2025-02-17 10:45:29.384176'),
+(152, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=20)', '2025-02-17 10:48:05.702740'),
+(153, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=20)', '2025-02-17 10:48:05.719722'),
+(154, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=20)', '2025-02-17 10:48:22.483077'),
+(155, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=20)', '2025-02-17 10:48:22.491604'),
+(156, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=21)', '2025-02-17 11:00:05.539711'),
+(157, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=21)', '2025-02-17 11:00:05.539711'),
+(158, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=21)', '2025-02-17 11:00:05.539711'),
+(159, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-17 21:41:09.077876'),
+(160, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-17 21:45:27.303164'),
+(161, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=26)', '2025-02-17 21:57:30.408757'),
+(162, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-17 22:02:14.092789'),
+(163, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=27)', '2025-02-17 22:02:33.042782'),
+(164, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-17 22:08:26.819763'),
+(165, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=18)', '2025-02-17 23:20:03.028928'),
+(166, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=18)', '2025-02-17 23:20:03.028928'),
+(167, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-18 10:49:14.068668'),
+(168, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-18 10:49:49.812825'),
+(169, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-18 17:03:48.901044'),
+(170, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=29)', '2025-02-18 17:04:11.377266'),
+(171, 8, 'Училищен Админ2', 'Създаден нов въпрос по тема 0; въпрос id=29)', '2025-02-18 17:04:28.275832'),
+(172, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=30)', '2025-02-18 17:04:31.377142'),
+(173, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=30)', '2025-02-18 17:04:31.380455'),
+(174, 8, 'Училищен Админ2', 'Изтрит е въпрос от тема 0 ; въпрос id=29)', '2025-02-18 18:43:06.868647'),
+(175, 8, 'Училищен Админ2', 'Изтрит е въпрос от тема 0 ; въпрос id=30)', '2025-02-18 18:46:09.037767'),
+(176, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-18 20:39:39.703983');
+
+-- --------------------------------------------------------
+
+--
+-- Структура на таблица `main_remark`
+--
+
+CREATE TABLE `main_remark` (
+  `id` bigint(20) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_name` varchar(50) DEFAULT NULL,
+  `date` datetime(6) DEFAULT NULL,
+  `text` longtext NOT NULL,
+  `task_id` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `main_remark`
+--
+
+INSERT INTO `main_remark` (`id`, `user_id`, `user_name`, `date`, `text`, `task_id`) VALUES
+(1, 8, 'Училищен Админ2', '2025-02-18 20:26:15.804791', 'Първи коментар ', 1),
+(2, 1, 'Георги Бориков', '2025-02-18 21:10:37.736416', 'просто коментар към 28-ми въпрос', 28),
+(3, 1, 'Георги Бориков', '2025-02-18 21:11:27.777688', 'Още един коментар към този въпрос', 28);
 
 -- --------------------------------------------------------
 
@@ -504,7 +646,6 @@ INSERT INTO `main_log` (`id`, `user_id`, `user_name`, `action`, `date`) VALUES
 -- Структура на таблица `main_school`
 --
 
-DROP TABLE IF EXISTS `main_school`;
 CREATE TABLE `main_school` (
   `id` bigint(20) NOT NULL,
   `short_name` varchar(20) NOT NULL,
@@ -531,7 +672,6 @@ INSERT INTO `main_school` (`id`, `short_name`, `full_name`, `city`, `address`, `
 -- Структура на таблица `main_school_specialities`
 --
 
-DROP TABLE IF EXISTS `main_school_specialities`;
 CREATE TABLE `main_school_specialities` (
   `id` bigint(20) NOT NULL,
   `school_id` bigint(20) NOT NULL,
@@ -545,7 +685,8 @@ CREATE TABLE `main_school_specialities` (
 INSERT INTO `main_school_specialities` (`id`, `school_id`, `specialty_id`) VALUES
 (2, 1, 1),
 (3, 1, 2),
-(1, 2, 2);
+(4, 2, 1),
+(5, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -553,7 +694,6 @@ INSERT INTO `main_school_specialities` (`id`, `school_id`, `specialty_id`) VALUE
 -- Структура на таблица `main_specialty`
 --
 
-DROP TABLE IF EXISTS `main_specialty`;
 CREATE TABLE `main_specialty` (
   `id` bigint(20) NOT NULL,
   `professional_field_num` varchar(3) NOT NULL,
@@ -579,7 +719,6 @@ INSERT INTO `main_specialty` (`id`, `professional_field_num`, `professional_fiel
 -- Структура на таблица `main_task`
 --
 
-DROP TABLE IF EXISTS `main_task`;
 CREATE TABLE `main_task` (
   `id` bigint(20) NOT NULL,
   `text` longtext NOT NULL,
@@ -588,8 +727,29 @@ CREATE TABLE `main_task` (
   `picture` varchar(100) NOT NULL,
   `group` smallint(5) UNSIGNED NOT NULL CHECK (`group` >= 0),
   `item_id` bigint(20) DEFAULT NULL,
-  `author_id` bigint(20) NOT NULL
+  `author_id` bigint(20) NOT NULL,
+  `textWrap` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `main_task`
+--
+
+INSERT INTO `main_task` (`id`, `text`, `type`, `level`, `picture`, `group`, `item_id`, `author_id`, `textWrap`) VALUES
+(1, 'Въпрос от ниво знание на тема 1 точка 1', 1, 1, '', 0, 1, 1, 'n'),
+(2, 'Текст на въпрос 2', 1, 2, '', 0, 1, 1, 's'),
+(17, 'Въпрос от затворен тип с един или два верни отговора с картинка', 2, 1, 'task_pics/text_line.png', 0, 1, 2, 'w'),
+(18, 'Въпрос 18 - текст на въпроса 999', 3, 1, '', 0, 1, 2, 's'),
+(19, 'Въпрос 19', 1, 3, '', 0, 1, 2, 's'),
+(20, 'Въпрос за съпоставяне  с картинка.  опциите са под картинката, а текста - според желанието на автора на въпроса.', 4, 1, 'task_pics/photo-editor_line.png', 0, 1, 2, 'w'),
+(21, 'Въпрос 21 - текст на въпроса. Въпросът е отворен - със свободни отговори.', 5, 1, '', 0, 1, 2, 's'),
+(22, '', 1, 1, '', 0, 1, 2, 's'),
+(23, '', 1, 1, '', 0, 1, 2, 's'),
+(24, '', 1, 1, '', 0, 1, 2, 's'),
+(25, '', 1, 1, '', 0, 1, 2, 's'),
+(26, '', 1, 1, '', 0, 1, 2, 's'),
+(27, '', 1, 1, '', 0, 1, 2, 's'),
+(28, 'Въпрос от ниво знание на тема 1 точка 1', 1, 1, '', 0, 1, 1, 'n');
 
 -- --------------------------------------------------------
 
@@ -597,7 +757,6 @@ CREATE TABLE `main_task` (
 -- Структура на таблица `main_taskitem`
 --
 
-DROP TABLE IF EXISTS `main_taskitem`;
 CREATE TABLE `main_taskitem` (
   `id` bigint(20) NOT NULL,
   `leading_char` varchar(4) NOT NULL,
@@ -610,13 +769,33 @@ CREATE TABLE `main_taskitem` (
   `task_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Схема на данните от таблица `main_taskitem`
+--
+
+INSERT INTO `main_taskitem` (`id`, `leading_char`, `text`, `value`, `value_name`, `checked`, `checked_t`, `value_t`, `task_id`) VALUES
+(1, '3', 'опция 1 на въпрос 1', '4', 'value_name 2', 1, NULL, '', 1),
+(2, 'б', 'отговор 2 на въпрос 1', '', '', 1, NULL, '', 1),
+(3, '1', 'отговор 1 на въпрос 2', '', '', 1, NULL, '', 2),
+(4, 'q', 'asda asdfasd asfas hfd g gh gfh ', '', '', 1, NULL, '', 19),
+(5, '1', 'опция 1 на въпрос 17', '', '', 1, NULL, '', 17),
+(6, '2', 'опция 2 на въпрос 17', '', '', 0, NULL, '', 17),
+(7, '1', 'ляво 1', '2', 'дясно 1', 0, NULL, '', 18),
+(8, '2', 'ляво 2', '1', 'дясно 2', 0, NULL, '', 18),
+(9, '', '', '1', 'опция 1 на този въпрос', 0, NULL, '', 20),
+(10, '', '', '2', 'опция 2 на този въпрос с добавен текст за да е дълъг отговора', 0, NULL, '', 20),
+(11, '', '', 'Отговор 1', '', 0, NULL, '', 21),
+(12, '', '', 'отговор 2', '', 0, NULL, '', 21),
+(13, '', '', 'Отговор 3', '', 0, NULL, '', 21),
+(14, '3', 'опция 1 на въпрос 1', '4', 'value_name 2', 1, NULL, '', 28),
+(15, 'б', 'отговор 2 на въпрос 1', '', '', 1, NULL, '', 28);
+
 -- --------------------------------------------------------
 
 --
 -- Структура на таблица `main_task_school`
 --
 
-DROP TABLE IF EXISTS `main_task_school`;
 CREATE TABLE `main_task_school` (
   `id` bigint(20) NOT NULL,
   `task_id` bigint(20) NOT NULL,
@@ -629,7 +808,6 @@ CREATE TABLE `main_task_school` (
 -- Структура на таблица `main_test`
 --
 
-DROP TABLE IF EXISTS `main_test`;
 CREATE TABLE `main_test` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -646,7 +824,6 @@ CREATE TABLE `main_test` (
 -- Структура на таблица `main_theme`
 --
 
-DROP TABLE IF EXISTS `main_theme`;
 CREATE TABLE `main_theme` (
   `id` bigint(20) NOT NULL,
   `num` smallint(5) UNSIGNED NOT NULL CHECK (`num` >= 0),
@@ -689,7 +866,6 @@ INSERT INTO `main_theme` (`id`, `num`, `title`, `tasks_total`, `tasks_knowledge`
 -- Структура на таблица `main_themeitem`
 --
 
-DROP TABLE IF EXISTS `main_themeitem`;
 CREATE TABLE `main_themeitem` (
   `id` bigint(20) NOT NULL,
   `item` smallint(5) UNSIGNED NOT NULL CHECK (`item` >= 0),
@@ -811,7 +987,6 @@ INSERT INTO `main_themeitem` (`id`, `item`, `title`, `criterion`, `total_points`
 -- Структура на таблица `main_userprofile`
 --
 
-DROP TABLE IF EXISTS `main_userprofile`;
 CREATE TABLE `main_userprofile` (
   `id` bigint(20) NOT NULL,
   `access_level` smallint(5) UNSIGNED NOT NULL CHECK (`access_level` >= 0),
@@ -828,14 +1003,14 @@ CREATE TABLE `main_userprofile` (
 --
 
 INSERT INTO `main_userprofile` (`id`, `access_level`, `session_screen`, `session_theme`, `user_id`, `school_id`, `speciality_id`, `gender`) VALUES
-(1, 1, 1, 1, 1, 1, 2, 1),
+(1, 1, 1, 1, 1, 1, 1, 1),
 (2, 2, 1, 1, 2, 1, NULL, 1),
-(3, 3, 1, 1, 3, 1, 2, 1),
+(3, 3, 1, 1, 3, 1, 1, 1),
 (4, 4, 1, 1, 4, 1, NULL, 1),
 (5, 4, 1, 1, 5, 2, NULL, 1),
 (6, 5, 1, 1, 6, 1, 1, 0),
 (7, 5, 1, 1, 7, 2, 2, 1),
-(8, 3, 1, 1, 8, 2, NULL, 1);
+(8, 3, 1, 1, 8, 2, 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -925,6 +1100,13 @@ ALTER TABLE `main_documents`
 --
 ALTER TABLE `main_log`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Индекси за таблица `main_remark`
+--
+ALTER TABLE `main_remark`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `main_remark_task_id_ae781b1b_fk_main_task_id` (`task_id`);
 
 --
 -- Индекси за таблица `main_school`
@@ -1018,7 +1200,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `auth_user`
@@ -1042,19 +1224,19 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `main_documents`
@@ -1066,7 +1248,13 @@ ALTER TABLE `main_documents`
 -- AUTO_INCREMENT for table `main_log`
 --
 ALTER TABLE `main_log`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
+
+--
+-- AUTO_INCREMENT for table `main_remark`
+--
+ALTER TABLE `main_remark`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `main_school`
@@ -1078,7 +1266,7 @@ ALTER TABLE `main_school`
 -- AUTO_INCREMENT for table `main_school_specialities`
 --
 ALTER TABLE `main_school_specialities`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `main_specialty`
@@ -1090,19 +1278,19 @@ ALTER TABLE `main_specialty`
 -- AUTO_INCREMENT for table `main_task`
 --
 ALTER TABLE `main_task`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `main_taskitem`
 --
 ALTER TABLE `main_taskitem`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `main_task_school`
 --
 ALTER TABLE `main_task_school`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `main_test`
@@ -1165,6 +1353,12 @@ ALTER TABLE `auth_user_user_permissions`
 ALTER TABLE `django_admin_log`
   ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+
+--
+-- Ограничения за таблица `main_remark`
+--
+ALTER TABLE `main_remark`
+  ADD CONSTRAINT `main_remark_task_id_ae781b1b_fk_main_task_id` FOREIGN KEY (`task_id`) REFERENCES `main_task` (`id`);
 
 --
 -- Ограничения за таблица `main_school_specialities`

@@ -219,6 +219,21 @@ class TaskItem(models.Model):
         verbose_name_plural = 'Въпроси - опции'
 
 
+# Коментари към въпросите
+class Remark(models.Model):
+    user_id = models.IntegerField('id на потребител', default=0)
+    user_name = models.CharField('име на потребител', max_length=50, default='', null=True)
+    date = models.DateTimeField('дата и час', default=timezone.now, null=True)
+    text = models.TextField('Коментар', default='', blank=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, related_name='remarks')
+
+    def __str__(self):
+        return '('+str(self.date)+') '+self.user_name+'/ '+self.text
+
+    class Meta:
+        verbose_name = 'Коментар'
+        verbose_name_plural = 'Коментари'
+
 """ 
 ***************************************
         Логове 

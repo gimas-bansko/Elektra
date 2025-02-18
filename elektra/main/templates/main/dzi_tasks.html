@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block lef_panel_icon%}
-                                <div class="expand-btn-grp @@display-class">
+<div class="expand-btn-grp @@display-class" xmlns="http://www.w3.org/1999/html">
                                     <button class="bg-solid-primary popup-dashboardright-btn">
                                         <i class="feather-sidebar right"></i>
                                     </button>
@@ -376,10 +376,22 @@
                                                     <div class="row mt--10">
                                                         <!-- comments -->
                                                         <div class="col-lg-2 col-md-2 col-sm-2 col-6">
-                                                            <button class="react-btn btn-default btn-small btn-border"
-                                                                    style="font-size: 12px;">
+                                                            <button type="button"
+                                                                    class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                                                    style="font-size: 12px;"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                                    @click="remark.text=''; remark.task_id=qst.id;">
                                                                 <i class="feather-file-plus"></i><span>&nbspКоментар&nbsp</span>
                                                             </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item delete-item"
+                                                                       data-bs-toggle="modal" data-bs-target="#listRemarksModal"
+                                                                       @click="loadRemarks(qst.id)">
+                                                                    <i class="feather-server"></i> Покажи всички коментари</a></li>
+                                                                <li><a class="dropdown-item delete-item"
+                                                                       data-bs-toggle="modal" data-bs-target="#newRemarkModal">
+                                                                    <i class="feather-edit"></i> Добави коментар</a></li>
+                                                            </ul>
                                                         </div>
                                                         <!-- do not accept -->
                                                         <div class="col-lg-2 col-md-2 col-sm-2 col-6">
@@ -912,8 +924,74 @@
                </div>
                 </div>
             </div>
-{% endverbatim %}
        </div>
+
+        <!-- Списък коментари -->
+        <div id="listRemarksModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <button class="close-button" data-bs-dismiss="modal">
+                        <i class="feather-x"></i>
+                    </button>
+                    <h5 class="title">Бележки (мнения, коментари) към въпрос #[[ remark.task_id]]</h5>
+                    <div class="chat-box-edit bg-flashlight mt--10" v-if="remarks.length == 0">
+                        <div class="inner top-flashlight leftside light-xl">
+                            <div class="chat-section generate-section">
+                                <div class="chat-content">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="text-align: right;"></div>
+                                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                                            <h6>Няма коментари към този въпрос</h6>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-box-edit bg-flashlight mt--10" v-if="remarks.length != 0" v-for="rem in remarks">
+                        <div class="inner top-flashlight leftside light-xl">
+                            <div class="chat-section generate-section">
+                                <div class="chat-content">
+                                    <div class="row">
+                                       <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                           [[ rem.text]]
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12"></div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12"  style="text-align: right; font-size: 9px;">
+                                           [[ rem.user_name ]]</br>[[ formatDate(rem.date) ]]
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Нов коментар -->
+        <div id="newRemarkModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <h5 class="title">Напишете бележка (мнение, коментар) към въпрос #[[ remark.task_id]]</h5>
+                    <div class="chat-form">
+                        <div class="border-gradient text-form">
+                            <textarea rows="6" placeholder="Вашият текст ..." v-model="remark.text"></textarea>
+                        </div>
+                    </div>
+                    <div class="bottom-btn mt--20">
+                        <a class="btn-default btn-small round" data-bs-dismiss="modal" @click="addRemark()">Запази</a>
+                    </div>
+                    <button class="close-button" data-bs-dismiss="modal">
+                        <i class="feather-x"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+{% endverbatim %}
+
 {% endblock %}
 
 {% block page_script %}

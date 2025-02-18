@@ -29,6 +29,7 @@ urlpatterns = [
     # ***************** API *********************
     path('api/theme_nums/<int:spec>/', views.ThemeNumView.as_view()),
     path('api/theme/<int:pk>/', views.ThemeView.as_view()),
+    path('api/remarks/<int:task_id>/', views.RemarksByTaskView.as_view()),
     path('api/theme_items/<int:pk>/', views.ThemeItemView.as_view()),
     path('api/context/', views.UserDataAPIView.as_view()),
 
@@ -42,6 +43,7 @@ urlpatterns = [
     path('api/TestStatisticByUser/', views.TestByUserView.as_view()),
     path('api/TestStatisticByTheme/', views.TestByThemeView.as_view()),
     path('api/SaveLogRecord/', views.SaveLogAction.as_view()),
+    path('api/AddRemark/', views.AddRemark.as_view()),
     path('api/DuplicateTaskRecord/', views.DuplicateTask.as_view()),
     path('api/school-to-task-action/<int:task_id>/<int:school_id>/<str:action>/', views.school_to_task_action, name='add_school_to_task'),
 ]

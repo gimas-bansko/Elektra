@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ThemeItem, Theme, Task, TaskItem,  Test
+from .models import ThemeItem, Theme, Task, TaskItem,  Test, Remark
 
 """ 
     Сериализатори за въпросите 
@@ -155,3 +155,9 @@ class TestSaveFileSerializer(serializers.ModelSerializer):
         image = validated_data.get('image')
         test = Test.objects.update_or_create(id=validated_data.get("id"), defaults={'image': image})
         return test
+
+
+class RemarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Remark
+        fields = "__all__"

@@ -41,6 +41,11 @@ const App = {
             listOfThemes: [],
             user:{},
             temp_id:0,
+            remark: {
+                text: '',
+                task_id: 0,
+                },
+            remarks: [],
             }
     },
     computed: {
@@ -469,6 +474,22 @@ const App = {
                 }
             })
         },
+        addRemark(){
+            axios({
+                method:'POST',
+                url:'/api/AddRemark/',
+                headers:{
+                    'X-CSRFToken':CSRF_TOKEN,
+                    //'Access-Control-Allow-Origin':'*',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    text: this.remark.text,
+                    task_id: this.remark.task_id,
+                }
+            })
+        },
         loadThemes(spec_id){
             const vm = this;
             axios.get('/api/theme_nums/'+spec_id+'/') // темите са различни за всяка специалност
@@ -480,6 +501,13 @@ const App = {
                 vm.reloadItem(vm)
             })
         },
+        loadRemarks(task_id){
+            const vm = this;
+            axios.get('/api/remarks/'+task_id+'/')
+            .then(function(response){
+                vm.remarks = response.data
+            })
+        },
         loadUserDetails(){
             const vm = this;
             axios.get('/api/context/')
@@ -487,7 +515,24 @@ const App = {
                 vm.user = response.data
                 vm.loadThemes(vm.user.speciality)
             })
-        }
+        },
+        formatDate(dateString) {
+            // Преобразуване на ISO 8601 дата в JavaScript Date обект
+            const date = new Date(dateString);
+
+            // Извличане на ден, месец и година  
+            const day = String(date.getDate()).padStart(2, '0'); // Добавя 0 отпред, ако е необходимо
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Месеците са от 0 до 11
+            const year = date.getFullYear();
+
+            // Извличане на час и минути
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            // Форматиране в желания формат: дд-мм-гггг чч:мм
+            return `${hours}:${minutes} ${day}/${month}/${year}`;
+        },
+
     },
     created: function(){
         this.loadUserDetails();

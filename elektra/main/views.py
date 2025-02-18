@@ -333,6 +333,34 @@ class SaveTestResults(APIView):
 
 
 """
+       ******************* КОМЕНТАРИ ******************
+"""
+class AddRemark(APIView):
+    def post(self, request):
+        user = self.request.user
+        user_id = user.id
+        user_name = user.first_name + ' ' + user.last_name
+        text = request.data['text']
+
+        task_id = request.data['task_id']
+        task = Task.objects.filter(id=task_id).get()
+
+        record = Remark.objects.create()
+        record.user_id = user_id
+        record.user_name = user_name
+        record.text = text
+        record.task = task
+        record.save()
+
+        return Response(status=201)
+
+class RemarksByTaskView(APIView):
+    def get(self, request, task_id):
+        queryset = Remark.objects.filter(task=task_id)
+        serializer = RemarkSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+"""
        *******************   LOG  ******************
 """
 class SaveLogAction(APIView):
