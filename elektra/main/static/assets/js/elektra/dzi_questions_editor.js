@@ -9,6 +9,7 @@ const App = {
             editMode: EDIT_NEW_QUESTION,
             showMode:0, // '0' - всички, '1' - неизползвани в текущото училище, '2' - използвани в текущото училище
             current_item: {theme_id:0, task_id:0},
+            copy_item: {theme_id:0, task_id:0},
             theme_num:0,
             question: {
                 id: 1,
@@ -174,7 +175,56 @@ const App = {
             qst.school = this.question.school
             qst.textWrap = this.question.textWrap
         },
-
+        useQuestion(task_id, school_id, action) {
+            const vm = this;
+            axios.get('api/school-to-task-action/' + task_id + '/' + school_id + '/' + action + '/')
+                .then(function (response) {
+                    vm.reloadItem(vm)
+                })
+        },
+        copyQuestion(question_id) {
+            const vm=this
+            axios({
+                method:'POST',
+                url:'/api/DuplicateTaskRecord/',
+                headers:{
+                    'X-CSRFToken':CSRF_TOKEN,
+                    //'Access-Control-Allow-Origin':'*',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    task_id: question_id,
+                    author_id: this.user.school,
+                }
+            })
+                .then(response => {
+                    vm.temp_id = response.data
+                    axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id+'/')
+                        .then(function(response){
+                            vm.theme = response.data
+                            vm.countThemeQuestions()
+                            txt = 'Създаден нов въпрос по тема '+vm.theme_num+'; въпрос id='+vm.question.id+')'
+                            vm.sendLogRecord(txt)
+                            // търся новия въпрос
+                            let i = 0
+                            for (th of vm.theme){
+                                let j = 0
+                                for (qst of th.tasks){
+                                    if (qst.id==vm.temp_id){
+                                        vm.make_q(i, j)
+                                        i=-1
+                                        break
+                                    }
+                                    j+=1
+                                }
+                                i+=1
+                                if(i<0){break;}
+                            }
+                            vm.setShowLevel(vm)
+                        })
+                })
+        },
         make_new_q(itm, lvl){ // създава нов въпрос от съответното ниво към съответната точка от темата
             const vm=this
             axios({
@@ -220,7 +270,7 @@ const App = {
             // this.reloadItem()
             })
             .catch(error => {
-                throw("Error: ",error);
+                throw("Error: ", error);
             })
         },
         countThemeQuestions(){
@@ -300,7 +350,7 @@ const App = {
                 }
             })
             .then(response => {
-                vm.reloadItem()
+                vm.reloadItem(vm)
                 txt = 'Изтрит е въпрос от тема '+vm.theme_num+' ; въпрос id='+idn+')'
                 vm.sendLogRecord(txt)
             })
@@ -365,8 +415,7 @@ const App = {
                     vm.saveOption(ggg)}
                 if(vm.flagNewItem){
                     vm.flagNewItem = false
-                    console.log('извиквам vm.reloadItem()')
-                    vm.reloadItem()
+                    vm.reloadItem(vm)
                     }
             })
             .catch(error => {
@@ -397,11 +446,9 @@ const App = {
             })
             this.revert()
         },
-        reloadItem(){
-            const vm = this;
+        reloadItem(vm){
             axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id+'/')
             .then(function(response){
-                console.log('vm.reloadItem() е получил отговор')
                 vm.theme = response.data
                 vm.countThemeQuestions()
                 vm.setShowLevel(vm)
@@ -431,7 +478,7 @@ const App = {
                 for (i=0; i< vm.listOfThemes.length; i++){
                     if (vm.listOfThemes[i].num == vm.user.theme){ vm.theme_num = i}
                     }
-                vm.reloadItem()
+                vm.reloadItem(vm)
             })
         },
         loadUserDetails(){

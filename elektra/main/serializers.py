@@ -98,8 +98,6 @@ class TaskSaveTaskOptionsSerializer(serializers.ModelSerializer):
         fields = ('id', 'ids', 'task', 'leading_char', 'text', 'value', 'value_name', 'checked')
 
     def create(self, validated_data):
-        print('create')
-        print('validated_data: ', validated_data)
         task = validated_data.get('task')
         leading_char = validated_data.get('leading_char')
         text = validated_data.get('text')
@@ -110,7 +108,6 @@ class TaskSaveTaskOptionsSerializer(serializers.ModelSerializer):
             id=validated_data.get("ids"),
             defaults={'task': task, 'leading_char': leading_char, 'text': text, 'value': value,
                       'value_name': value_name, 'checked': checked})
-        print('test=', option)
         return option
 
 """
@@ -137,12 +134,10 @@ class TestSaveSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        print('validated_data: ', validated_data)
         i = validated_data.get('id')
         ttl = validated_data.get('title')
         cd = validated_data.get('creation_date')
         ath = validated_data.get('author')
-        print('id=', i, 'title=', ttl, 'creation_date=', cd, 'author=', ath)
         if i == 1000:
             test = Test.objects.create(title=ttl, author=ath)
         else:
@@ -156,9 +151,7 @@ class TestSaveFileSerializer(serializers.ModelSerializer):
         fields = ('id', 'image')
 
     def create(self, validated_data):
-        print('validated_data: ', validated_data)
         i = validated_data.get('id')
         image = validated_data.get('image')
-        print('TestSaveFileSerializer --> id=', i, 'image=', image)
         test = Test.objects.update_or_create(id=validated_data.get("id"), defaults={'image': image})
         return test

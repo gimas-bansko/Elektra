@@ -42,5 +42,6 @@ urlpatterns = [
     path('api/TestStatisticByUser/', views.TestByUserView.as_view()),
     path('api/TestStatisticByTheme/', views.TestByThemeView.as_view()),
     path('api/SaveLogRecord/', views.SaveLogAction.as_view()),
-
+    path('api/DuplicateTaskRecord/', views.DuplicateTask.as_view()),
+    path('api/school-to-task-action/<int:task_id>/<int:school_id>/<str:action>/', views.school_to_task_action, name='add_school_to_task'),
 ]

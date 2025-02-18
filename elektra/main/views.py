@@ -1,5 +1,5 @@
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginUserForm
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
@@ -7,6 +7,10 @@ from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
+from django.http import JsonResponse
+
+from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, 'main/index.html')
@@ -185,7 +189,6 @@ class UserDataAPIView(APIView):
 # Премахване на въпрос
 class TaskDelTaskAPIView(APIView):
     def post(self, request):
-        level = request.data['level']
         task_id = request.data['id']
         Task.objects.filter(id=task_id).delete()
         return Response(status=201)
@@ -211,7 +214,6 @@ class TaskNewQuestionBodyAPIView(APIView):
         author = School.objects.get(id=author_id)
         task.author = author
         task.save()
-        print(f'Автор: {author_id}')
         return Response(task.id)
 
 
@@ -348,3 +350,72 @@ class SaveLogAction(APIView):
 
         return Response(status=201)
 
+"""
+       *******************   NEW  ******************
+"""
+
+# използва се/не се използва даден въпрос в дадено училище
+def school_to_task_action(request, task_id, school_id, action):
+    # Взимам задачата по task_id
+    task = get_object_or_404(Task, id=task_id)
+    # Взимам училището по school_id
+    school = get_object_or_404(School, id=school_id)
+    if action=='add':
+        # Добавям училището към полето school на задачата
+        act = 'added to'
+        task.school.add(school)
+    else:
+        # Премахвам училището от полето school на задачата
+        act = 'removed from'
+        task.school.remove(school)
+
+    # Връщам JSON отговор
+    return JsonResponse({
+        'success': True,
+        'message': f'School with id {school_id} {act} Task with id {task_id}.'
+    })
+
+# дублиране на въпрос заедно с опциите
+class DuplicateTask(APIView):
+    def post(self, request):
+        # Извличам task_id от заявката
+        task_id = request.data['task_id']
+        author_id = request.data['author_id']
+
+        # Вземам оригиналния Task
+        original_task = Task.objects.get(id=task_id)
+
+        # Започвам транзакция
+        new_id = 0
+        school = get_object_or_404(School, id=author_id)
+        with transaction.atomic():
+            # Създавам копие на Task
+            new_task = Task.objects.create(
+                item=original_task.item,
+                text=original_task.text,
+                type=original_task.type,
+                level=original_task.level,
+                picture=original_task.picture,
+                group=original_task.group,
+                author=school,
+                textWrap=original_task.textWrap,
+            )
+
+            # Копирам свързаните TaskItem записи
+            task_items = TaskItem.objects.filter(task=original_task)
+            for item in task_items:
+                TaskItem.objects.create(
+                    task=new_task,  # Свързвам с новия Task
+                    leading_char=item.leading_char,
+                    text=item.text,
+                    value=item.value,
+                    value_name=item.value_name,
+                    checked=item.checked,
+                    checked_t=item.checked_t,
+                    value_t=item.value_t,
+                )
+
+                # Върнете JSON отговор с информация за новата задача
+            new_id = new_task.id
+
+        return Response(new_id)

@@ -1,0 +1,23 @@
+            axios({
+                method:'POST',
+                //url:'/api/DuplicateTask/',
+                url:'/api/duplicate-task/',
+                headers:{
+                    'X-CSRFToken':CSRF_TOKEN,
+                    //'Access-Control-Allow-Origin':'*',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    task_id:question_id,
+                    school_id: this.user.school,
+                }
+            })
+                .then(response => {
+                    vm.flagNewItem = false
+                    console.log('извиквам vm.reloadItem() презареждане')
+                    vm.reloadItem(vm)
+                })
+                .catch(error => {
+                    throw("Error: ", error);
+                })
