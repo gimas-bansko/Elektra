@@ -22,8 +22,8 @@
                                     <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                                         <li>Тема:</li>
                                         {% verbatim %}
-                                        <li style="font-size: 12px;">
-                                            Тема {{ listOfThemes[theme_num].num }}: {{ listOfThemes[theme_num].title }}
+                                        <li style="font-size: 12px;" v-if="listOfThemes.length>0">
+                                            Тема [[ listOfThemes[theme_num].num ]]: [[ listOfThemes[theme_num].title ]]
                                         </li>
                                         {% endverbatim %}
                                     </ul>

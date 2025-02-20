@@ -1,3 +1,5 @@
+from lib2to3.pgen2.tokenize import group
+
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginUserForm
@@ -126,7 +128,7 @@ def dzi_test_online(request):
     }
     return render(request, 'main/dzi_test_online.html', context)
 
-def user_context(request, title):
+def user_context(request, title, show_th=False):
     user = request.user
     user_profile = user.userprofile
 
@@ -139,13 +141,14 @@ def user_context(request, title):
         'user_first_name': user.first_name,
         'user_level': USER_LEVEL[user_profile.access_level-1][1],
         'user_profile': user_profile,
-#        'schools': schools,
+        'show_theme': show_th,
+        #        'schools': schools,
 #        'specialities': user_profile.school.specialities.all(),
     }
     return context
 
 def dzi_tasks(request):
-    return render(request, 'main/dzi_tasks.html', user_context(request,'въпроси'))
+    return render(request, 'main/dzi_tasks.html', user_context(request,'въпроси', show_th=True))
 
 def dzi_users(request):
     context = user_context(request, 'потребители')
@@ -181,6 +184,16 @@ class UserDataAPIView(APIView):
             'speciality': user_profile.speciality.id if user_profile.speciality else 0,
         }
         return Response(context)
+
+def set_user_theme(request, theme_num):
+    user = request.user
+    user_profile = user.userprofile
+    user_profile.session_theme = theme_num
+    user_profile.save()
+    return JsonResponse({
+        'success': True,
+        'message': f'Theme was changed to {theme_num}.'
+    })
 
 # ************************************************
 #                 ВЪПРОСИ
@@ -257,6 +270,34 @@ class TaskFileAPIView(APIView):
         if data.is_valid():
             data.save(id=request.data['id'])
         return Response(status=201)
+
+class AddToGroup(APIView):
+    def post(self, request):
+        # Извличам task_id от заявката
+        source_id = request.data['source_id']
+        target_id = request.data['target_id']
+
+        # Вземам съответните записи от Task
+        source = Task.objects.get(id=source_id)
+        target = Task.objects.get(id=target_id)
+
+        # Определям № на групата
+        if target.group == 0:
+            target.group = target.id
+            target.save()
+            source.group = target.id
+        else:
+            source.group = target.group
+        source.save()
+
+        return Response(target.group)
+
+
+def clear_group(request, task_id):
+    task = Task.objects.get(id=task_id)
+    task.group = 0
+    task.save()
+    return JsonResponse({'status': 'success'}, status=201)
 
 # ***********************************************
 def tests_by_theme(request, pk):

@@ -46,6 +46,14 @@ const App = {
                 task_id: 0,
                 },
             remarks: [],
+            grouping: {
+                active: false, // режим - ако е true е активен избор на въпрос към чиято група ще се присъединявам
+                item_num: 0,
+                task_num: 0, // номера на тема/въпрос на въпроса, който присъединявам към група
+                },
+            temp_item_num: 0,
+            temp_task_num: 0,
+            temp_int:0, // просто променлива за временно съхранение на целочислена променлива
             }
     },
     computed: {
@@ -55,7 +63,7 @@ const App = {
                 return this.question.picture.split('/').pop(); // Взема последната част от пътя
             }
             return null; // Ако няма картинка
-        }
+        },
     },
     methods:{
         setShowMode(mode){
@@ -501,6 +509,13 @@ const App = {
                 vm.reloadItem(vm)
             })
         },
+        changeTheme(theme_num){
+            const vm = this;
+            axios.get('api/set_user_theme/'+theme_num+'/') // темите са различни за всяка специалност
+            .then(function(response){
+                vm.loadUserDetails()
+            })
+        },
         loadRemarks(task_id){
             const vm = this;
             axios.get('/api/remarks/'+task_id+'/')
@@ -520,7 +535,7 @@ const App = {
             // Преобразуване на ISO 8601 дата в JavaScript Date обект
             const date = new Date(dateString);
 
-            // Извличане на ден, месец и година  
+            // Извличане на ден, месец и година
             const day = String(date.getDate()).padStart(2, '0'); // Добавя 0 отпред, ако е необходимо
             const month = String(date.getMonth() + 1).padStart(2, '0'); // Месеците са от 0 до 11
             const year = date.getFullYear();
@@ -532,10 +547,66 @@ const App = {
             // Форматиране в желания формат: дд-мм-гггг чч:мм
             return `${hours}:${minutes} ${day}/${month}/${year}`;
         },
+        editEnabled(theme_num, task_num) {
+            if (this.theme[theme_num].tasks[task_num].showLevel==1) {
+                return true
+            }
+            return false;
+        },
+        addToGroup(item, task){
+            this.grouping.active=true
+            this.grouping.item_num=item
+            this.grouping.task_num=task
+        },
+        showAddToGroup(item, task){
+            let result = true
+            if(!this.grouping.active){result=false}
+            if((item == this.grouping.item_num)&&(task == this.grouping.task_num)){result=false}
+            if(this.theme[item].tasks[task].showLevel == -1){result=false}
+
+            return result
+        },
+        saveGroup(item, task){
+            const vm = this;
+            this.grouping.active=false;
+            this.temp_item_num=item
+            this.temp_task_num=task
+            axios({
+                method:'POST',
+                url:'/api/group/',
+                headers:{
+                    'X-CSRFToken':CSRF_TOKEN,
+                    //'Access-Control-Allow-Origin':'*',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    source_id: this.theme[this.grouping.item_num].tasks[this.grouping.task_num].id,
+                    target_id: this.theme[item].tasks[task].id,
+                }
+            })
+                .then(response => {
+                    let gr=response.data
+                    vm.theme[vm.grouping.item_num].tasks[vm.grouping.task_num].group=gr
+                    vm.theme[vm.temp_item_num].tasks[vm.temp_task_num].group=gr
+                })
+        },
+        clearGroup(item, task){
+            const vm = this;
+            this.grouping.active=false
+            this.grouping.item_num=item
+            this.grouping.task_num=task
+            axios.get('/api/clear_group/'+this.theme[item].tasks[task].id+'/')
+                .then(function(response){
+                    vm.theme[vm.grouping.item_num].tasks[vm.grouping.task_num].group=0
+                })
+        },
 
     },
     created: function(){
         this.loadUserDetails();
+        // this.setShowMode(0)
+        // this.setShowMode(2)
     }
 }
 

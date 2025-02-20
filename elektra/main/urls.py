@@ -28,10 +28,13 @@ urlpatterns = [
 
     # ***************** API *********************
     path('api/theme_nums/<int:spec>/', views.ThemeNumView.as_view()),
+    path('api/set_user_theme/<int:theme_num>/', views.set_user_theme),
     path('api/theme/<int:pk>/', views.ThemeView.as_view()),
     path('api/remarks/<int:task_id>/', views.RemarksByTaskView.as_view()),
     path('api/theme_items/<int:pk>/', views.ThemeItemView.as_view()),
     path('api/context/', views.UserDataAPIView.as_view()),
+    path('api/group/', views.AddToGroup.as_view()),
+    path('api/clear_group/<int:task_id>/', views.clear_group),
 
     path('api/TaskFile/', views.TaskFileAPIView.as_view()),
     path('api/TaskDelItem/', views.TaskDelItemAPIView.as_view()),
