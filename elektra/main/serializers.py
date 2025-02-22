@@ -18,6 +18,17 @@ class TaskContextSerializer(serializers.ModelSerializer):
         model = TaskContext
         fields = '__all__'
 
+# общ контекст - обновяваане на картинка
+class ContextFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskContext
+        fields = ('id', 'picture')
+
+    def create(self, validated_data):
+        image = validated_data.get('picture')
+        item = TaskContext.objects.update_or_create(id=validated_data.get("id"), defaults={'picture': image})
+        return item
+
 # въпроси - списък
 class TaskSerializer(serializers.ModelSerializer):
 
@@ -78,7 +89,7 @@ class TaskSaveTaskBodySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('id', 'ids', 'text', 'type', 'level', 'group', 'textWrap')
+        fields = ('id', 'ids', 'text', 'type', 'level', 'group', 'textWrap', 'context')
 
     def create(self, validated_data):
         print('create')
@@ -88,9 +99,10 @@ class TaskSaveTaskBodySerializer(serializers.ModelSerializer):
         level_q = validated_data.get('level')
         group = validated_data.get('group')
         textWrap = validated_data.get('textWrap')
+        context = validated_data.get('context')
         test = Task.objects.update_or_create(
             id=validated_data.get("ids"),
-            defaults={'text': text, 'type': type_q, 'level': level_q, 'group': group, 'textWrap': textWrap})
+            defaults={'text': text, 'type': type_q, 'level': level_q, 'group': group, 'textWrap': textWrap, 'context': context})
         print('test=', test)
         return test
 
@@ -168,3 +180,4 @@ class RemarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Remark
         fields = "__all__"
+

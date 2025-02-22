@@ -409,6 +409,7 @@ const App = {
         },
         saveQuestionBody(){
             vm = this
+            console.log(vm.question.ctx)
             axios({
                 method:'POST',
                 url:'/api/TaskSaveQuestionBody/',
@@ -427,6 +428,7 @@ const App = {
                     group: this.question.group,
                     item: this.question.item,
                     textWrap: this.question.textWrap,
+                    context: this.question.ctx,
                 }
             })
             .then(response => {
@@ -434,8 +436,9 @@ const App = {
                     vm.saveOption(ggg)}
                 if(vm.flagNewItem){
                     vm.flagNewItem = false
-                    vm.reloadItem(vm)
+
                     }
+                vm.reloadItem(vm)
             })
             .catch(error => {
                 throw("Error: ",error);
@@ -614,6 +617,45 @@ const App = {
             console.log(this.user)
             this.context_edit_mode=0
         },
+        newContext(){
+            const vm = this;
+            axios({
+                method:'POST',
+                url:'/api/NewContext/',
+                headers:{
+                    'X-CSRFToken':CSRF_TOKEN,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    author: this.user.school,
+                    task_id: this.theme[vm.current_item.theme_id].tasks[vm.current_item.task_id].id,
+                }
+            })
+                .then(response => {
+                    vm.theme[vm.current_item.theme_id].tasks[vm.current_item.task_id].context=response.data
+                    vm.make_q(vm.current_item.theme_id, vm.current_item.task_id)
+                    vm.context_count+=1
+                    vm.context_edit_mode=2
+                })
+        },
+        onContextImageChange(e){
+            const file = e.target.files[0]
+            this.question.ctx.picture = URL.createObjectURL(file)
+            // this.theme[this.question.item].picture = URL.createObjectURL(file)
+            let formData = new FormData();
+            formData.append('id', this.question.ctx.id)
+            formData.append('picture', file)
+            let url =  'api/ContextFile/'
+            axios.post(url, formData, {headers: {'X-CSRFToken':CSRF_TOKEN, 'Content-Type': 'multipart/form-data'}})
+            txt = 'Променена/качена картинка за контекст (id='+this.question.ctx.id+')'
+            this.sendLogRecord(txt)
+        },
+        clearContext(){
+            this.context_edit_mode=0;
+            this.question.ctx=null;
+            this.countThemeQuestions()
+            },
     },
     created: function(){
         this.loadUserDetails();

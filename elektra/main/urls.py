@@ -36,6 +36,8 @@ urlpatterns = [
     path('api/group/', views.AddToGroup.as_view()),
     path('api/clear_group/<int:task_id>/', views.clear_group),
 
+    path('api/NewContext/', views.NewContextView.as_view()),
+    path('api/ContextFile/', views.ContextFileAPIView.as_view()),
     path('api/TaskFile/', views.TaskFileAPIView.as_view()),
     path('api/TaskDelItem/', views.TaskDelItemAPIView.as_view()),
     path('api/TaskDelete/', views.TaskDelTaskAPIView.as_view()),

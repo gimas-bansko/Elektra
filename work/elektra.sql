@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране: 18 фев 2025 в 22:44
+-- Време на генериране: 22 фев 2025 в 13:44
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 -- Структура на таблица `auth_group`
 --
 
+DROP TABLE IF EXISTS `auth_group`;
 CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL
@@ -38,6 +39,7 @@ CREATE TABLE `auth_group` (
 -- Структура на таблица `auth_group_permissions`
 --
 
+DROP TABLE IF EXISTS `auth_group_permissions`;
 CREATE TABLE `auth_group_permissions` (
   `id` bigint(20) NOT NULL,
   `group_id` int(11) NOT NULL,
@@ -50,6 +52,7 @@ CREATE TABLE `auth_group_permissions` (
 -- Структура на таблица `auth_permission`
 --
 
+DROP TABLE IF EXISTS `auth_permission`;
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -129,7 +132,11 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (65, 'Can add Коментар', 17, 'add_remark'),
 (66, 'Can change Коментар', 17, 'change_remark'),
 (67, 'Can delete Коментар', 17, 'delete_remark'),
-(68, 'Can view Коментар', 17, 'view_remark');
+(68, 'Can view Коментар', 17, 'view_remark'),
+(69, 'Can add task context', 18, 'add_taskcontext'),
+(70, 'Can change task context', 18, 'change_taskcontext'),
+(71, 'Can delete task context', 18, 'delete_taskcontext'),
+(72, 'Can view task context', 18, 'view_taskcontext');
 
 -- --------------------------------------------------------
 
@@ -137,6 +144,7 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 -- Структура на таблица `auth_user`
 --
 
+DROP TABLE IF EXISTS `auth_user`;
 CREATE TABLE `auth_user` (
   `id` int(11) NOT NULL,
   `password` varchar(128) NOT NULL,
@@ -156,14 +164,14 @@ CREATE TABLE `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$600000$bAENMC2y6CBzHiVvZTa7sj$MP961DiZWk5LKNig+de4AKqeNf9wD+aKmJxqhxmyeGU=', '2025-02-18 20:39:39.699471', 1, 'superadmin', 'Георги', 'Бориков', 'ggborikov@abv.bg', 1, 1, '2024-12-29 17:32:38.000000'),
+(1, 'pbkdf2_sha256$600000$bAENMC2y6CBzHiVvZTa7sj$MP961DiZWk5LKNig+de4AKqeNf9wD+aKmJxqhxmyeGU=', '2025-02-22 09:11:43.968439', 1, 'superadmin', 'Георги', 'Бориков', 'ggborikov@abv.bg', 1, 1, '2024-12-29 17:32:38.000000'),
 (2, 'pbkdf2_sha256$600000$RWfc0Po5N9BUkizdDNHsIE$67D49ArZ/dLSqU4KFPLJWBiuSslah0gCNFCagSxXVdg=', NULL, 0, 'guestadmin', 'Гост', 'Админ', 'ga@ad.com', 0, 1, '2024-12-29 21:35:09.000000'),
 (3, 'pbkdf2_sha256$600000$PEevvgdmijM2ilQntfJs4g$ullQlEiWASWqqMTtkX7eq6rErh6GnKns/W3cRTV6YIY=', '2025-02-15 14:37:54.874361', 0, 'schooladmin1', 'Училищен', 'Админ', '', 0, 1, '2024-12-29 21:38:59.000000'),
 (4, 'pbkdf2_sha256$600000$Na4YoANjNOepAC37fCZz2I$c2jwxDw8oBet84B/aoFbvd91i5HKDLxniPSuJD2hkDk=', NULL, 0, 'teacher1', 'Учител', '1', '', 0, 1, '2024-12-29 21:40:28.000000'),
 (5, 'pbkdf2_sha256$600000$q8x1XojW1qkF40PJsicOQz$vmotFZ0od9zKMNmA9wibUBz0crHJXz12noZb9D4qscg=', '2024-12-30 15:34:38.037155', 0, 'teacher2', 'Учител', '2', '', 0, 1, '2024-12-29 21:40:55.000000'),
 (6, 'pbkdf2_sha256$600000$1bY0hDrKYA0R7qUdBAYwPR$/wrXG/7djhixTHJ8dt6Itqc2ES5NFRVfOmIWK8SUaWw=', NULL, 0, 'student1', 'Ученник', '1', '', 0, 1, '2024-12-29 21:41:11.000000'),
 (7, 'pbkdf2_sha256$600000$JeGmRVAFHowS0VnPnurjtR$s9r+PkOfMVeOk0phB4xwgIvvbqVpBZu4zefd9guzwh0=', NULL, 0, 'student2', 'Ученик', '2', '', 0, 1, '2024-12-29 21:41:28.000000'),
-(8, 'pbkdf2_sha256$600000$UVMIfVg53LiGDkJJhGHyj2$MfEf4n0TTcxyXVEzdfSIl/4Kh6wG0gW12qG/Kd+Fwx0=', '2025-02-18 10:49:14.063654', 0, 'schooladmin2', 'Училищен', 'Админ2', '', 0, 1, '2024-12-29 21:43:33.000000');
+(8, 'pbkdf2_sha256$600000$UVMIfVg53LiGDkJJhGHyj2$MfEf4n0TTcxyXVEzdfSIl/4Kh6wG0gW12qG/Kd+Fwx0=', '2025-02-21 21:37:59.052716', 0, 'schooladmin2', 'Училищен', 'Админ2', '', 0, 1, '2024-12-29 21:43:33.000000');
 
 -- --------------------------------------------------------
 
@@ -171,6 +179,7 @@ INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `userna
 -- Структура на таблица `auth_user_groups`
 --
 
+DROP TABLE IF EXISTS `auth_user_groups`;
 CREATE TABLE `auth_user_groups` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -183,6 +192,7 @@ CREATE TABLE `auth_user_groups` (
 -- Структура на таблица `auth_user_user_permissions`
 --
 
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
 CREATE TABLE `auth_user_user_permissions` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -195,6 +205,7 @@ CREATE TABLE `auth_user_user_permissions` (
 -- Структура на таблица `django_admin_log`
 --
 
+DROP TABLE IF EXISTS `django_admin_log`;
 CREATE TABLE `django_admin_log` (
   `id` int(11) NOT NULL,
   `action_time` datetime(6) NOT NULL,
@@ -278,7 +289,9 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (65, '2025-02-05 12:41:31.800743', '5', '5. Тенденции в развитието на микропроцесорите, съвместимост', 3, '', 14, 1),
 (66, '2025-02-05 12:41:52.985207', '1', 'Тема 1. Микропроцесор. Архитектура на микропроцесор', 3, '', 12, 1),
 (67, '2025-02-15 16:33:03.381611', '2', 'ПГП гр. Някъде', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\\u0438\"]}}]', 9, 1),
-(68, '2025-02-15 16:34:40.674758', '2', 'ПГП гр. Някъде', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\\u0438\"]}}]', 9, 1);
+(68, '2025-02-15 16:34:40.674758', '2', 'ПГП гр. Някъде', 2, '[{\"changed\": {\"fields\": [\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u0430\\u043b\\u043d\\u043e\\u0441\\u0442\\u0438\"]}}]', 9, 1),
+(69, '2025-02-21 14:53:32.722659', '1', 'Контекст 1: контекст 1. текст на контекста, и още текст, и още...', 1, '[{\"added\": {}}]', 18, 1),
+(70, '2025-02-21 14:53:59.810692', '28', 'Въпрос от ниво знание на тема 1 точка 1\r\n<DOCTYPE html>\r\n      <html lang=\"en\">\r\n      <head>', 2, '[{\"changed\": {\"fields\": [\"\\u0412\\u044a\\u043f\\u0440\\u043e\\u0441\", \"Context\"]}}]', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -286,6 +299,7 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 -- Структура на таблица `django_content_type`
 --
 
+DROP TABLE IF EXISTS `django_content_type`;
 CREATE TABLE `django_content_type` (
   `id` int(11) NOT NULL,
   `app_label` varchar(100) NOT NULL,
@@ -308,6 +322,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (9, 'main', 'school'),
 (10, 'main', 'specialty'),
 (11, 'main', 'task'),
+(18, 'main', 'taskcontext'),
 (15, 'main', 'taskitem'),
 (16, 'main', 'test'),
 (12, 'main', 'theme'),
@@ -321,6 +336,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 -- Структура на таблица `django_migrations`
 --
 
+DROP TABLE IF EXISTS `django_migrations`;
 CREATE TABLE `django_migrations` (
   `id` bigint(20) NOT NULL,
   `app` varchar(255) NOT NULL,
@@ -361,7 +377,9 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (26, 'main', '0008_remove_task_num', '2025-02-08 08:38:03.647454'),
 (27, 'main', '0009_test_alter_log_user_id_alter_log_user_name', '2025-02-08 09:39:45.945876'),
 (28, 'main', '0010_task_textwrap_alter_task_item', '2025-02-16 19:47:18.496712'),
-(29, 'main', '0011_remark', '2025-02-18 20:22:38.622792');
+(29, 'main', '0011_remark', '2025-02-18 20:22:38.622792'),
+(30, 'main', '0012_taskcontext_task_context', '2025-02-21 00:03:38.749119'),
+(31, 'main', '0013_taskcontext_author', '2025-02-21 09:01:17.791254');
 
 -- --------------------------------------------------------
 
@@ -369,6 +387,7 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 -- Структура на таблица `django_session`
 --
 
+DROP TABLE IF EXISTS `django_session`;
 CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
@@ -383,6 +402,7 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 ('21sh22a77rh34si6t8gfns7voclo9zfa', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tVcDq:7iyKYtIObV8sWGQnLdzNcXtQB-bIS4jN436eNbOuBaA', '2025-01-22 20:00:10.235656'),
 ('30emskj9uh6r4ei6hvktjk5vy3fdbovc', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUFbV:uouOqJmsaDReuSupFStz-keCGmqOcFqkShdsfDt-hNk', '2025-01-19 01:38:57.340694'),
 ('3ru5pv463wmorx95l7ebw670mclzfkq8', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUAOG:BmSidPGyYyAxTKPgzqUcOjIEefKwR4otkuFC2S8jNw0', '2025-01-18 20:04:56.430846'),
+('49x8wppz043wz8849zjj0pzrkw39zrm4', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tllXz:EUjt3Mm496FFu6s-x2zvaECrpeF4btP08JehxZ7I60A', '2025-03-08 09:11:43.980724'),
 ('8mstj9f58xi14czbvnd70qat11v2cskj', 'e30:1tUBse:pdrhJabkhjQIc1vl2dTVa_-W0OgcmJIBZ0gB55qA0Gc', '2025-01-18 21:40:24.685498'),
 ('df9u2zir7nyvk0cyr7e8s99a7vpt30it', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUC4B:DUggkm-H9BZPSbjBaa4Bpduh9K-TqYsgCjDCGfdMjMo', '2025-01-18 21:52:19.757616'),
 ('dr803shmi80ajfgx539dzaa7vijt79ve', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tUEuq:QANcjOaSqg-LmLU7z8XGZzGxd0S86Mph9139IrpsrVE', '2025-01-19 00:54:52.877419'),
@@ -392,7 +412,6 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 ('l4rsxt8r9edreck8mjbiocw72kxiyith', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tS1s1:7tT4KQbm4McDON9jJOzBXcYygyH3r1R34iQgekenYbc', '2025-01-12 22:34:49.613757'),
 ('mc01p662lmy6j84pzz6sx7bxrnbm8ho7', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tSzeg:pVsPc5IbeDT1fzuqP5BgkxuZXMrJCWhXwJ7WHEJKrFc', '2025-01-15 14:25:02.052397'),
 ('mhtgpirm4fge6zuqbj163dad66dyqwds', '.eJxVjDsOwjAQBe_iGlkbO_4sJX3OYK1_OIBsKU4qxN2RpRTQvpl5b-bo2Is7etrcGtmVSXb53TyFZ6oDxAfVe-Oh1X1bPR8KP2nnS4vpdTvdv4NCvYxaKfRI3lhAMcecSSjUkgTAhDBFSEnLDNLOWlDSmZQFY9AggPKoAvt8Ac1VNu0:1teXJZ:ViazKLmTKan7A6wbZYNnIWfBvtgMjGkvO2HMXVhsE9U', '2025-02-16 10:34:57.437078'),
-('oqhwjzi66nqvtlc23zxk8o9btio9d2lc', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tkUNX:_UztQo0zTfc-6jiMbuahIi7G6fuXO_3DCKy0eq-r9gg', '2025-03-04 20:39:39.703983'),
 ('pul6ra6t7qsyfia6bc9bup9kvwt15rqa', 'e30:1tUBqa:uC2hg0NIhfndIzVVqi5YI3hRB5U7e__xQABuE5gAt-8', '2025-01-18 21:38:16.378424'),
 ('pxoxufs2gl4prdkii8du0dgclgpu2lif', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tgjvC:cD5sHctj79_DL2M6b1eId_3qRPcdkO6eBV-X375e3do', '2025-02-22 12:26:54.360796'),
 ('pzwm5erx2frykg6kmwkc6cykpemcfs83', '.eJxVjMsOwiAQRf-FtSHyKDAu3fsNZIYBqRqalHZl_HfbpAvd3nPueYuI61Lj2vMcRxYXocTpdyNMz9x2wA9s90mmqS3zSHJX5EG7vE2cX9fD_QtU7HV721J0Dlb7AJp8Mk6zy0MIbNUWAeW8VcpQAQMEJivGUsLAZ0BKupATny_YWzgY:1tRzD1:POrK6kLmN90kQWTtHnWoosZjhZcqnQIETPObHPZXigk', '2025-01-12 19:44:19.901785'),
@@ -405,6 +424,7 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 -- Структура на таблица `main_documents`
 --
 
+DROP TABLE IF EXISTS `main_documents`;
 CREATE TABLE `main_documents` (
   `id` bigint(20) NOT NULL,
   `title` varchar(200) NOT NULL,
@@ -426,6 +446,7 @@ INSERT INTO `main_documents` (`id`, `title`, `attachment`) VALUES
 -- Структура на таблица `main_log`
 --
 
+DROP TABLE IF EXISTS `main_log`;
 CREATE TABLE `main_log` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -614,7 +635,52 @@ INSERT INTO `main_log` (`id`, `user_id`, `user_name`, `action`, `date`) VALUES
 (173, 8, 'Училищен Админ2', 'Запазени промени във въпрос по тема 0 ; въпрос id=30)', '2025-02-18 17:04:31.380455'),
 (174, 8, 'Училищен Админ2', 'Изтрит е въпрос от тема 0 ; въпрос id=29)', '2025-02-18 18:43:06.868647'),
 (175, 8, 'Училищен Админ2', 'Изтрит е въпрос от тема 0 ; въпрос id=30)', '2025-02-18 18:46:09.037767'),
-(176, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-18 20:39:39.703983');
+(176, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-18 20:39:39.703983'),
+(177, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-18 22:06:19.532023'),
+(178, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-18 22:06:19.532023'),
+(179, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-20 10:46:41.960591'),
+(180, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-20 10:46:41.964069'),
+(181, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-20 19:32:51.845360'),
+(182, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-20 19:32:51.846868'),
+(183, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-21 14:54:14.892954'),
+(184, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-21 15:47:40.140686'),
+(185, 8, 'Училищен Админ2', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-21 21:37:59.055071'),
+(186, 1, 'Георги Бориков', 'ВЛИЗАНЕ В ПЛАТФОРМАТА', '2025-02-22 09:11:43.968439'),
+(187, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-22 11:05:05.117914'),
+(188, 1, 'Георги Бориков', 'Променена/качена картинка (тема 0; въпрос id=1)', '2025-02-22 11:10:42.026285'),
+(189, 1, 'Георги Бориков', 'Променена/качена картинка за контекст (id=3)', '2025-02-22 11:17:03.778793'),
+(190, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:17:38.515816'),
+(191, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:17:38.515816'),
+(192, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:19:48.644216'),
+(193, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:19:48.646895'),
+(194, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:27:39.842066'),
+(195, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:27:39.842066'),
+(196, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:38:54.379514'),
+(197, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 11:38:54.390223'),
+(198, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:01:45.718652'),
+(199, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:01:45.723722'),
+(200, 1, 'Георги Бориков', 'Променена/качена картинка за контекст (id=3)', '2025-02-22 12:02:46.343894'),
+(201, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:02:50.934846'),
+(202, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:02:50.934846'),
+(203, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:03:14.098841'),
+(204, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:03:14.098841'),
+(205, 1, 'Георги Бориков', 'Променена/качена картинка за контекст (id=3)', '2025-02-22 12:06:44.290559'),
+(206, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:06:48.772699'),
+(207, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:06:48.772699'),
+(208, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:14:12.790708'),
+(209, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:14:12.790708'),
+(210, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-22 12:24:42.542935'),
+(211, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-22 12:24:42.544958'),
+(212, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-22 12:32:52.446812'),
+(213, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=28)', '2025-02-22 12:32:52.449459'),
+(214, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:33:43.393811'),
+(215, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:33:43.397812'),
+(216, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:37:27.073732'),
+(217, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:37:27.080243'),
+(218, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:38:56.867009'),
+(219, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:38:56.872490'),
+(220, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:39:25.103531'),
+(221, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:39:25.104530');
 
 -- --------------------------------------------------------
 
@@ -622,6 +688,7 @@ INSERT INTO `main_log` (`id`, `user_id`, `user_name`, `action`, `date`) VALUES
 -- Структура на таблица `main_remark`
 --
 
+DROP TABLE IF EXISTS `main_remark`;
 CREATE TABLE `main_remark` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -646,6 +713,7 @@ INSERT INTO `main_remark` (`id`, `user_id`, `user_name`, `date`, `text`, `task_i
 -- Структура на таблица `main_school`
 --
 
+DROP TABLE IF EXISTS `main_school`;
 CREATE TABLE `main_school` (
   `id` bigint(20) NOT NULL,
   `short_name` varchar(20) NOT NULL,
@@ -672,6 +740,7 @@ INSERT INTO `main_school` (`id`, `short_name`, `full_name`, `city`, `address`, `
 -- Структура на таблица `main_school_specialities`
 --
 
+DROP TABLE IF EXISTS `main_school_specialities`;
 CREATE TABLE `main_school_specialities` (
   `id` bigint(20) NOT NULL,
   `school_id` bigint(20) NOT NULL,
@@ -694,6 +763,7 @@ INSERT INTO `main_school_specialities` (`id`, `school_id`, `specialty_id`) VALUE
 -- Структура на таблица `main_specialty`
 --
 
+DROP TABLE IF EXISTS `main_specialty`;
 CREATE TABLE `main_specialty` (
   `id` bigint(20) NOT NULL,
   `professional_field_num` varchar(3) NOT NULL,
@@ -719,6 +789,7 @@ INSERT INTO `main_specialty` (`id`, `professional_field_num`, `professional_fiel
 -- Структура на таблица `main_task`
 --
 
+DROP TABLE IF EXISTS `main_task`;
 CREATE TABLE `main_task` (
   `id` bigint(20) NOT NULL,
   `text` longtext NOT NULL,
@@ -728,28 +799,54 @@ CREATE TABLE `main_task` (
   `group` smallint(5) UNSIGNED NOT NULL CHECK (`group` >= 0),
   `item_id` bigint(20) DEFAULT NULL,
   `author_id` bigint(20) NOT NULL,
-  `textWrap` varchar(1) NOT NULL
+  `textWrap` varchar(1) NOT NULL,
+  `context_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Схема на данните от таблица `main_task`
 --
 
-INSERT INTO `main_task` (`id`, `text`, `type`, `level`, `picture`, `group`, `item_id`, `author_id`, `textWrap`) VALUES
-(1, 'Въпрос от ниво знание на тема 1 точка 1', 1, 1, '', 0, 1, 1, 'n'),
-(2, 'Текст на въпрос 2', 1, 2, '', 0, 1, 1, 's'),
-(17, 'Въпрос от затворен тип с един или два верни отговора с картинка', 2, 1, 'task_pics/text_line.png', 0, 1, 2, 'w'),
-(18, 'Въпрос 18 - текст на въпроса 999', 3, 1, '', 0, 1, 2, 's'),
-(19, 'Въпрос 19', 1, 3, '', 0, 1, 2, 's'),
-(20, 'Въпрос за съпоставяне  с картинка.  опциите са под картинката, а текста - според желанието на автора на въпроса.', 4, 1, 'task_pics/photo-editor_line.png', 0, 1, 2, 'w'),
-(21, 'Въпрос 21 - текст на въпроса. Въпросът е отворен - със свободни отговори.', 5, 1, '', 0, 1, 2, 's'),
-(22, '', 1, 1, '', 0, 1, 2, 's'),
-(23, '', 1, 1, '', 0, 1, 2, 's'),
-(24, '', 1, 1, '', 0, 1, 2, 's'),
-(25, '', 1, 1, '', 0, 1, 2, 's'),
-(26, '', 1, 1, '', 0, 1, 2, 's'),
-(27, '', 1, 1, '', 0, 1, 2, 's'),
-(28, 'Въпрос от ниво знание на тема 1 точка 1', 1, 1, '', 0, 1, 1, 'n');
+INSERT INTO `main_task` (`id`, `text`, `type`, `level`, `picture`, `group`, `item_id`, `author_id`, `textWrap`, `context_id`) VALUES
+(1, 'Въпрос от ниво знание на тема 1 точка 1', 1, 1, 'task_pics/code-editor_line_Ib3T2Ni.png', 27, 1, 1, 'n', NULL),
+(2, 'Текст на въпрос 2', 1, 2, '', 0, 1, 1, 's', NULL),
+(3, '', 1, 1, 'task_pics/photo_line.png', 0, NULL, 1, 's', NULL),
+(17, 'Въпрос от затворен тип с един или два верни отговора с картинка', 2, 1, 'task_pics/text_line.png', 0, 1, 2, 'w', NULL),
+(18, 'Въпрос 18 - текст на въпроса 999', 3, 1, '', 0, 1, 2, 's', NULL),
+(19, 'Въпрос 19', 1, 3, '', 0, 1, 2, 's', NULL),
+(20, 'Въпрос за съпоставяне  с картинка.  опциите са под картинката, а текста - според желанието на автора на въпроса.', 4, 1, 'task_pics/photo-editor_line.png', 0, 1, 2, 'w', NULL),
+(21, 'Въпрос 21 - текст на въпроса. Въпросът е отворен - със свободни отговори.', 5, 1, '', 0, 1, 2, 's', NULL),
+(22, '', 1, 1, '', 0, 1, 2, 's', NULL),
+(23, '', 1, 1, '', 0, 1, 2, 's', 3),
+(24, '', 1, 1, '', 0, 1, 2, 's', NULL),
+(25, '', 1, 1, '', 0, 1, 2, 's', NULL),
+(26, '', 1, 1, '', 0, 1, 2, 's', NULL),
+(27, '', 1, 1, '', 27, 1, 2, 's', NULL),
+(28, 'Въпрос от ниво знание на тема 1 точка 1\r\n<DOCTYPE html>\r\n      <html lang=\"en\">\r\n      <head>', 1, 1, '', 0, 1, 1, 'n', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура на таблица `main_taskcontext`
+--
+
+DROP TABLE IF EXISTS `main_taskcontext`;
+CREATE TABLE `main_taskcontext` (
+  `id` bigint(20) NOT NULL,
+  `text` longtext NOT NULL,
+  `picture` varchar(100) DEFAULT NULL,
+  `textWrap` varchar(1) NOT NULL,
+  `author_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `main_taskcontext`
+--
+
+INSERT INTO `main_taskcontext` (`id`, `text`, `picture`, `textWrap`, `author_id`) VALUES
+(1, 'контекст 1. текст на контекста, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст, и още текст', 'context_pics/voice.png', 's', 1),
+(2, '', '', 's', 1),
+(3, 'NEW CONTEXT j******************', 'context_pics/photo_line.png', 'w', 1);
 
 -- --------------------------------------------------------
 
@@ -757,6 +854,7 @@ INSERT INTO `main_task` (`id`, `text`, `type`, `level`, `picture`, `group`, `ite
 -- Структура на таблица `main_taskitem`
 --
 
+DROP TABLE IF EXISTS `main_taskitem`;
 CREATE TABLE `main_taskitem` (
   `id` bigint(20) NOT NULL,
   `leading_char` varchar(4) NOT NULL,
@@ -796,11 +894,19 @@ INSERT INTO `main_taskitem` (`id`, `leading_char`, `text`, `value`, `value_name`
 -- Структура на таблица `main_task_school`
 --
 
+DROP TABLE IF EXISTS `main_task_school`;
 CREATE TABLE `main_task_school` (
   `id` bigint(20) NOT NULL,
   `task_id` bigint(20) NOT NULL,
   `school_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `main_task_school`
+--
+
+INSERT INTO `main_task_school` (`id`, `task_id`, `school_id`) VALUES
+(11, 27, 1);
 
 -- --------------------------------------------------------
 
@@ -808,6 +914,7 @@ CREATE TABLE `main_task_school` (
 -- Структура на таблица `main_test`
 --
 
+DROP TABLE IF EXISTS `main_test`;
 CREATE TABLE `main_test` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -824,6 +931,7 @@ CREATE TABLE `main_test` (
 -- Структура на таблица `main_theme`
 --
 
+DROP TABLE IF EXISTS `main_theme`;
 CREATE TABLE `main_theme` (
   `id` bigint(20) NOT NULL,
   `num` smallint(5) UNSIGNED NOT NULL CHECK (`num` >= 0),
@@ -866,6 +974,7 @@ INSERT INTO `main_theme` (`id`, `num`, `title`, `tasks_total`, `tasks_knowledge`
 -- Структура на таблица `main_themeitem`
 --
 
+DROP TABLE IF EXISTS `main_themeitem`;
 CREATE TABLE `main_themeitem` (
   `id` bigint(20) NOT NULL,
   `item` smallint(5) UNSIGNED NOT NULL CHECK (`item` >= 0),
@@ -987,6 +1096,7 @@ INSERT INTO `main_themeitem` (`id`, `item`, `title`, `criterion`, `total_points`
 -- Структура на таблица `main_userprofile`
 --
 
+DROP TABLE IF EXISTS `main_userprofile`;
 CREATE TABLE `main_userprofile` (
   `id` bigint(20) NOT NULL,
   `access_level` smallint(5) UNSIGNED NOT NULL CHECK (`access_level` >= 0),
@@ -1134,7 +1244,15 @@ ALTER TABLE `main_specialty`
 ALTER TABLE `main_task`
   ADD PRIMARY KEY (`id`),
   ADD KEY `main_task_item_id_1d36f96a_fk_main_themeitem_id` (`item_id`),
-  ADD KEY `main_task_author_id_020b13fa_fk_main_school_id` (`author_id`);
+  ADD KEY `main_task_author_id_020b13fa_fk_main_school_id` (`author_id`),
+  ADD KEY `main_task_context_id_68892366_fk_main_taskcontext_id` (`context_id`);
+
+--
+-- Индекси за таблица `main_taskcontext`
+--
+ALTER TABLE `main_taskcontext`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `main_taskcontext_author_id_90c33635_fk_main_school_id` (`author_id`);
 
 --
 -- Индекси за таблица `main_taskitem`
@@ -1200,7 +1318,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `auth_user`
@@ -1224,19 +1342,19 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `main_documents`
@@ -1248,7 +1366,7 @@ ALTER TABLE `main_documents`
 -- AUTO_INCREMENT for table `main_log`
 --
 ALTER TABLE `main_log`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT for table `main_remark`
@@ -1281,6 +1399,12 @@ ALTER TABLE `main_task`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT for table `main_taskcontext`
+--
+ALTER TABLE `main_taskcontext`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `main_taskitem`
 --
 ALTER TABLE `main_taskitem`
@@ -1290,7 +1414,7 @@ ALTER TABLE `main_taskitem`
 -- AUTO_INCREMENT for table `main_task_school`
 --
 ALTER TABLE `main_task_school`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `main_test`
@@ -1372,7 +1496,14 @@ ALTER TABLE `main_school_specialities`
 --
 ALTER TABLE `main_task`
   ADD CONSTRAINT `main_task_author_id_020b13fa_fk_main_school_id` FOREIGN KEY (`author_id`) REFERENCES `main_school` (`id`),
+  ADD CONSTRAINT `main_task_context_id_68892366_fk_main_taskcontext_id` FOREIGN KEY (`context_id`) REFERENCES `main_taskcontext` (`id`),
   ADD CONSTRAINT `main_task_item_id_1d36f96a_fk_main_themeitem_id` FOREIGN KEY (`item_id`) REFERENCES `main_themeitem` (`id`);
+
+--
+-- Ограничения за таблица `main_taskcontext`
+--
+ALTER TABLE `main_taskcontext`
+  ADD CONSTRAINT `main_taskcontext_author_id_90c33635_fk_main_school_id` FOREIGN KEY (`author_id`) REFERENCES `main_school` (`id`);
 
 --
 -- Ограничения за таблица `main_taskitem`

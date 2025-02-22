@@ -165,7 +165,8 @@ class ImageField(models.ImageField):
 
 class TaskContext(models.Model):
     text = models.TextField('Контекст', default='', blank=True, help_text='Общ текстов контекст за въпросите')
-    picture = models.ImageField('Картинка', upload_to='context_pics', blank=True, null=True, help_text='Обща картинка за въпросите')
+    picture = models.ImageField('Картинка', upload_to='context_pics', blank=True,
+                                null=True, help_text='Обща картинка за въпросите')
     author = models.ForeignKey(School, on_delete=models.CASCADE, default=1)
     textWrap = models.CharField('Разположение на текста', max_length=1, default='s', blank=True,
                                 help_text='Разположение на текста спрямо картинката (e,w,n,s)')

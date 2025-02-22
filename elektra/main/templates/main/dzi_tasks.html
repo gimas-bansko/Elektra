@@ -739,13 +739,13 @@
                                    <i class="feather-server"></i> Задаване на съществуващ контекст</a></li>
 
                                <li v-if="(context_edit_mode==0)&&(question.ctx==null)">
-                                   <a class="dropdown-item" @click="context_edit_mode=2">
-                                   <i class="feather-image"></i> Създаване на нов контекст</a></li>
+                                   <a class="dropdown-item" @click="newContext()">
+                                   <i class="feather-file-plus"></i> Създаване на нов контекст</a></li>
 
                                <li v-if="(context_edit_mode==0)&&(context_count>0)&&(question.ctx!=null)&&
                                          (question.ctx.id>0)&&(question.ctx.author==user.school)">
                                    <a class="dropdown-item" @click="context_edit_mode=2">
-                                   <i class="feather-image"></i> Редактиране на текущия контекст</a></li>
+                                   <i class="feather-repeat"></i> Редактиране на текущия контекст</a></li>
 
                                <li v-if="(context_edit_mode==0)&&(context_count>0)&&(question.ctx!=null)&&
                                          (question.ctx.id>0)&&(question.ctx.author!=user.school)">
@@ -843,7 +843,7 @@
                                                    <div class="btn-grp">
                                                        <button class="react-btn btn-default btn-small btn-border"
                                                                style="color: red; border-color: #5c0000d4;"
-                                                               @click="question.ctx=null;context_edit_mode=0;">
+                                                               @click="clearContext()">
                                                            <i class="feather-x"></i>
                                                            <span>&nbsp;Премахни</span>
                                                        </button>
@@ -920,7 +920,7 @@
                                                         <input type="file"
                                                                id="imageInputCtx"
                                                                class="input-file"
-                                                               @change="onImageChange($event)"
+                                                               @change="onContextImageChange($event)"
                                                                style="display: none;">
                                                    </div>
 

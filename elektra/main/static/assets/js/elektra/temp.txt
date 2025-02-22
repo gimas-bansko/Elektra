@@ -34,3 +34,12 @@
                     </div>
 
 
+    def post(self, request):
+        data = TaskSaveTaskBodySerializer(data=request.data)
+        print(f'data: {data}')
+        if data.is_valid():
+            data.save()
+        else:
+            print('error validation: ', data.errors)
+        return Response(status=201)
+

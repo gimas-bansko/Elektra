@@ -1,3 +1,5 @@
+from contextlib import nullcontext
+
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginUserForm
@@ -231,11 +233,27 @@ class TaskNewQuestionBodyAPIView(APIView):
 # Въпрос - запазване на тялото на въпроса
 class TaskSaveQuestionBodyAPIView(APIView):
     def post(self, request):
-        data = TaskSaveTaskBodySerializer(data=request.data)
-        if data.is_valid():
-            data.save()
+        data=request.data
+        task = Task.objects.get(id=data['id'])
+
+        # записвам контекста, ако има такъв
+        if data['context']:
+            context = TaskContext.objects.get(id=data['context']['id'])
+            context.text = data['context']['text']
+            context.textWrap = data['context']['textWrap']
+            context.save()
+            task.context=context
         else:
-            print('error validation: ', data.errors)
+            task.context = None
+
+        task.text = data['text']
+        task.type_q = data['type']
+        task.level_q = data['level']
+        task.group = data['group']
+        task.textWrap = data['textWrap']
+
+        task.save()
+
         return Response(status=201)
 
 
@@ -398,6 +416,37 @@ class RemarksByTaskView(APIView):
         queryset = Remark.objects.filter(task=task_id)
         serializer = RemarkSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
+
+"""
+       ******************* КОНТЕКСТ ******************
+"""
+class NewContextView(APIView):
+    def post(self, request):
+        task_id = request.data['task_id']
+        task = Task.objects.filter(id=task_id)
+
+        context = TaskContext.objects.create()
+
+        author_id = request.data['author']
+        author = School.objects.get(id=author_id)
+        context.author = author
+        context.save()
+
+        task = Task.objects.get(id=task_id)
+        task.context = context
+        task.save()
+
+        queryset = TaskContext.objects.filter(id=context.id)
+        serializer = TaskContextSerializer(queryset, many=True, context={"request": request})
+        return Response(serializer.data)
+
+# Контекст - обновяване на картинка
+class ContextFileAPIView(APIView):
+    def post(self, request):
+        data = ContextFileSerializer(data=request.data)
+        if data.is_valid():
+            data.save(id=request.data['id'])
+        return Response(status=201)
 
 """
        *******************   LOG  ******************
