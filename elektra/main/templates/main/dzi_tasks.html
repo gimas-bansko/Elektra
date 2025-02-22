@@ -486,11 +486,12 @@
                                                                 <i class="feather-copy"></i><span>&nbspКопирай&nbsp</span>
                                                             </button>
                                                         </div>
+
                                                         <!-- delete -->
                                                         <div class="col-lg-2 col-md-2 col-sm-2 col-6">
                                                             <button class="react-btn btn-default btn-small btn-border bg-color-danger"
                                                                     style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1"
-                                                                    @click="deleteTask(qst.id)">
+                                                                    data-bs-toggle="modal" data-bs-target="#deleteQuestionModal">
                                                                 <i class="feather-delete"></i><span>&nbspИзтрий&nbsp&nbsp</span>
                                                             </button>
                                                         </div>
@@ -1245,20 +1246,20 @@
                     <div class="row mt--20">
                        <div class="col-lg-2 col-md-2">
                        </div>
-                       <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
-                           <div class="btn-grp">
-                               <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                            <div class="btn-grp">
+                                <button class="react-btn btn-default btn-small btn-border bg-color-danger"
                                        data-bs-dismiss="modal">
                                    <i class="feather-x"></i><span>&nbspОткажи</span>
-                               </button>
-                               &nbsp
-                               <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                </button>
+                                &nbsp
+                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
                                        data-bs-dismiss="modal" @click="save()">
                                    <i class="feather-check"></i><span>&nbspЗапази</span>
-                               </button>
-                       </div>
-                   </div>
-               </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
        </div>
@@ -1381,6 +1382,32 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Диалог за изтриване на въпрос -->
+        <div id="deleteQuestionModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <button class="close-button" data-bs-dismiss="modal">
+                        <i class="feather-x"></i>
+                    </button>
+                    <h5 class="title">Въпрос #[[ question.id ]] ще бъде премахнат от базата данни. Моля, потвърдете!</h5>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12"  style="text-align: right;">
+                            <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                   data-bs-dismiss="modal">
+                               <i class="feather-x"></i><span>&nbsp;Откажи</span>
+                            </button>
+                            &nbsp
+                            <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                    data-bs-dismiss="modal"
+                                    @click="deleteTask(theme[current_item.theme_id].tasks[current_item.task_id].id)">
+                               <i class="feather-check"></i><span>&nbsp;Изтрий</span>
+                            </button>
                         </div>
                     </div>
                 </div>
