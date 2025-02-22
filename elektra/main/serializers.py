@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ThemeItem, Theme, Task, TaskItem,  Test, Remark
+from .models import ThemeItem, Theme, Task, TaskItem,  Test, Remark, TaskContext
 
 """ 
     Сериализатори за въпросите 
@@ -12,9 +12,16 @@ class TaskItemSerializer(serializers.ModelSerializer):
         model = TaskItem
         fields = "__all__"
 
+# общ контекст за група въпроси
+class TaskContextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskContext
+        fields = '__all__'
 
 # въпроси - списък
 class TaskSerializer(serializers.ModelSerializer):
+
+    context = TaskContextSerializer()
     options = TaskItemSerializer(many=True)
 
     class Meta:

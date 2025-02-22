@@ -18,6 +18,7 @@ admin.site.register(School)
 admin.site.register(Specialty)
 admin.site.register(Documents)
 admin.site.register(Remark)
+admin.site.register(TaskContext)
 
 @admin.register(Log)
 class LogV(admin.ModelAdmin):

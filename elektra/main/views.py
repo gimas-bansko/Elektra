@@ -1,5 +1,3 @@
-from lib2to3.pgen2.tokenize import group
-
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginUserForm
@@ -12,7 +10,7 @@ from .serializers import *
 from django.http import JsonResponse
 
 from django.db import transaction
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, 'main/index.html')

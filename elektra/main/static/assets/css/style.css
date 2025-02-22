@@ -21385,6 +21385,7 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
   overflow: hidden;
   border: none;
 }
+
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .rbt-modal-box .modal-dialog .wrapper {
     width: auto;
@@ -22067,6 +22068,11 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
 .bg-color-mid {
   background: #ba9d09;
   color: black;
+}
+
+.btn-color-blue {
+  border-color: rgb(7 3 144);
+  color: #0d6efd;
 }
 
 .elektra-tab {

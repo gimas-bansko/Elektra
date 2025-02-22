@@ -35,7 +35,8 @@ const App = {
                     },
                 ],
                 showLevel:0, // '-1' - неизползван(чужд), '0' - използван(чужд), '1' - използван(свой)
-                textWrap:'n' // 'n'-отгоре; 'e'-от ляво; 'w'-от дясно; 's'-от долу;
+                textWrap:'n', // 'n'-отгоре; 'e'-от ляво; 'w'-от дясно; 's'-от долу;
+                ctx: {},
                 },
             theme: [],
             listOfThemes: [],
@@ -54,6 +55,8 @@ const App = {
             temp_item_num: 0,
             temp_task_num: 0,
             temp_int:0, // просто променлива за временно съхранение на целочислена променлива
+            context_count:0, //брой въпроси със зададен контекст
+            context_edit_mode:0 //0 - нищо, 1 - избор от наличните, 2 - редакция, 3 - копие, 4 - откачане, 5 - нов контекст
             }
     },
     computed: {
@@ -169,8 +172,10 @@ const App = {
             vm.question.author=vm.theme[itm].tasks[id].author
             vm.question.school=vm.theme[itm].tasks[id].school
             vm.question.textWrap=vm.theme[itm].tasks[id].textWrap
+            vm.question.ctx=vm.theme[itm].tasks[id].context
             vm.question.deletedOptions.length = 0;
             vm.editMode = EDIT_OLD_QUESTION
+            vm.context_edit_mode=0
         },
         revert(){ // връща данните след редакция за визуализиране в списъка с данни
             let itm = this.current_item.theme_id
@@ -298,6 +303,7 @@ const App = {
                     else {return false;} //не го показвам
                     }
             }
+            this.context_count=0
             this.theme.forEach((th) => {
                 th.q_knowledge=0
                 th.q_comprehension=0
@@ -310,6 +316,7 @@ const App = {
                         else if (qst.level==3){th.q_application+=1}
                         else {th.q_analysis+=1}
                         }
+                    if(qst.context){this.context_count+=1}
                     });
                 });
         },
@@ -601,12 +608,15 @@ const App = {
                     vm.theme[vm.grouping.item_num].tasks[vm.grouping.task_num].group=0
                 })
         },
-
+        setContext(item, task){
+            this.question.ctx=this.theme[item].tasks[task].context
+            console.log(this.question.ctx)
+            console.log(this.user)
+            this.context_edit_mode=0
+        },
     },
     created: function(){
         this.loadUserDetails();
-        // this.setShowMode(0)
-        // this.setShowMode(2)
     }
 }
 

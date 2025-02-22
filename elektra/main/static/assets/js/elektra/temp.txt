@@ -1,23 +1,36 @@
-            axios({
-                method:'POST',
-                //url:'/api/DuplicateTask/',
-                url:'/api/duplicate-task/',
-                headers:{
-                    'X-CSRFToken':CSRF_TOKEN,
-                    //'Access-Control-Allow-Origin':'*',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                data:{
-                    task_id:question_id,
-                    school_id: this.user.school,
-                }
-            })
-                .then(response => {
-                    vm.flagNewItem = false
-                    console.log('извиквам vm.reloadItem() презареждане')
-                    vm.reloadItem(vm)
-                })
-                .catch(error => {
-                    throw("Error: ", error);
-                })
+                    <!-- съдържание на контекста -->
+                    <div class="chat-content mb--10" v-if="qst.context!=true">
+                        <div class="row">
+                            <!-- картинка и текст -->
+                            <div class="row mb--10" v-if="question.context.textWrap=='n'">
+                                <p class="mb--10">[[ question.context.text ]]</p>
+                                <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                    <img class="radius" :src="question.context.picture">
+                                </div>
+                            </div>
+                            <div class="row mb--10" v-if="question.context.textWrap=='s'">
+                                <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                    <img class="radius" :src="question.context.picture">
+                                </div>
+                                <p class="mt--10">[[ question.context.text ]]</p>
+                            </div>
+                            <div class="row mb--10" v-if="question.context.textWrap=='e'">
+                                <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                    [[ question.context.text ]]
+                                </div>
+                                <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                    <img class="radius" :src="question.context.picture">
+                                </div>
+                            </div>
+                            <div class="row mb--10" v-if="question.context.textWrap=='w'">
+                                <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                    <img class="radius" :src="question.context.picture">
+                                </div>
+                                <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                    [[ question.context.text ]]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
