@@ -14,6 +14,8 @@ from django.http import JsonResponse
 from django.db import transaction
 # from django.views.decorators.csrf import csrf_exempt
 
+import requests
+
 def index(request):
     return render(request, 'main/index.html')
 

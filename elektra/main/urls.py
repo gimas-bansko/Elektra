@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from . import convert
 
 urlpatterns = [
     path('', views.dzi_home, name='home'),
@@ -51,4 +52,6 @@ urlpatterns = [
     path('api/AddRemark/', views.AddRemark.as_view()),
     path('api/DuplicateTaskRecord/', views.DuplicateTask.as_view()),
     path('api/school-to-task-action/<int:task_id>/<int:school_id>/<str:action>/', views.school_to_task_action, name='add_school_to_task'),
+    # transfer
+    path('api/transfer/<int:theme>/', convert.TransferData.as_view()),
 ]

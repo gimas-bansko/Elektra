@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране: 22 фев 2025 в 13:44
+-- Време на генериране: 23 фев 2025 в 14:20
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -680,7 +680,15 @@ INSERT INTO `main_log` (`id`, `user_id`, `user_name`, `action`, `date`) VALUES
 (218, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:38:56.867009'),
 (219, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:38:56.872490'),
 (220, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:39:25.103531'),
-(221, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:39:25.104530');
+(221, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=1)', '2025-02-22 12:39:25.104530'),
+(222, 1, 'Георги Бориков', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-22 12:45:51.696306'),
+(223, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=31)', '2025-02-22 12:46:32.415954'),
+(224, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=31)', '2025-02-22 12:46:32.436153'),
+(225, 1, 'Георги Бориков', 'Изтрит е въпрос от тема 0 ; въпрос id=31)', '2025-02-22 12:46:47.655908'),
+(226, 1, 'Георги Бориков', 'Изтрит е въпрос от тема 0 ; въпрос id=1)', '2025-02-22 13:18:32.991410'),
+(227, 1, 'Георги Бориков', 'Създаден нов въпрос по тема 0; въпрос id=1)', '2025-02-22 13:18:48.358209'),
+(228, 1, 'Георги Бориков', 'Запазени промени във въпрос по тема 0 ; въпрос id=32)', '2025-02-22 13:18:50.778199'),
+(229, 1, 'Георги Бориков', 'Изтрит е въпрос от тема 0 ; въпрос id=32)', '2025-02-22 13:19:09.889174');
 
 -- --------------------------------------------------------
 
@@ -703,7 +711,6 @@ CREATE TABLE `main_remark` (
 --
 
 INSERT INTO `main_remark` (`id`, `user_id`, `user_name`, `date`, `text`, `task_id`) VALUES
-(1, 8, 'Училищен Админ2', '2025-02-18 20:26:15.804791', 'Първи коментар ', 1),
 (2, 1, 'Георги Бориков', '2025-02-18 21:10:37.736416', 'просто коментар към 28-ми въпрос', 28),
 (3, 1, 'Георги Бориков', '2025-02-18 21:11:27.777688', 'Още един коментар към този въпрос', 28);
 
@@ -808,7 +815,6 @@ CREATE TABLE `main_task` (
 --
 
 INSERT INTO `main_task` (`id`, `text`, `type`, `level`, `picture`, `group`, `item_id`, `author_id`, `textWrap`, `context_id`) VALUES
-(1, 'Въпрос от ниво знание на тема 1 точка 1', 1, 1, 'task_pics/code-editor_line_Ib3T2Ni.png', 27, 1, 1, 'n', NULL),
 (2, 'Текст на въпрос 2', 1, 2, '', 0, 1, 1, 's', NULL),
 (3, '', 1, 1, 'task_pics/photo_line.png', 0, NULL, 1, 's', NULL),
 (17, 'Въпрос от затворен тип с един или два верни отговора с картинка', 2, 1, 'task_pics/text_line.png', 0, 1, 2, 'w', NULL),
@@ -872,8 +878,6 @@ CREATE TABLE `main_taskitem` (
 --
 
 INSERT INTO `main_taskitem` (`id`, `leading_char`, `text`, `value`, `value_name`, `checked`, `checked_t`, `value_t`, `task_id`) VALUES
-(1, '3', 'опция 1 на въпрос 1', '4', 'value_name 2', 1, NULL, '', 1),
-(2, 'б', 'отговор 2 на въпрос 1', '', '', 1, NULL, '', 1),
 (3, '1', 'отговор 1 на въпрос 2', '', '', 1, NULL, '', 2),
 (4, 'q', 'asda asdfasd asfas hfd g gh gfh ', '', '', 1, NULL, '', 19),
 (5, '1', 'опция 1 на въпрос 17', '', '', 1, NULL, '', 17),
@@ -1366,7 +1370,7 @@ ALTER TABLE `main_documents`
 -- AUTO_INCREMENT for table `main_log`
 --
 ALTER TABLE `main_log`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=230;
 
 --
 -- AUTO_INCREMENT for table `main_remark`
@@ -1396,7 +1400,7 @@ ALTER TABLE `main_specialty`
 -- AUTO_INCREMENT for table `main_task`
 --
 ALTER TABLE `main_task`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `main_taskcontext`
@@ -1408,7 +1412,7 @@ ALTER TABLE `main_taskcontext`
 -- AUTO_INCREMENT for table `main_taskitem`
 --
 ALTER TABLE `main_taskitem`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `main_task_school`
