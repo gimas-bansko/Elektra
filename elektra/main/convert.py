@@ -76,8 +76,9 @@ class Transfer:
         task.text = question['text']
         task.type = question['type']
         task.level = level
-        task.school = self.school
+#        task.school = self.school
         task.author = self.school
+        task.textWrap = 'w'
         task.group = self.make_group_number(task.id, question['group'])
         # ако има картинка
         if question['picture']:
@@ -90,13 +91,13 @@ class Transfer:
                 # Създаване на ContentFile от съдържанието на изображението
                 image_file = ContentFile(response.content, name=filename)
                 task.picture.save(filename, image_file)  # Записване на изображението в ImageField
-                print(f'Изображението {image_file} е успешно записано!')
+                print(f'Изображението {filename} е успешно записано!')
             else:
                 print(f'Неуспешно изтегляне на изображението {image_url}')
         task.save()
         # и сега опциите:
         for old_option in question['options']:
-            option = TaskItem.objects.create_task(task.id)
+            option = TaskItem.objects.create_task(task)
             option.leading_char = old_option['leading_char']
             option.text = old_option['text']
             option.value = old_option['value']
@@ -121,7 +122,7 @@ class TransferData(APIView):
                         OldDB.save_question(q,2)
                     for q in old_item['tasks_application']:
                         OldDB.save_question(q,3)
-                    for q in old_item['tasks_application']:
+                    for q in old_item['tasks_analysis']:
                         OldDB.save_question(q,4)
                 return Response(OldDB.list_of_themes)
             else:
