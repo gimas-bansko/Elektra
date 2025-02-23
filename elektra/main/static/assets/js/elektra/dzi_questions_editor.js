@@ -54,6 +54,7 @@ const App = {
                 },
             temp_item_num: 0,
             temp_task_num: 0,
+            id_to_delete: 0,
             temp_int:0, // просто променлива за временно съхранение на целочислена променлива
             context_count:0, //брой въпроси със зададен контекст
             context_edit_mode:0 //0 - нищо, 1 - избор от наличните, 2 - редакция, 3 - копие, 4 - откачане, 5 - нов контекст
@@ -101,8 +102,8 @@ const App = {
             let q=0
             let th = this.theme[idx]
             if (level==1){q=th.q_knowledge;}
-            if (level==2){q=th.q_comprehension<th.comprehension;}
-            if (level==3){q=th.q_application<th.application;}
+            if (level==2){q=th.q_comprehension;}
+            if (level==3){q=th.q_application;}
             if (level==4){q=th.q_analysis;}
             return q
         },
