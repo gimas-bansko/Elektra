@@ -109,27 +109,6 @@ def dzi_set_speciality(request, sp):
 
     return dzi_dashboard(request)
 
-def dzi_test(request):
-    context = {
-        'tab_title': 'тест',
-        'show_theme': True,
-    }
-    return render(request, 'main/dzi_test.html', context)
-
-def dzi_test_online_start(request):
-    context = {
-        'tab_title': 'тест',
-        'show_theme': True,
-    }
-    return render(request, 'main/dzi_test_online_start.html', context)
-
-def dzi_test_online(request):
-    context = {
-        'tab_title': 'тест',
-        'show_theme': True,
-    }
-    return render(request, 'main/dzi_test_online.html', context)
-
 def user_context(request, title, show_th=False):
     user = request.user
     user_profile = user.userprofile
@@ -148,6 +127,16 @@ def user_context(request, title, show_th=False):
 #        'specialities': user_profile.school.specialities.all(),
     }
     return context
+
+def dzi_test(request):
+    return render(request, 'main/dzi_test.html', user_context(request,'въпроси'))
+
+def dzi_test_online_start(request):
+    return render(request, 'main/dzi_test_online_start.html', user_context(request,'въпроси'))
+
+def dzi_test_online(request):
+    return render(request, 'main/dzi_test_online.html', user_context(request,'въпроси'))
+
 
 def dzi_tasks(request):
     return render(request, 'main/dzi_tasks.html', user_context(request,'въпроси', show_th=True))
