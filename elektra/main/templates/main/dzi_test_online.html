@@ -5,46 +5,65 @@
 {% include 'main/dzi_left_panel_profile.html' %}
 {% endblock %}
 
+{% block lef_panel_icon%}
+<div class="expand-btn-grp @@display-class" xmlns="http://www.w3.org/1999/html">
+                                    <button class="bg-solid-primary popup-dashboardright-btn">
+                                        <i class="feather-sidebar right"></i>
+                                    </button>
+                                </div>
+{% endblock %}
+
 {% block main_content %}
             <!-- Main content -->
-            <div class="rbt-main-content mr--0">
-                <!-- Start Breadcarumb area  -->
-                <div class="breadcrumb-area breadcarumb-style1 pt--180 pb--60">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
+            <div class="rbt-main-content">
+                <div class="rbt-daynamic-page-content">
+                    <!-- Start Breadcarumb area  -->
+                    <div class="chatenai-separator">
+                        <img class="w-100 separator-dark"
+                             src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
+                        <img class="w-100 separator-light"
+                             src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
+                    </div>
+                    <div class="breadcrumb-area breadcarumb-style1 pt--30 pb--30">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
                                 <div class="breadcrumb-inner text-center">
                                     <h1 class="title theme-gradient h2">Тест</h1>
                                     <ul class="page-list">
                                         <li class="rainbow-breadcrumb-item"><a href="{% url 'dzi_home' %}">Начало</a></li>
                                         <li class="rainbow-breadcrumb-item"><a href="{% url 'dzi_tests' %}">Тест</a></li>
-                                        <li class="rainbow-breadcrumb-item"><a href="{% url 'start_test'%}">Онлайн тест</a></li>
-                                        <li class="rainbow-breadcrumb-item active">Решаване на тест</li>
+                                        <li class="rainbow-breadcrumb-item active">>Онлайн тест</li>
                                     </ul>
+                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- End Breadcarumb area  -->
-                <div class="chatenai-separator">
-                    <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
-                    <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
-                </div>
+                    <!-- End Breadcarumb area  -->
+                    <div class="chatenai-separator">
+                        <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
+                        <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
+                    </div>
 
-                <div class="rbt-daynamic-page-content">
                     <!-- Dashboard Center Content -->
                     <div class="rbt-dashboard-content">
                         <div class="content-page">
-                            <div class="chat-box-list">
+                            <div class="chat-box-list pt--30" v-if="status==0">
+                                <!-- приветствие, ако не е стартиран тест -->
                                 <div class="rainbow-generartor-section rainbow-section-gap">
-                                    <div class="section-title text-justify sal-animate" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
+                                    <div class="section-title text-justify sal-animate"
+                                         data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
                                         <p class="description b1">Тази страница Ви дава възможност да получите тест по
-                                            тема "" от Националната изпитна програма за провеждане на държавен изпит за
+                                            тема №[[listOfThemes[theme_num].num]] "[[ listOfThemes[theme_num].title ]]"
+                                            от Националната изпитна програма за провеждане на държавен изпит за
                                             придобиване на трета степен на професионална квалификация за специалност код
-                                            5230501 „Компютърна техника и технологии“ от професия код 523050 „Техник на
-                                            компютърни системи“ от професионално направление код 523 „Електроника,
-                                            автоматика, комуникационна и компютърна техника“ (НИП).</p>
+                                            {{user_profile.speciality.specialty_num}} „{{user_profile.speciality.specialty_name}}“
+                                            от професия код {{user_profile.speciality.profession_num}}
+                                            „{{user_profile.speciality.profession_name}}“
+                                            от професионално направление код {{user_profile.speciality.professional_field_num}}
+                                            „{{user_profile.speciality.professional_field_name}}“
+                                            (НИП).</p>
                                         <p>
                                             Тестът съдържа задачи с различна трудност с максимален брой точки – 100. За
                                             всеки Ваш отговор ще получите определен брой точки, показан в горния десен
@@ -61,7 +80,7 @@
                                             контролира от програмата.</p>
                                         <p>
                                             Край на теста и оценка на резултата се извиква с бутона "Край на теста".
-                                            Оценката на теста се дава общ брой точки, без да се посочва кои от подадените
+                                            Оценката на теста се дава като общ брой точки и се посочва кои от подадените
                                             отговори са правилни и кои не. Броят на тестовете, които може да генерира един
                                             потребител не е ограничено, но всеки следващ път ще бъде генериран нов,
                                             различен от предишните набор от тестови задачи.</p>
@@ -76,169 +95,435 @@
                                             <span class="theme-gradient">ПОЖЕЛАВАМЕ ВИ УСПЕШНА РАБОТА!</span></p>
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="chat-box-list pt--30" v-else-if="status==1"
+                                 v-for="(item, item_idx) in theme">
+                                <!-- Заглавна част -->
+                                <div class="chat-box author-speech bg-flashlight">
+                                    <div class="inner">
+                                        <div class="chat-section">
+                                            <div class="chat-content">
+                                                <h6 class="title">[[item.item]]. [[item.title]]</h6>
+                                                <p>Критерии за оценяване: <br>[[item.criterion]] </p>
+                                                <div class="rainbow-pricing-detailed-area">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="section-title text-left mb--30" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
+                                                                <p class="title w-600 mb--0">Брой тестови задачи по равнища </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row row--15">
+                                                        <div class="col-lg-12">
+                                                            <div class="rainbow-compare-table style-1">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- списък на въпросите на подтемата по нива на Блум -->
+                                <div v-for="level in 4" :key="level"   :id="'T'+item_idx+'L'+level">
+
+                                    <!-- ако има въпроси от това ниво -->
+                                    <div>
+                                        <div v-for="(qst, qst_idx) in item.tasks">
+                                            <div class="chat-box ai-speech bg-flashlight mt--10"
+                                                 v-if="qst.level==level"
+                                                 :id="'qt'+item_idx+'_'+qst_idx">
+                                                <!-- показвам всички въпроси от тема/точка/ниво (theme/item/level) qst -->
+                                                <div class="inner top-flashlight leftside light-xl">
+                                                    <!-- Заглавна част - параметри на въпроса -->
+                                                    <div class="chat-section generate-section">
+                                                        <div class="chat-content">
+                                                            <!-- Заглавен ред -->
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                    <h5 class="title"
+                                                                :class="{'color-level-1': qst.level==1,
+                                                                         'color-level-2': qst.level==2,
+                                                                         'color-level-3': qst.level==3,
+                                                                         'color-level-4': qst.level==4,
+                                                                        }">
+                                                                Въпрос #[[ qst.id ]]</h5>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="text-align: right;">
+                                                                    <span style="font-size:9px; color: #C231A1;" v-if="qst.showLevel==-1"> Не се използва във Вашето училище</span>
+                                                                    <span style="font-size:9px; color: #0d6efd;" v-if="qst.showLevel==0"> Въпрос от друго училище, използван и във Вашето</span>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Група/Ниво -->
+                                                            <div class="row mb--10">
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+
+                                                                </div>
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="text-align: center;">
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 " style="text-align: right;">
+                                                                   <span class="react-btn btn-default btn-small btn-border"
+                                                                         :class="{'color-level-1': qst.level==1,
+                                                                                  'color-level-2': qst.level==2,
+                                                                                  'color-level-3': qst.level==3,
+                                                                                  'color-level-4': qst.level==4,
+                                                                                  }">
+                                                                         Въпрос от ниво [[2*qst.level]] т.</span>
+                                                               </div>
+                                                            </div>
+                                                            <!-- Контекст -->
+                                                            <div class="chat-content mb--10" v-if="qst.context!=NULL">
+                                                                <div class="row">
+                                                                    <!-- картинка и текст -->
+                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='n'">
+                                                                        <p class="mb--10">[[ qst.context.text ]]</p>
+                                                                        <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                            <img class="radius" :src="qst.context.picture">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='s'">
+                                                                        <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                            <img class="radius" :src="qst.context.picture">
+                                                                        </div>
+                                                                        <p class="mt--10">[[ qst.context.text ]]</p>
+                                                                    </div>
+                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='e'">
+                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                            [[ qst.context.text ]]
+                                                                        </div>
+                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                            <img class="radius" :src="qst.context.picture">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='w'">
+                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                            <img class="radius" :src="qst.context.picture">
+                                                                        </div>
+                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                            [[ qst.context.text ]]
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                       </div>
+                                                    </div>
+                                                    <!-- Въпрос -->
+                                                    <div class="chat-section">
+                                                        <!-- Въпрос тип 1 - изброени отговори без картинка -->
+                                                        <div class="chat-content" v-if="qst.type==1">
+                                                            <p class="mb--20">[[ qst.text ]]</p>
+                                                            <div class="row">
+                                                                <div class="col-lg-1"></div>
+                                                                <div class="col-lg-11">
+                                                                    <!-- Опции/отговори -->
+                                                                    <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
+                                                                        <input :id="'option_'+item.id+'_'+qst.id+'_'+option.id"
+                                                                               type="checkbox" disabled :checked="option.checked">
+                                                                        <label :for="'option_'+item.id+'_'+qst.id+'_'+option.id">
+                                                                            <span :class="{'color-No': !option.checked, 'color-Ok': option.checked}">[[ option.leading_char ]]. [[ option.text ]]</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Въпрос тип 2 - изброени отговори с картинка -->
+                                                        <div class="chat-content" v-else-if="qst.type==2">
+                                                            <div class="row">
+                                                                <!-- картинка и текст -->
+                                                                <div class="row mb--10" v-if="qst.textWrap=='n'">
+                                                                    <p class="mb--10">[[ qst.text ]]</p>
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='s'">
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                    <p class="mt--10">[[ qst.text ]]</p>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='e'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.text ]]
+                                                                    </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='w'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.text ]]
+                                                                    </div>
+                                                                </div>
+                                                                <!-- отговори -->
+                                                                <div class="row">
+                                                                    <div class="col-lg-1"></div>
+                                                                    <div class="col-lg-11">
+                                                                        <!-- Опции/отговори -->
+                                                                        <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
+                                                                            <input :id="'option_'+item.id+'_'+qst.id+'_'+option.id"
+                                                                                   type="checkbox" disabled :checked="option.checked">
+                                                                            <label :for="'option_'+item.id+'_'+qst.id+'_'+option.id">
+                                                                                <span :class="{'color-No': !option.checked, 'color-Ok': option.checked}">[[ option.leading_char ]]. [[ option.text ]]</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Въпрос тип 3 - съпоставяне без картинка -->
+                                                        <div class="chat-content" v-else-if="qst.type==3">
+                                                            <p class="mb--20">[[ qst.text ]]</p>
+                                                            <div class="row">
+                                                                <div class="col-lg-1"></div>
+                                                                <div class="col-lg-11">
+                                                                    <!-- Опции/отговори -->
+                                                                    <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-5 d-flex align-items-center">
+                                                                                [[ option.leading_char ]]. [[ option.text ]]
+                                                                            </div>
+                                                                            <div class="col-lg-7 btn-grp">
+                                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                                        type="button"
+                                                                                        style="color: green; border-color: #013401;">
+                                                                                    [[ option.value ]]</button>&nbsp;
+                                                                                [[ option.value_name ]]
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Въпрос тип 4 - съпоставяне с картинка -->
+                                                        <div class="chat-content" v-else-if="qst.type==4">
+                                                            <div class="row">
+                                                                <!-- картинка и текст -->
+                                                                <div class="row mb--10" v-if="qst.textWrap=='n'">
+                                                                    <p class="mb--10">[[ qst.text ]]</p>
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='s'">
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                    <p class="mt--10">[[ qst.text ]]</p>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='e'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.text ]]
+                                                                    </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.textWrap=='w'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.picture">
+                                                                    </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.text ]]
+                                                                    </div>
+                                                                </div>
+                                                                <!-- отговори -->
+                                                                <div class="row">
+                                                                    <div class="col-lg-1"></div>
+                                                                    <div class="col-lg-11">
+                                                                    <!-- Опции/отговори -->
+                                                                    <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-2 d-flex align-items-end  btn-grp">
+                                                                               <button class="react-btn btn-default btn-small btn-border"
+                                                                                        type="button"
+                                                                                        style="color: green; border-color: #013401;">
+                                                                                    [[ option.value ]]</button>&nbsp;
+                                                                            </div>
+                                                                            <div class="col-lg-10">
+                                                                                [[ option.value_name ]]
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Въпрос тип 5 - изброени отговори без картинка -->
+                                                        <div class="chat-content" v-else>
+                                                            <p class="mb--20">[[ qst.text ]]</p>
+                                                            <div class="row">
+                                                                <div class="row mt-5"><div>Допустими отговори:</div> </div>
+                                                                <div class="col-lg-2 d-flex align-items-end"></div>
+                                                                <div class="col-lg-10">
+                                                                    <!-- Опции/отговори -->
+                                                                    <div class="rbt-checkbox-wrapper" v-for="(option, idx) in qst.options">
+                                                                        [[ idx+1 ]]. [[ option.value ]]
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- функционални бутони -->
+                                                    <div class="row mt--10">
+                                                        <!-- comments -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button type="button"
+                                                                    class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                                                    style="font-size: 12px;"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                                    @click="remark.text=''; remark.task_id=qst.id;">
+                                                                <i class="feather-file-plus"></i><span>&nbspКоментар&nbsp</span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item delete-item"
+                                                                       data-bs-toggle="modal" data-bs-target="#listRemarksModal"
+                                                                       @click="loadRemarks(qst.id)">
+                                                                    <i class="feather-server"></i> Покажи всички коментари</a></li>
+                                                                <li><a class="dropdown-item delete-item"
+                                                                       data-bs-toggle="modal" data-bs-target="#newRemarkModal">
+                                                                    <i class="feather-edit"></i> Добави коментар</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <!-- do not accept -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button type="button"
+                                                                    class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                                                    style="font-size: 12px; padding-left: 10px;"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                                    @click="remark.text=''; remark.task_id=qst.id;"
+                                                                    v-if="theme[item_idx].tasks[qst_idx].showLevel!=-1">
+                                                                <i class="feather-file-plus"></i><span>Групиране</span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item delete-item"
+                                                                       @click="addToGroup(item_idx, qst_idx)"
+                                                                       v-if="(qst.showLevel != -1)&&(qst.group==0)">
+                                                                    <i class="feather-server"></i> Добави към група от взаимно изключващи се въпроси</a></li>
+                                                                <li><a class="dropdown-item delete-item"
+                                                                       v-if="(qst.showLevel != -1)&&(qst.group!=0)"
+                                                                       @click="clearGroup(item_idx, qst_idx)">
+                                                                    <i class="feather-edit"></i> Извади от група от взаимно изключващи се въпроси</a></li>
+                                                                <li><a class="dropdown-item"
+                                                                       data-bs-toggle="modal" data-bs-target="#listGroupModal"
+                                                                       @click="temp_int=qst.group"
+                                                                       v-if="(qst.showLevel != -1)&&(qst.group!=0)">
+                                                                    <i class="feather-edit"></i> Покажи списък на въпросите в групата</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <!-- accept -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-secondary"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==0"
+                                                                    @click="useQuestion(qst.id, user.school, 'remove')">
+                                                                <i class="feather-upload-cloud"></i><span>&nbspИзключи&nbsp</span>
+                                                            </button>
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-primary"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==-1"
+                                                                    @click="useQuestion(qst.id, user.school, 'add')">
+                                                                <i class="feather-download-cloud"></i><span>&nbspПолзвай</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- copy -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-warning"
+                                                                    @click="copyQuestion(qst.id)"
+                                                                    data-bs-toggle="modal" data-bs-target="#editQuestionModal"
+                                                                    style="font-size: 12px;">
+                                                                <i class="feather-copy"></i><span>&nbspКопирай&nbsp</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- delete -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1"
+                                                                    data-bs-toggle="modal" data-bs-target="#deleteQuestionModal"
+                                                                    @click="id_to_delete=qst.id">
+                                                                <i class="feather-delete"></i><span>&nbspИзтрий&nbsp&nbsp</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- edit -->
+                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="rbt-static-bar collapse-width">
-                            <!-- End Header Top Area  -->
-                            <ul class="staticbar-btn-grp d-md-flex">
-                                <li>
-                                    <button class="btn-default btn-small btn-border"
-                                            data-bs-toggle="modal" data-bs-target="#selectSpeciality">
-                                        <span>Стартирай тест</span>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button class="btn-default btn-small btn-border"
-                                            data-bs-toggle="modal" data-bs-target="#selectTheme">
-                                        <span>Избери тема</span>
-                                    </button>
-                                </li>
-                            </ul>
-                            <div id="my_switcher" class="my_switcher">
-                                <ul>
-                                    <li>
-                                        <a href="javascript: void(0);" data-theme="light" class="setColor light">
-                                            <img src="{% static 'assets/images/light/switch/sun-01.svg' %}" alt="Sun images"><span title="Light Mode"> Light</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
-                                            <img src="{% static 'assets/images/light/switch/vector.svg' %}" alt="Vector Images"><span title="Dark Mode">
-                                        Dark</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                    </div>
+
+                    <!-- Dashboard Right Content -->
+                    <div class="rbt-right-side-panel popup-dashboardright-section">
+                        <!-- статична горна част на дясната лента -->
+                        <div class="right-side-top">
+                            <div v-if="status>0">
+                                <h6 class="title">Съдържание на темата:</h6>
+                            </div>
+                        </div>
+                        <!-- бутон Стартирай тест -->
+                        <div class="right-side-bottom mb--5" v-if="status==0">
+                            <div class="chat-history-section" style="text-align: center;">
+                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                        style="font-size: 12px;"
+                                        @click="startTest">
+                                    <i class="feather-play"></i><span>&nbsp;Стартирай тест&nbsp;</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- бутон Спри тест -->
+                        <div class="right-side-bottom mb--5" v-else-if="stattus==2">
+                            <div class="chat-history-section" style="text-align: center;">
+                                <button type="button"
+                                        class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                        style="font-size: 12px;">
+                                    <i class="feather-stop-circle"></i><span>&nbsp;Край на теста&nbsp;</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- бутон Избери тема -->
+                        <div class="right-side-bottom mb--5">
+                            <div class="chat-history-section" style="text-align: center;">
+                                <button class="btn-default btn-small btn-border"
+                                        data-bs-toggle="modal" data-bs-target="#themeSelectModal"
+                                        style="font-size: 12px;">
+                                    <i class="feather-file-plus"></i><span>&nbsp;Избери друга тема&nbsp;</span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 {% endblock %}
 
 {% block modals %}
-        <!--Избор на тема Modal HTML -->
-        <div id="selectTheme" class="modal rbt-modal-box copy-modal fade" tabindex="-1">
+        <!-- Избор на тема -->
+        <div id="themeSelectModal" class="modal rbt-modal-box copy-modal fade" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content wrapper top-flashlight light-xl">
                     <div class="section-title text-center mb--30 sal-animate" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
-                        <h4 class="title mb--0 w-600">Избор на тема</h4>
+                        <h6 class="title mb--0 w-600">Изберете тема</h6>
                     </div>
                     <div class="genarator-section">
                         <ul class="genarator-card-group">
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 1: </span>
-                                            Микропроцесор. Архитектура на микропроцесор</h5>
+                            <li v-for="theme in listOfThemes">
+                                <a class="genarator-card" data-bs-dismiss="modal" @click="changeTheme(theme.num)" >
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <h4>[[ theme.num ]]</h4>
+                                            </div>
+                                            <div class="col-10">
+                                                <h6>[[ theme.title ]]</h6>
+                                            </div>
                                         </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 1: </span>
-                                            Микропроцесор. Архитектура на микропроцесор</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 1: </span>
-                                            Микропроцесор. Архитектура на микропроцесор</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 1: </span>
-                                            Микропроцесор. Архитектура на микропроцесор</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 1: </span>
-                                            Микропроцесор. Архитектура на микропроцесор</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 18: </span>
-                                            Процеси, нишки, алгоритми за планиране и управление на паметта в
-                                            операционната система (ОС)</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 18: </span>
-                                            Процеси, нишки, алгоритми за планиране и управление на паметта в
-                                            операционната система (ОС)</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="text-generator.html" class="genarator-card">
-                                    <div class="inner">
-                                        <div class="left-align">
-                                            <h5>
-                                            <span class="theme-gradient">Тема 18: </span>
-                                            Процеси, нишки, алгоритми за планиране и управление на паметта в
-                                            операционната система (ОС)</h5>
-                                        </div>
-                                        <div class="right-align">
-                                            <div class="icon-bar"><i data-feather="arrow-right"></i></div>
-                                        </div>
-                                    </div>
                                 </a>
                             </li>
                         </ul>
@@ -250,10 +535,10 @@
             </div>
         </div>
 
+
+
 {% endblock %}
 
 {% block page_script %}
-<!--
-    <script src="{% static 'assets/js/elektra/dzi_dashboard.js' %}"></script>
--->
+    <script src="{% static 'assets/js/elektra/dzi_test.js' %}"></script>
 {% endblock %}

@@ -135,7 +135,7 @@ def dzi_test_online_start(request):
     return render(request, 'main/dzi_test_online_start.html', user_context(request,'въпроси'))
 
 def dzi_test_online(request):
-    return render(request, 'main/dzi_test_online.html', user_context(request,'въпроси'))
+    return render(request, 'main/dzi_test_online.html', user_context(request,'тест', show_th=True))
 
 
 def dzi_tasks(request):
