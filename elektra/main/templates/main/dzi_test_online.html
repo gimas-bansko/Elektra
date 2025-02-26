@@ -100,113 +100,81 @@
                             <div class="chat-box-list pt--30" v-else-if="status==1"
                                  v-for="(item, item_idx) in theme">
                                 <!-- Заглавна част -->
-                                <div class="chat-box author-speech bg-flashlight">
-                                    <div class="inner">
-                                        <div class="chat-section">
-                                            <div class="chat-content">
-                                                <h6 class="title">[[item.item]]. [[item.title]]</h6>
-                                                <p>Критерии за оценяване: <br>[[item.criterion]] </p>
-                                                <div class="rainbow-pricing-detailed-area">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="section-title text-left mb--30" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
-                                                                <p class="title w-600 mb--0">Брой тестови задачи по равнища </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row row--15">
-                                                        <div class="col-lg-12">
-                                                            <div class="rainbow-compare-table style-1">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- списък на въпросите на подтемата по нива на Блум -->
                                 <div v-for="level in 4" :key="level"   :id="'T'+item_idx+'L'+level">
+                                    <div v-for="(qst, qst_idx) in item.tasks">
+                                        <div class="chat-box author-speech bg-flashlight"
+                                             v-if="qst.level==level"
+                                             :id="'qt'+item_idx+'_'+qst_idx">
+                                            <div class="inner">
+                                                <div class="chat-section">
+                                                    <div class="chat-content">
+                                                        <!-- Заглавен ред -->
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                <h5 class="title"
+                                                            :class="{'color-level-1': qst.level==1,
+                                                                     'color-level-2': qst.level==2,
+                                                                     'color-level-3': qst.level==3,
+                                                                     'color-level-4': qst.level==4,
+                                                                    }">
+                                                            Въпрос #[[ qst.id ]]</h5>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="text-align: right;">
+                                                                <span style="font-size:9px; color: #C231A1;" v-if="qst.showLevel==-1"> Не се използва във Вашето училище</span>
+                                                                <span style="font-size:9px; color: #0d6efd;" v-if="qst.showLevel==0"> Въпрос от друго училище, използван и във Вашето</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Група/Ниво -->
+                                                        <div class="row mb--10">
+                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-12">
 
-                                    <!-- ако има въпроси от това ниво -->
-                                    <div>
-                                        <div v-for="(qst, qst_idx) in item.tasks">
-                                            <div class="chat-box ai-speech bg-flashlight mt--10"
-                                                 v-if="qst.level==level"
-                                                 :id="'qt'+item_idx+'_'+qst_idx">
-                                                <!-- показвам всички въпроси от тема/точка/ниво (theme/item/level) qst -->
-                                                <div class="inner top-flashlight leftside light-xl">
-                                                    <!-- Заглавна част - параметри на въпроса -->
-                                                    <div class="chat-section generate-section">
-                                                        <div class="chat-content">
-                                                            <!-- Заглавен ред -->
+                                                            </div>
+                                                            <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="text-align: center;">
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 " style="text-align: right;">
+                                                               <span class="react-btn btn-default btn-small btn-border"
+                                                                     :class="{'color-level-1': qst.level==1,
+                                                                              'color-level-2': qst.level==2,
+                                                                              'color-level-3': qst.level==3,
+                                                                              'color-level-4': qst.level==4,
+                                                                              }">
+                                                                     Въпрос от ниво [[2*qst.level]] т.</span>
+                                                           </div>
+                                                        </div>
+                                                        <!-- Контекст -->
+                                                        <div class="chat-content mb--10" v-if="qst.context!=NULL">
                                                             <div class="row">
-                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                                                    <h5 class="title"
-                                                                :class="{'color-level-1': qst.level==1,
-                                                                         'color-level-2': qst.level==2,
-                                                                         'color-level-3': qst.level==3,
-                                                                         'color-level-4': qst.level==4,
-                                                                        }">
-                                                                Въпрос #[[ qst.id ]]</h5>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="text-align: right;">
-                                                                    <span style="font-size:9px; color: #C231A1;" v-if="qst.showLevel==-1"> Не се използва във Вашето училище</span>
-                                                                    <span style="font-size:9px; color: #0d6efd;" v-if="qst.showLevel==0"> Въпрос от друго училище, използван и във Вашето</span>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Група/Ниво -->
-                                                            <div class="row mb--10">
-                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-12">
-
-                                                                </div>
-                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="text-align: center;">
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 " style="text-align: right;">
-                                                                   <span class="react-btn btn-default btn-small btn-border"
-                                                                         :class="{'color-level-1': qst.level==1,
-                                                                                  'color-level-2': qst.level==2,
-                                                                                  'color-level-3': qst.level==3,
-                                                                                  'color-level-4': qst.level==4,
-                                                                                  }">
-                                                                         Въпрос от ниво [[2*qst.level]] т.</span>
-                                                               </div>
-                                                            </div>
-                                                            <!-- Контекст -->
-                                                            <div class="chat-content mb--10" v-if="qst.context!=NULL">
-                                                                <div class="row">
-                                                                    <!-- картинка и текст -->
-                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='n'">
-                                                                        <p class="mb--10">[[ qst.context.text ]]</p>
-                                                                        <div class="col-lg-12 img-box  d-flex justify-content-center">
-                                                                            <img class="radius" :src="qst.context.picture">
-                                                                        </div>
+                                                                <!-- картинка и текст -->
+                                                                <div class="row mb--10" v-if="qst.context.textWrap=='n'">
+                                                                    <p class="mb--10">[[ qst.context.text ]]</p>
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.context.picture">
                                                                     </div>
-                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='s'">
-                                                                        <div class="col-lg-12 img-box  d-flex justify-content-center">
-                                                                            <img class="radius" :src="qst.context.picture">
-                                                                        </div>
-                                                                        <p class="mt--10">[[ qst.context.text ]]</p>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.context.textWrap=='s'">
+                                                                    <div class="col-lg-12 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.context.picture">
                                                                     </div>
-                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='e'">
-                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                            [[ qst.context.text ]]
-                                                                        </div>
-                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                            <img class="radius" :src="qst.context.picture">
-                                                                        </div>
+                                                                    <p class="mt--10">[[ qst.context.text ]]</p>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.context.textWrap=='e'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.context.text ]]
                                                                     </div>
-                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='w'">
-                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                            <img class="radius" :src="qst.context.picture">
-                                                                        </div>
-                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                            [[ qst.context.text ]]
-                                                                        </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.context.picture">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb--10" v-if="qst.context.textWrap=='w'">
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        <img class="radius" :src="qst.context.picture">
+                                                                    </div>
+                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
+                                                                        [[ qst.context.text ]]
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                       </div>
+                                                        </div>
                                                     </div>
                                                     <!-- Въпрос -->
                                                     <div class="chat-section">
@@ -457,6 +425,21 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div id="my_switcher" class="my_switcher">
+                                <ul>
+                                    <li>
+                                        <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                                            <img src="{% static 'assets/images/light/switch/sun-01.svg' %}" alt="Sun images"><span title="Light Mode"> Light</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                                            <img src="{% static 'assets/images/light/switch/vector.svg' %}" alt="Vector Images"><span title="Dark Mode">
+                                        Dark</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
