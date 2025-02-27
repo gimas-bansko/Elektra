@@ -43,41 +43,6 @@ const App = {
     },
 
     methods: {
-        removeGroup(t,max){ // търси индекс на елемент с атрибут group=g в масива t
-            let f = false
-            while (!f){
-                let i = 0
-                let g = 0
-                while (t[i]&&(g==0)){
-                    if (!(t[i].group==0)){
-                        g = t[i].group
-                    }
-                    i++
-                }
-                if (!(g == 0)){  // има група
-                    let group_idx=[]
-                    i = 0
-                    for(task of t){
-                        if(task.group==g){group_idx.push(i)}
-                        i++
-                    }
-                    // избирам по случаен начин 1 от елементите на групата и го премахвам от списъка с въпросите
-                    if((group_idx.length>1)&&(max<t.length)) {
-                        i = group_idx[Math.floor(Math.random() * group_idx.length)]
-                        t.splice(i,1)
-                    }
-                    else{t[group_idx[0]].group=0}
-                }
-                else {f = true}
-            }// while f
-        },
-        removeExtraTasks(t,max){
-            let n = 0
-            while (max < t.length){
-                n = Math.floor(Math.random() * t.length)
-                t.splice(n, 1)
-            }
-        },
         valueTasks(t, points){ // оценяване на задачите от дадено ниво
             let total = 0
             let numOkBase = 0 // брой верни отговори по ключ
@@ -119,19 +84,10 @@ const App = {
                 this.points_total += total
             }
         },
+
         stopTest(){
             this.status = 2
             clearInterval(vm.timer.id)
-            // оценка на резултата
-            this.points_total = 0
-            for(item of this.test){
-                this.valueTasks(item.tasks_knowledge, 2)
-                this.valueTasks(item.tasks_comprehension, 4)
-                this.valueTasks(item.tasks_application, 6)
-                this.valueTasks(item.tasks_analysis, 8)
-            }
-            this.points_total = Math.round(this.points_total)
-            this.sendTestResult()
         },
         sendTestResult(){
             const vm=this
@@ -146,28 +102,95 @@ const App = {
                     'Content-Type': 'application/json',
                 },
                 data:{
-                    theme: this.theme.num,
-                    points: this.points_total,
+                    theme: vm.theme.num,
+                    points: vm.points_total,
                     time: time
                 }
             })
                 .then(response => {
                 })
-                .catch(error => {
-                    throw("Error: ",error);
-                })
         },
 
         startTest(){
-            vm = this
-            vm.status = 1
-            vm.timer.h = 0
-            vm.timer.m = 0
-            vm.timer.s = 0
-            vm.testTimer()
-            const theme_num_id=vm.listOfThemes[vm.theme_num]
+            this.status = 1
+            this.timer.h = 0
+            this.timer.m = 0
+            this.timer.s = 0
+            this.timer.id = setInterval(this.testTimer, 1000)
+
+            // формирам нов тест
+            this.test.length = 0;
+            let groups=[]
+            let temp_question_list=[]
+            let level_nip = 0 // брой въпроси в теста изисквани от НИП за точка/ниво
+            //генерирам списък въпроси с изискваните от НИП брой и структура
+            let item;
+            for(item of this.theme){// обхождам темата точка по точка
+                console.log(item)
+                for (let level = 1; level < 5; level++){ //за всяко ниво по Блум
+                    if (level===1) {level_nip=item.knowledge}
+                    else if (level===2) {level_nip=item.comprehension}
+                    else if (level===3) {level_nip=item.application}
+                    else if (level===4) {level_nip=item.analysis}
+                    console.log('level '+level+' ('+level_nip+')') // ПРОВЕРКА
+                    temp_question_list.length = 0;
+                    for(let question of item.tasks){ //обхождам точката въпрос по въпрос
+                        if(question.level===level) {
+                            temp_question_list.push(question)
+                        }
+                    }
+                    // temp_question_list съдържа всички въпроси от текущото ниво за текущата точка
+                    // махам доколкото е възможно групите
+                    let num=0
+                    let question=temp_question_list[num]
+                    while ((num<temp_question_list.length)&&(temp_question_list.length > level_nip)){
+                        question=temp_question_list[num]
+                        if(question.group>0){ //въпросът е част от група
+                            if (groups.includes(question.group)) {
+                                //вече съм срещал тази група и затова махам въпроса
+                                temp_question_list.splice(num,1)
+                            }
+                            else {// това е първият срещнат елемент от група question.group (не се съдържа в масива groups)
+                                groups.push(question.group)
+                                num++
+                            }
+                        }
+                        else { //въпросът не е част от група
+                            num++
+                        }
+                    }
+                    // мамхам по случаен начин въпроси докато не останат толкова, колкото изисква НИП
+                    while(temp_question_list.length > level_nip){
+                        num=Math.floor(Math.random() * temp_question_list.length)
+                        temp_question_list.splice(num,1)
+                        }
+                    for(question of temp_question_list){ // ПРОВЕРКА
+                        console.log('question #'+question.id+' ( група #'+question.group+')')
+                    }
+                    // прехвърлям избраните въпроси от това ниво по тази точка в теста
+                    for (let question of temp_question_list){
+                        this.test.push(question)
+                    }
+                }
+            }
+            //разбърквам по случаен начин списъка с въпроси
+            for (let i = this.test.length - 1; i > 0; i--) {
+                // Избиране на случаен индекс от 0 до i
+                const randomIndex = Math.floor(Math.random() * (i + 1));
+                // Размяна на текущия елемент с елемента на случайния индекс
+                [this.test[i], this.test[randomIndex]] = [this.test[randomIndex], this.test[i]];
+            }
+            //номерирам въпросите
+            let num = 1
+            for (let question of this.test){
+                question.num=num
+                num++;
+            }
+            for(let question of this.test){ // ПРОВЕРКА
+                console.log('въпрос #'+question.num+' ( #'+question.id+')')
+            }
         },
-        
+
         testTimer(){
             vm=this
             if(vm.status===1){
