@@ -39,6 +39,7 @@ const App = {
                 },
             ],
             theme_num:1,
+            showResults: false,
         }
     },
 
@@ -85,10 +86,6 @@ const App = {
             }
         },
 
-        stopTest(){
-            this.status = 2
-            clearInterval(vm.timer.id)
-        },
         sendTestResult(){
             const vm=this
             time = ((this.timer.h * 60) + this.timer.m) * 60 +this.timer.s
@@ -111,6 +108,10 @@ const App = {
                 })
         },
 
+        stopTest(){
+            this.status = 2
+            clearInterval(vm.timer.id)
+        },
         startTest(){
             this.status = 1
             this.timer.h = 0
@@ -126,13 +127,11 @@ const App = {
             //генерирам списък въпроси с изискваните от НИП брой и структура
             let item;
             for(item of this.theme){// обхождам темата точка по точка
-                console.log(item)
                 for (let level = 1; level < 5; level++){ //за всяко ниво по Блум
                     if (level===1) {level_nip=item.knowledge}
                     else if (level===2) {level_nip=item.comprehension}
                     else if (level===3) {level_nip=item.application}
                     else if (level===4) {level_nip=item.analysis}
-                    console.log('level '+level+' ('+level_nip+')') // ПРОВЕРКА
                     temp_question_list.length = 0;
                     for(let question of item.tasks){ //обхождам точката въпрос по въпрос
                         if(question.level===level) {
@@ -164,9 +163,6 @@ const App = {
                         num=Math.floor(Math.random() * temp_question_list.length)
                         temp_question_list.splice(num,1)
                         }
-                    for(question of temp_question_list){ // ПРОВЕРКА
-                        console.log('question #'+question.id+' ( група #'+question.group+')')
-                    }
                     // прехвърлям избраните въпроси от това ниво по тази точка в теста
                     for (let question of temp_question_list){
                         this.test.push(question)
@@ -186,11 +182,7 @@ const App = {
                 question.num=num
                 num++;
             }
-            for(let question of this.test){ // ПРОВЕРКА
-                console.log('въпрос #'+question.num+' ( #'+question.id+')')
-            }
         },
-
         testTimer(){
             vm=this
             if(vm.status===1){
