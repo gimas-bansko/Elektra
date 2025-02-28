@@ -22119,3 +22119,23 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
 .custom-file-label:hover {
     background-color: #0056b3; /* По-тъмен син цвят при hover */
 }
+
+.color-grade-6 {
+  color: #41a341 !important;
+}
+
+.color-grade-5 {
+  color: #0936e8 !important;
+}
+
+.color-grade-4 {
+  color: #f8b503 !important;
+}
+
+.color-grade-3 {
+  color: #d35426 !important;
+}
+
+.color-grade-2 {
+  color: #ef0606 !important;
+}

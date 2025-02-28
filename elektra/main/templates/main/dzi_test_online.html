@@ -175,9 +175,9 @@
                                                                     <!-- Опции/отговори -->
                                                                     <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
                                                                         <input :id="'option_'+qst.id+'_'+option.id"
-                                                                               type="checkbox" disabled :checked="option.checked">
+                                                                               type="checkbox" v-model="option.checked_t">
                                                                         <label :for="'option_'+qst.id+'_'+option.id">
-                                                                            <span :class="{'color-No': !option.checked, 'color-Ok': option.checked}">[[ option.leading_char ]]. [[ option.text ]]</span>
+                                                                            <span>[[ option.leading_char ]]. [[ option.text ]]</span>
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -222,9 +222,9 @@
                                                                         <!-- Опции/отговори -->
                                                                         <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
                                                                             <input :id="'option_'+qst.id+'_'+option.id"
-                                                                                   type="checkbox" disabled :checked="option.checked">
+                                                                                   type="checkbox" v-model="option.checked_t">
                                                                             <label :for="'option_'+qst.id+'_'+option.id">
-                                                                                <span :class="{'color-No': !option.checked, 'color-Ok': option.checked}">[[ option.leading_char ]]. [[ option.text ]]</span>
+                                                                                <span>[[ option.leading_char ]]. [[ option.text ]]</span>
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -243,12 +243,11 @@
                                                                             <div class="col-lg-5 d-flex align-items-center">
                                                                                 [[ option.leading_char ]]. [[ option.text ]]
                                                                             </div>
-                                                                            <div class="col-lg-7 btn-grp">
-                                                                                <button class="react-btn btn-default btn-small btn-border"
-                                                                                        type="button"
-                                                                                        style="color: green; border-color: #013401;">
-                                                                                    [[ option.value ]]</button>&nbsp;
-                                                                                [[ option.value_name ]]
+                                                                            <div class="col-lg-7">
+                                                                                <div class="form-group">
+                                                                                    <input type="text" style="max-width:60px;" v-model="option.value_t">
+                                                                                    <span class="btn-default bg-solid-primary">&nbsp;&nbsp;&nbsp;[[ option.value_name ]]</span>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -294,14 +293,11 @@
                                                                     <!-- Опции/отговори -->
                                                                     <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
                                                                         <div class="row">
-                                                                            <div class="col-lg-2 d-flex align-items-end  btn-grp">
-                                                                               <button class="react-btn btn-default btn-small btn-border"
-                                                                                        type="button"
-                                                                                        style="color: green; border-color: #013401;">
-                                                                                    [[ option.value ]]</button>&nbsp;
-                                                                            </div>
-                                                                            <div class="col-lg-10">
-                                                                                [[ option.value_name ]]
+                                                                            <div class="col-lg-12 d-flex align-items-end  btn-grp">
+                                                                                <div class="form-group">
+                                                                                    <input type="text" style="max-width:60px;" v-model="option.value_t">
+                                                                                    <span class="btn-default bg-solid-primary">&nbsp;&nbsp;&nbsp;[[ option.value_name ]]</span>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -312,13 +308,14 @@
                                                         <!-- Въпрос тип 5 - изброени отговори без картинка -->
                                                         <div class="chat-content" v-else>
                                                             <p class="mb--20" style="text-align: justify;">[[ qst.text ]]</p>
-                                                            <div class="row">
-                                                                <div class="row mt-5"><div>Допустими отговори:</div> </div>
-                                                                <div class="col-lg-2 d-flex align-items-end"></div>
-                                                                <div class="col-lg-10">
+                                                            <div class="row" v-for="(option, idx) in qst.options">
+                                                                <div class="col-lg-2"  v-if="idx==0"><span>Отговор:</span> </div>
+                                                                <div class="col-lg-10"  v-if="idx==0">
                                                                     <!-- Опции/отговори -->
-                                                                    <div class="rbt-checkbox-wrapper" v-for="(option, idx) in qst.options">
-                                                                        [[ idx+1 ]]. [[ option.value ]]
+                                                                    <div class="form-group">
+                                                                        <input type="text"
+                                                                               placeholder="Вашият отговор ..."
+                                                                               v-model="option.value_t">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -582,6 +579,18 @@
                                 <h1 class="title theme-gradient h2">
                                     [[ (timer.h<10)?'0'+timer.h:timer.h ]]:[[ (timer.m<10)?'0'+timer.m:timer.m ]]:[[ (timer.s<10)?'0'+timer.s:timer.s ]]
                                 </h1>
+                            </div>
+                            <div v-if="status==2" style="text-align: center;">
+                                <h5>
+                                    Точки общо: [[ points_total ]]
+                                </h5>
+                                Вашата оценка е
+                                <span :class="{'color-grade-2': exam_grade == 'слаб',
+                                               'color-grade-3': exam_grade == 'среден',
+                                               'color-grade-4': exam_grade == 'добър',
+                                               'color-grade-5': exam_grade == 'много добър',
+                                               'color-grade-6': exam_grade == 'отличен',
+                                               }">[[ exam_grade ]] [[ exam_score ]]</span>
                             </div>
                         </div>
                         <!-- бутон Стартирай тест -->

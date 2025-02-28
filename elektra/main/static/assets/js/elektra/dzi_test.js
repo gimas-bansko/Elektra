@@ -40,52 +40,12 @@ const App = {
             ],
             theme_num:1,
             showResults: false,
+            exam_score:0,
+            exam_grade:'слаб',
         }
     },
 
     methods: {
-        valueTasks(t, points){ // оценяване на задачите от дадено ниво
-            let total = 0
-            let numOkBase = 0 // брой верни отговори по ключ
-            let numOk = 0 // брой дадени верни отговори
-            let numAnswers = 0 // брой дадени отговори
-            let taskTotal = 0 // точки за конкретния въпрос
-            let numOptions = 0 // брой отговори към въпроса
-            if (t.length > 0){
-                for (task of t){
-                    numOkBase = 0; numOk = 0; numAnswers = 0; taskTotal = 0; numOptions = 0
-                    if (task.type < 3){ // тип 1 или 2 - затворен въпрос
-                        for(option of task.options){
-                            numOptions++
-                            if (option.checked_t){numAnswers++}
-                            if (option.checked){numOkBase++}
-                            if (option.checked_t && option.checked){numOk++}
-                        }
-                        if ((numOkBase >= numOk)&&(numOkBase>0)){
-                            taskTotal += Math.round(points*numOk/numOkBase)
-                        }
-                    }
-                    else if (task.type < 5){ // тип 1 или 2 - съпоставяне
-                        for(option of task.options){
-                            numOptions++
-                            if (option.value_t){numAnswers++}
-                            if (option.value_t && option.value){numOk++}
-                        }
-                        if(numOptions>0){ taskTotal += points*numOk/numOptions }
-                    }
-                    else { // отворен отговор
-                        for(option of task.options){
-                            numOptions++
-                            if (task.options[0].value_t == option.value){numOk = 1}
-                        }
-                        taskTotal += points*numOk
-                    }
-                    total = total + taskTotal
-                }
-                this.points_total += total
-            }
-        },
-
         sendTestResult(){
             const vm=this
             time = ((this.timer.h * 60) + this.timer.m) * 60 +this.timer.s
@@ -110,7 +70,77 @@ const App = {
 
         stopTest(){
             this.status = 2
-            clearInterval(vm.timer.id)
+            clearInterval(this.timer.id)
+            // оценяване на задачите от дадено ниво
+            let numOkBase = 0 // брой верни отговори по ключ
+            let numOk = 0 // брой дадени верни отговори
+            let numAnswers = 0 // брой дадени отговори
+            let taskTotal = 0 // точки за конкретния въпрос
+            let numOptions = 0 // брой отговори към въпроса
+            let points = 0
+            this.points_total = 0
+            console.log('1.'+this.points_total)
+            for (let task of this.test){
+                numOkBase = 0; numOk = 0; numAnswers = 0; taskTotal = 0; numOptions = 0
+                task.stat_points=0
+                if (task.type < 3){ // тип 1 или 2 - затворен въпрос
+                    for(let option of task.options){
+                        numOptions++
+                        if (option.checked_t){numAnswers++}
+                        if (option.checked){numOkBase++}
+                        if (option.checked_t && option.checked){numOk++}
+                    }
+                    if ((numOkBase >= numOk)&&(numOkBase>0)){
+                        points = task.level*2*numOk/numOkBase
+                        task.stat_points = parseFloat(points.toFixed(2));
+                        // NB полето stat_points съдържа САМО точките от този тест
+                    }
+                }
+                else if (task.type < 5){ // тип 3 или 4 - съпоставяне
+                    for(let option of task.options){
+                        numOptions++
+                        if (option.value_t){numAnswers++}
+                        if (option.value_t && option.value){numOk++}
+                    }
+                    if(numOptions>0){
+                        points = task.level*2*numOk/numOptions
+                        task.stat_points = parseFloat(points.toFixed(2));
+                        // NB полето stat_points съдържа САМО точките от този тест
+                    }
+                }
+                else { // отворен отговор
+                    for(let option of task.options){
+                        numOptions++
+                        if (task.options[0].value_t === option.value){numOk = 1}
+                    }
+                    task.stat_points = points*numOk
+                }
+                console.log('task.stat_points='+task.stat_points)
+                this.points_total = this.points_total + task.stat_points
+                console.log('2.'+this.points_total)
+            }
+            let es=this.points_total*0.06
+            console.log('3.'+this.points_total)
+
+            this.exam_score = parseFloat(es.toFixed(2))
+            if(this.exam_score <= 2.00) {
+                this.exam_score = 2.00
+            }
+            if(this.exam_score <= 2.99) {
+                this.exam_grade = 'слаб'
+            }
+            else if(this.exam_score <= 3.49) {
+                this.exam_grade = 'среден'
+            }
+            else if(this.exam_score <= 4.49) {
+                this.exam_grade = 'добър'
+            }
+            else if(this.exam_score <= 5.49) {
+                this.exam_grade = 'много добър'
+            }
+            else {
+                this.exam_grade = 'отличен'
+            }
         },
         startTest(){
             this.status = 1

@@ -198,6 +198,9 @@ class Task(models.Model):
                                 help_text='Разположение на текста спрямо картинката (e,w,n,s)')
     context = models.ForeignKey(TaskContext, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks',
                                 help_text='Контекст за въпроса')
+    # данни за статистика по въпроси
+    stat_attempts = models.IntegerField('Брой опити', default=0, help_text='колко пъти е изтеглен въпроса')
+    stat_points = models.FloatField('Получени точки', default=0, help_text='колко точки общо е получено от отговори')
 
     objects = TaskManager()
 
