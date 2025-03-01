@@ -225,8 +225,8 @@
                                                             <div class="chat-content mb--10" v-if="qst.context!=NULL">
                                                                 <div class="row">
                                                                     <!-- картинка и текст -->
-                                                                    <div class="row mb--10" v-if="qst.context.textWrap=='n'">
-                                                                        <p class="mb--10">[[ qst.context.text ]]</p>
+                                                                    <div class="row mb--10"  v-if="qst.context.textWrap=='n'">
+                                                                        <p class="mb--10" style="text-align: justify;">[[ qst.context.text ]]</p>
                                                                         <div class="col-lg-12 img-box  d-flex justify-content-center">
                                                                             <img class="radius" :src="qst.context.picture">
                                                                         </div>
@@ -235,11 +235,11 @@
                                                                         <div class="col-lg-12 img-box  d-flex justify-content-center">
                                                                             <img class="radius" :src="qst.context.picture">
                                                                         </div>
-                                                                        <p class="mt--10">[[ qst.context.text ]]</p>
+                                                                        <p class="mt--10" style="text-align: justify;">[[ qst.context.text ]]</p>
                                                                     </div>
                                                                     <div class="row mb--10" v-if="qst.context.textWrap=='e'">
-                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                            [[ qst.context.text ]]
+                                                                        <div class="col-lg-6">
+                                                                            <p class="mt--10" style="text-align: justify;">[[ qst.context.text ]]</p>
                                                                         </div>
                                                                         <div class="col-lg-6 img-box  d-flex justify-content-center">
                                                                             <img class="radius" :src="qst.context.picture">
@@ -249,8 +249,8 @@
                                                                         <div class="col-lg-6 img-box  d-flex justify-content-center">
                                                                             <img class="radius" :src="qst.context.picture">
                                                                         </div>
-                                                                        <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                            [[ qst.context.text ]]
+                                                                        <div class="col-lg-6">
+                                                                            <p class="mt--10" style="text-align: justify;">[[ qst.context.text ]]</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -261,7 +261,7 @@
                                                     <div class="chat-section">
                                                         <!-- Въпрос тип 1 - изброени отговори без картинка -->
                                                         <div class="chat-content" v-if="qst.type==1">
-                                                            <p class="mb--20">[[ qst.text ]]</p>
+                                                            <p class="mt--20" style="text-align: justify;">[[ qst.text ]]</p>
                                                             <div class="row">
                                                                 <div class="col-lg-1"></div>
                                                                 <div class="col-lg-11">
@@ -281,7 +281,7 @@
                                                             <div class="row">
                                                                 <!-- картинка и текст -->
                                                                 <div class="row mb--10" v-if="qst.textWrap=='n'">
-                                                                    <p class="mb--10">[[ qst.text ]]</p>
+                                                                    <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                     <div class="col-lg-12 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
                                                                     </div>
@@ -290,11 +290,11 @@
                                                                     <div class="col-lg-12 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
                                                                     </div>
-                                                                    <p class="mt--10">[[ qst.text ]]</p>
+                                                                    <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                 </div>
                                                                 <div class="row mb--10" v-if="qst.textWrap=='e'">
-                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                        [[ qst.text ]]
+                                                                    <div class="col-lg-6">
+                                                                        <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                     </div>
                                                                     <div class="col-lg-6 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
@@ -304,8 +304,8 @@
                                                                     <div class="col-lg-6 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
                                                                     </div>
-                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                        [[ qst.text ]]
+                                                                    <div class="col-lg-6">
+                                                                        <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                     </div>
                                                                 </div>
                                                                 <!-- отговори -->
@@ -326,7 +326,7 @@
                                                         </div>
                                                         <!-- Въпрос тип 3 - съпоставяне без картинка -->
                                                         <div class="chat-content" v-else-if="qst.type==3">
-                                                            <p class="mb--20">[[ qst.text ]]</p>
+                                                            <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                             <div class="row">
                                                                 <div class="col-lg-1"></div>
                                                                 <div class="col-lg-11">
@@ -337,10 +337,9 @@
                                                                                 [[ option.leading_char ]]. [[ option.text ]]
                                                                             </div>
                                                                             <div class="col-lg-7 btn-grp">
-                                                                                <button class="react-btn btn-default btn-small btn-border"
-                                                                                        type="button"
-                                                                                        style="color: green; border-color: #013401;">
-                                                                                    [[ option.value ]]</button>&nbsp;
+                                                                                <span class="btn-color-green-outline">
+                                                                                    &nbsp;[[ option.value ]]&nbsp;</span>
+                                                                                &nbsp;
                                                                                 [[ option.value_name ]]
                                                                             </div>
                                                                         </div>
@@ -353,7 +352,7 @@
                                                             <div class="row">
                                                                 <!-- картинка и текст -->
                                                                 <div class="row mb--10" v-if="qst.textWrap=='n'">
-                                                                    <p class="mb--10">[[ qst.text ]]</p>
+                                                                    <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                     <div class="col-lg-12 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
                                                                     </div>
@@ -362,11 +361,11 @@
                                                                     <div class="col-lg-12 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
                                                                     </div>
-                                                                    <p class="mt--10">[[ qst.text ]]</p>
+                                                                    <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                 </div>
                                                                 <div class="row mb--10" v-if="qst.textWrap=='e'">
-                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                        [[ qst.text ]]
+                                                                    <div class="col-lg-6">
+                                                                        <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                     </div>
                                                                     <div class="col-lg-6 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
@@ -376,8 +375,8 @@
                                                                     <div class="col-lg-6 img-box  d-flex justify-content-center">
                                                                         <img class="radius" :src="qst.picture">
                                                                     </div>
-                                                                    <div class="col-lg-6 img-box  d-flex justify-content-center">
-                                                                        [[ qst.text ]]
+                                                                    <div class="col-lg-6">
+                                                                        <p class="mt--10" style="text-align: justify;">[[ qst.text ]]</p>
                                                                     </div>
                                                                 </div>
                                                                 <!-- отговори -->
@@ -387,11 +386,9 @@
                                                                     <!-- Опции/отговори -->
                                                                     <div class="rbt-checkbox-wrapper" v-for="option in qst.options">
                                                                         <div class="row">
-                                                                            <div class="col-lg-2 d-flex align-items-end  btn-grp">
-                                                                               <button class="react-btn btn-default btn-small btn-border"
-                                                                                        type="button"
-                                                                                        style="color: green; border-color: #013401;">
-                                                                                    [[ option.value ]]</button>&nbsp;
+                                                                            <div class="col-lg-2 d-flex align-items-end">
+                                                                                <span class="btn-color-green-outline">
+                                                                                    &nbsp;[[ option.value ]]&nbsp;</span>
                                                                             </div>
                                                                             <div class="col-lg-10">
                                                                                 [[ option.value_name ]]
@@ -404,7 +401,7 @@
                                                         </div>
                                                         <!-- Въпрос тип 5 - изброени отговори без картинка -->
                                                         <div class="chat-content" v-else>
-                                                            <p class="mb--20">[[ qst.text ]]</p>
+                                                            <p class="mt--20" style="text-align: justify;">[[ qst.text ]]</p>
                                                             <div class="row">
                                                                 <div class="row mt-5"><div>Допустими отговори:</div> </div>
                                                                 <div class="col-lg-2 d-flex align-items-end"></div>
@@ -426,7 +423,7 @@
                                                                     style="font-size: 12px;"
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     @click="remark.text=''; remark.task_id=qst.id;">
-                                                                <i class="feather-file-plus"></i><span>&nbspКоментар&nbsp</span>
+                                                                </i><span>&nbspКоментар&nbsp</span>
                                                             </button>
                                                             <ul class="dropdown-menu">
                                                                 <li><a class="dropdown-item delete-item"
@@ -442,11 +439,11 @@
                                                         <div class="col-lg-2 col-md-2 col-sm-2 col-6">
                                                             <button type="button"
                                                                     class="react-btn btn-default btn-small btn-border dropdown-toggle"
-                                                                    style="font-size: 12px; padding-left: 10px;"
+                                                                    style="font-size: 12px;"
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     @click="remark.text=''; remark.task_id=qst.id;"
                                                                     v-if="theme[item_idx].tasks[qst_idx].showLevel!=-1">
-                                                                <i class="feather-file-plus"></i><span>Групиране</span>
+                                                                </i><span>Групиране</span>
                                                             </button>
                                                             <ul class="dropdown-menu">
                                                                 <li><a class="dropdown-item delete-item"
@@ -1163,11 +1160,8 @@
                                         </div>
                                         <div class="col-lg-1"></div>
                                         <div class="col-lg-1">
-                                           <div class="btn-grp">
-                                               <button class="react-btn btn-default btn-small btn-border">
-                                                   <span style="margin-left: -6px;">[[option.value]]</span>
-                                               </button>
-                                           </div>
+                                           <span class="btn-color-none-outline">
+                                               &nbsp;[[ option.value ]]&nbsp;</span>
                                         </div>
                                         <div class="col-lg-5" style="display: flex; align-items: center;">
                                             <span >[[option.value_name]]</span>
@@ -1188,11 +1182,8 @@
                                     <div class="row mt--5" v-else-if="(question.type==4)&&(!option.collapsed)">
                                         <div class="form-group col-lg-1"></div>
                                         <div class="col-lg-1">
-                                           <div class="btn-grp">
-                                               <button class="react-btn btn-default btn-small btn-border">
-                                                   <span style="margin-left: -6px;">[[option.value]]</span>
-                                               </button>
-                                           </div>
+                                           <span class="btn-color-none-outline">
+                                               &nbsp;[[ option.value ]]&nbsp;</span>
                                         </div>
                                         <div class="col-lg-10" style="display: flex; align-items: center;">
                                             <span >[[option.value_name]]</span>

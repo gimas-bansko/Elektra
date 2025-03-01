@@ -11347,7 +11347,7 @@ button.btn-default.btn-small,
 div.btn-default.btn-small {
   height: 40px;
   line-height: 40px;
-  padding: 0 20px;
+  padding: 0 5px;
   font-size: 14px;
   font-weight: 500;
 }
@@ -22047,12 +22047,11 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
 
 .color-Ok {
   color: green;
-  text-decoration: underline;
 }
 
 .color-No {
   color: brown;
-  text-decoration: line-through;
+  /*text-decoration: line-through;*/
 }
 
 .bg-color-bad {
@@ -22073,6 +22072,39 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
 .btn-color-blue {
   border-color: rgb(7 3 144);
   color: #0d6efd;
+}
+
+.btn-color-green-outline {
+  color: green;
+  border-color: #013401;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 8px;
+  display: inline-block;
+  min-width: 30px;
+  text-align: center;
+}
+
+.btn-color-red-outline {
+  color: red;
+  border-color: red;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 8px;
+  display: inline-block;
+  min-width: 30px;
+  text-align: center;
+  /*text-decoration: line-through;*/
+}
+
+.btn-color-none-outline {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 8px;
+  display: inline-block;
+  min-width: 30px;
+  text-align: center;
+  /*text-decoration: line-through;*/
 }
 
 .elektra-tab {

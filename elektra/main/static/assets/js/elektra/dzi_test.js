@@ -70,6 +70,7 @@ const App = {
 
         stopTest(){
             this.status = 2
+            this.showResults=false
             clearInterval(this.timer.id)
             // оценяване на задачите от дадено ниво
             let numOkBase = 0 // брой верни отговори по ключ
@@ -79,10 +80,9 @@ const App = {
             let numOptions = 0 // брой отговори към въпроса
             let points = 0
             this.points_total = 0
-            console.log('1.'+this.points_total)
             for (let task of this.test){
                 numOkBase = 0; numOk = 0; numAnswers = 0; taskTotal = 0; numOptions = 0
-                task.stat_points=0
+                task.stat_points=0; points = 0;
                 if (task.type < 3){ // тип 1 или 2 - затворен въпрос
                     for(let option of task.options){
                         numOptions++
@@ -90,7 +90,7 @@ const App = {
                         if (option.checked){numOkBase++}
                         if (option.checked_t && option.checked){numOk++}
                     }
-                    if ((numOkBase >= numOk)&&(numOkBase>0)){
+                    if ((numOkBase >= numOk)&&(numOkBase>0)&&(numAnswers<=numOkBase)){
                         points = task.level*2*numOk/numOkBase
                         task.stat_points = parseFloat(points.toFixed(2));
                         // NB полето stat_points съдържа САМО точките от този тест
@@ -100,7 +100,7 @@ const App = {
                     for(let option of task.options){
                         numOptions++
                         if (option.value_t){numAnswers++}
-                        if (option.value_t && option.value){numOk++}
+                        if (option.value_t === option.value){numOk++}
                     }
                     if(numOptions>0){
                         points = task.level*2*numOk/numOptions
@@ -115,12 +115,9 @@ const App = {
                     }
                     task.stat_points = points*numOk
                 }
-                console.log('task.stat_points='+task.stat_points)
                 this.points_total = this.points_total + task.stat_points
-                console.log('2.'+this.points_total)
             }
             let es=this.points_total*0.06
-            console.log('3.'+this.points_total)
 
             this.exam_score = parseFloat(es.toFixed(2))
             if(this.exam_score <= 2.00) {
@@ -195,6 +192,10 @@ const App = {
                         }
                     // прехвърлям избраните въпроси от това ниво по тази точка в теста
                     for (let question of temp_question_list){
+                        for (let option of question.options){
+                            option.value_t=''
+                            option.checked_t=false
+                        }
                         this.test.push(question)
                     }
                 }
