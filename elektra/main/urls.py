@@ -54,4 +54,6 @@ urlpatterns = [
     path('api/school-to-task-action/<int:task_id>/<int:school_id>/<str:action>/', views.school_to_task_action, name='add_school_to_task'),
     # transfer
     path('api/transfer/<int:theme>/', convert.TransferData.as_view()),
+    # AI
+    path("api/check-answer/", views.CheckAnswer.as_view()),
 ]

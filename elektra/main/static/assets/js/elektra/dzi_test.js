@@ -68,6 +68,35 @@ const App = {
                 })
         },
 
+        checkAnswer(qst){
+            const vm = this;
+            let task = qst
+            let ea =''
+            for(let opt of qst.options){
+                if (ea.length>0){ ea=ea+'; '}
+                ea=ea+opt.value;
+            }
+            axios({
+                method:'POST',
+                url:'/api/check-answer/',
+                headers:{
+                    'X-CSRFToken':CSRF_TOKEN,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    question: qst.text,
+                    example_answer:  ea,
+                    student_answer: qst.options[0].value_t,
+                }
+            })
+                .then(response => {
+                    task.textWrap='(проверено с ИИ)'
+                    if(response.data.result==='Да'){task.stat_points=task.level*2}
+                    else {task.stat_points=0}
+                })
+        },
+
         stopTest(){
             this.status = 2
             this.showResults=false
@@ -112,6 +141,10 @@ const App = {
                     for(let option of task.options){
                         numOptions++
                         if (task.options[0].value_t === option.value){numOk = 1}
+
+                    }
+                    if((points==0)&&(task.options[0].value_t.length>0)) {
+                        this.checkAnswer(task)
                     }
                     task.stat_points = points*numOk
                 }

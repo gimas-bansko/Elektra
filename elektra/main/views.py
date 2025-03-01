@@ -12,9 +12,9 @@ from .serializers import *
 from django.http import JsonResponse
 
 from django.db import transaction
-# from django.views.decorators.csrf import csrf_exempt
 
-import requests
+from openai import OpenAI
+
 
 def index(request):
     return render(request, 'main/index.html')
@@ -526,3 +526,55 @@ class DuplicateTask(APIView):
             new_id = new_task.id
 
         return Response(new_id)
+
+
+"""
+    Проверка на въпрос с отворен отговор с понощта на OpenAI
+"""
+# Задайте вашия OpenAI API ключ
+client = OpenAI(
+  api_key ="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"
+)
+
+class CheckAnswer(APIView):
+    def post(self, request):
+        try:
+            # Парсиране на входните данни от фронтенда
+            question = request.data["question"]
+            example_answer = request.data["example_answer"]
+            student_answer = request.data["student_answer"]
+            print(question, example_answer, student_answer)
+            # Проверка дали всички необходими данни са налични
+            if not question or not example_answer or not student_answer:
+                return Response({"error": "Missing required fields"}, status=400)
+
+            # Формулиране на prompt за OpenAI
+            prompt = f"""  
+Ти си учител, който проверява отговор на ученик  на зададен въпрос.   
+Въпросът е: "{question}"  
+Възможни верни отговори са (разделени с ";"): "{example_answer}"  
+Отговора на ученика е: "{student_answer}"  
+
+Верен ли е отговорът на ученика? Отговори с "Да" или "Не".  
+"""
+
+            # Изпращане на заявка към OpenAI API
+            response = client.chat.completions.create(
+                model="gpt-4",  # Можете да използвате и "gpt-3.5-turbo"
+                messages=[
+                    {'role': 'system', 'content': 'You are a helpful assistant.'},
+                    {'role': 'user', 'content': prompt},
+                ],
+                max_tokens=100,
+                temperature=0.2,  # По-ниска стойност за по-конкретни отговори
+            )
+
+            # Извличане на отговора от OpenAI
+            ai_response = response.choices[0].message.content.strip()
+
+            # Връщане на резултата към фронтенда
+            return Response({'result': ai_response}, status=200)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
+

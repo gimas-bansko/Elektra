@@ -550,6 +550,8 @@
                                                             <span :class="{'color-No': qst.stat_points==0,
                                                                            'color-Ok': qst.stat_points>0}">
                                                                 [[ option.value_t ]]</span>
+                                                            <span style="font-size:10px; color: #0d6efd;"
+                                                                  v-if="qst.textWrap.length>1">&nbsp;[[qst.textWrap]]</span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
