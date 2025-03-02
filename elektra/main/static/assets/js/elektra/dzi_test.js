@@ -48,10 +48,17 @@ const App = {
     methods: {
         sendTestResult(){
             const vm=this
-            time = ((this.timer.h * 60) + this.timer.m) * 60 +this.timer.s
+            let time=''
+            if(this.timer.h<10){time=time+'0'}
+            time=time+this.timer.h+':'
+            if(this.timer.m<10){time=time+'0'}
+            time=time+this.timer.m+':'
+            if(this.timer.s<10){time=time+'0'}
+            time=time+this.timer.s
+
             axios({
                 method:'POST',
-                url:'/diki/api/SaveTestResult/',
+                url:'/api/SaveTestResult/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
@@ -59,9 +66,11 @@ const App = {
                     'Content-Type': 'application/json',
                 },
                 data:{
-                    theme: vm.theme.num,
+                    theme: vm.user.theme,
+                    spec: vm.user.speciality,
                     points: vm.points_total,
-                    time: time
+                    time: time,
+                    test:this.test,
                 }
             })
                 .then(response => {
@@ -171,6 +180,7 @@ const App = {
             else {
                 this.exam_grade = 'отличен'
             }
+            this.sendTestResult()
         },
         startTest(){
             this.status = 1

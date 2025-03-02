@@ -359,23 +359,35 @@ class TestByThemeView(APIView):
        *******************   TEST  ******************
 """
 
-
+# запазване на резултат от тест на на ниво потребител
 class SaveTestResults(APIView):
     def post(self, request):
+        # запис на резултата на ниво потребител
         user = self.request.user
         user_id = user.id
-        user_name = user.first_name + ' ' + user.last_name
+
         theme = request.data['theme']
         points = request.data['points']
         time = request.data['time']
+        spec = request.data['spec']
 
         record = Test.objects.create()
-        record.user_id = user_id
-        record.user_name = user_name
-        record.theme = theme
+        record.user = user
+        record.theme = Theme.objects.filter(id=theme).get()
+        record.spec = Specialty.objects.filter(id=spec).get()
         record.points = points
         record.time = time
         record.save()
+
+        # запис на реезултата на ниво въпроси
+        test = request.data['test']
+        for test_question in test:
+            print(f'test question:{test_question}')
+
+            local_question = Task.objects.filter(id=test_question['id']).get()
+            local_question.stat_attempts = local_question.stat_attempts + 1
+            local_question.stat_points = local_question.stat_points + test_question['stat_points']
+            local_question.save()
 
         return Response(status=201)
 
@@ -507,7 +519,6 @@ class DuplicateTask(APIView):
                 author=school,
                 textWrap=original_task.textWrap,
             )
-
             # Копирам свързаните TaskItem записи
             task_items = TaskItem.objects.filter(task=original_task)
             for item in task_items:

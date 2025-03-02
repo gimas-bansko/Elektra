@@ -280,11 +280,11 @@ class Log(models.Model):
 ***************************************
 """
 class Test(models.Model):
-    user_id = models.IntegerField('id на потрбител', default=0)
-    user_name = models.CharField('id на потрбител', max_length=50, default='', null=True)
-    theme = models.PositiveSmallIntegerField('номер на тема', default=0)
-    points = models.PositiveSmallIntegerField('получени точки', default=0)
-    time = models.IntegerField('продължителност', default=0)
+    user = models.ForeignKey(User,verbose_name='потребител', on_delete=models.CASCADE, default=1)
+    theme = models.ForeignKey(Theme, verbose_name='тема', on_delete=models.CASCADE, default=1)
+    spec = models.ForeignKey(Specialty, verbose_name='специалност', on_delete=models.CASCADE, default=1)
+    points = models.IntegerField('получени точки', default=0)
+    time = models.CharField('продължителност',  max_length=10, default='00:00:00')
     date = models.DateTimeField('дата и час', default=datetime.now, null=True)
 
     def __str__(self):
