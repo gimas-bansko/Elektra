@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ThemeItem, Theme, Task, TaskItem,  Test, Remark, TaskContext
+from .models import ThemeItem, Theme, Task, TaskItem,  TestResult, Remark, TaskContext
 
 """ 
     Сериализатори за въпросите 
@@ -78,7 +78,7 @@ class ThemeNumSerializer(serializers.ModelSerializer):
 
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Test
+        model = TestResult
         fields = ('user_id', 'user_name', 'theme', 'points', 'time')
 
 
@@ -135,7 +135,7 @@ class TaskSaveTaskOptionsSerializer(serializers.ModelSerializer):
 class TestReadSerializer(serializers.ModelSerializer):
     # image_url = serializers.SerializerMethodField('get_image_url')
     class Meta:
-        model = Test
+        model = TestResult
         # fields = ( 'id', 'title', 'creation_date', 'image', 'author', 'image_url')
         fields = "__all__"
 
@@ -149,7 +149,7 @@ class TestReadSerializer(serializers.ModelSerializer):
 
 class TestSaveSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Test
+        model = TestResult
         fields = '__all__'
 
     def create(self, validated_data):
@@ -158,21 +158,21 @@ class TestSaveSerializer(serializers.ModelSerializer):
         cd = validated_data.get('creation_date')
         ath = validated_data.get('author')
         if i == 1000:
-            test = Test.objects.create(title=ttl, author=ath)
+            test = TestResult.objects.create(title=ttl, author=ath)
         else:
-            test = Test.objects.update_or_create(id=validated_data.get("id"), defaults={'title': ttl, 'creation_date': cd, 'author': ath})
+            test = TestResult.objects.update_or_create(id=validated_data.get("id"), defaults={'title': ttl, 'creation_date': cd, 'author': ath})
         return test
 
 
 class TestSaveFileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Test
+        model = TestResult
         fields = ('id', 'image')
 
     def create(self, validated_data):
         i = validated_data.get('id')
         image = validated_data.get('image')
-        test = Test.objects.update_or_create(id=validated_data.get("id"), defaults={'image': image})
+        test = TestResult.objects.update_or_create(id=validated_data.get("id"), defaults={'image': image})
         return test
 
 

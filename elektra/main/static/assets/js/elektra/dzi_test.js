@@ -42,10 +42,24 @@ const App = {
             showResults: false,
             exam_score:0,
             exam_grade:'слаб',
+            answers: 0,
         }
     },
 
     methods: {
+        checkOptionOkNo(option) {
+            if(option.checked||option.checked_t) {
+                if (option.checked === option.checked_t) {// ok
+                    return 1
+                }
+                if (option.checked === !option.checked_t) {// no
+                    return -1
+                }
+            }
+            else {
+                return 0
+            }
+        },
         sendTestResult(){
             const vm=this
             let time=''
@@ -76,7 +90,6 @@ const App = {
                 .then(response => {
                 })
         },
-
         checkAnswer(qst){
             const vm = this;
             let task = qst
@@ -105,7 +118,6 @@ const App = {
                     else {task.stat_points=0}
                 })
         },
-
         stopTest(){
             this.status = 2
             this.showResults=false
@@ -118,8 +130,10 @@ const App = {
             let numOptions = 0 // брой отговори към въпроса
             let points = 0
             this.points_total = 0
+            this.answers = 0
             for (let task of this.test){
                 numOkBase = 0; numOk = 0; numAnswers = 0; taskTotal = 0; numOptions = 0
+                // task.stat_attempts = 0
                 task.stat_points=0; points = 0;
                 if (task.type < 3){ // тип 1 или 2 - затворен въпрос
                     for(let option of task.options){
@@ -137,7 +151,7 @@ const App = {
                 else if (task.type < 5){ // тип 3 или 4 - съпоставяне
                     for(let option of task.options){
                         numOptions++
-                        if (option.value_t){numAnswers++}
+                        if (option.value_t.length>0){numAnswers++}
                         if (option.value_t === option.value){numOk++}
                     }
                     if(numOptions>0){
@@ -155,9 +169,11 @@ const App = {
                     if((points==0)&&(task.options[0].value_t.length>0)) {
                         this.checkAnswer(task)
                     }
+                    if(task.options[0].value_t.length>0) { numAnswers++ }
                     task.stat_points = points*numOk
                 }
                 this.points_total = this.points_total + task.stat_points
+                if (numAnswers>0){this.answers++}
             }
             let es=this.points_total*0.06
 
@@ -180,7 +196,14 @@ const App = {
             else {
                 this.exam_grade = 'отличен'
             }
-            this.sendTestResult()
+
+            if((this.answers*2) < this.test.length) {
+                this.status = 3
+            }
+            else {this.sendTestResult()}
+            console.log('status: '+this.status)
+            console.log('answers: '+this.answers)
+            console.log('questions: '+this.test.length)
         },
         startTest(){
             this.status = 1

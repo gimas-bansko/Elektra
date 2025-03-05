@@ -406,8 +406,8 @@
                                                                 <input :id="'option_'+qst.id+'_'+option.id"
                                                                        type="checkbox" disabled :checked="option.checked_t">
                                                                 <label :for="'option_'+qst.id+'_'+option.id">
-                                                                    <span :class="{'color-No': option.checked==!option.checked_t,
-                                                                                   'color-Ok': option.checked==option.checked_t}">
+                                                                    <span :class="{'color-No': checkOptionOkNo(option)==-1,
+                                                                                   'color-Ok': checkOptionOkNo(option)==1}">
                                                                         [[ option.leading_char ]]. [[ option.text ]]</span>
                                                                 </label>
                                                             </div>
@@ -608,6 +608,24 @@
                                                'color-grade-6': exam_grade == 'отличен',
                                                }">[[ exam_grade ]] [[ exam_score ]]</span>
                             </div>
+                            <div v-if="status==3" style="text-align: center;">
+                                <h5 class="color-grade-2">
+                                    Тестът не се зачита
+                                </h5>
+                                <div v-if="answers>0">
+                                    Отговорили сте
+                                    <span class="color-grade-2"> само на [[ answers ]] </span>
+                                    <span v-if="answers==1"> въпрос</span>
+                                    <span v-else> въпроса </span> от
+                                    <span class="color-grade-6"> общо [[ test.length ]]</span>
+                                </div>
+                                <div v-else>
+                                    Не сте отговорили
+                                    <span class="color-grade-2"> на нито един </span>
+                                    въпрос от
+                                    <span class="color-grade-6"> общо [[ test.length ]]</span>
+                                </div>
+                            </div>
                         </div>
                         <!-- бутон Стартирай тест -->
                         <div class="right-side-bottom mb--5" v-if="status==0">
@@ -641,7 +659,7 @@
                             </div>
                         </div>
                         <!-- бутон Нов тест -->
-                        <div class="right-side-bottom mb--5" v-if="status==2">
+                        <div class="right-side-bottom mb--5" v-if="status>=2">
                             <div class="chat-history-section" style="text-align: center;">
                                 <button class="react-btn btn-default btn-small btn-border bg-color-success"
                                         style="font-size: 12px;"

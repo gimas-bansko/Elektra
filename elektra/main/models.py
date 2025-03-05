@@ -202,6 +202,22 @@ class Task(models.Model):
     stat_attempts = models.IntegerField('Брой опити', default=0, help_text='колко пъти е изтеглен въпроса')
     stat_points = models.FloatField('Получени точки', default=0, help_text='колко точки общо е получено от отговори')
 
+    def update_statistics(self, is_correct, points):
+        """
+        Актуализира статистиките на въпроса въз основа на резултатите от тестовете.
+        """
+        self.stat_attempts += 1
+        self.stat_points += points
+        self.save()
+
+    def difficulty(self):
+        """
+        Изчислява трудността на въпроса като процент от правилните отговори.
+        """
+        if self.stat_attempts > 0:
+            return 1 - (self.stat_points / (self.stat_attempts * 1.0))  # Трудност = 1 - среден резултат
+        return 0.0
+
     objects = TaskManager()
 
     def __str__(self):
@@ -279,16 +295,33 @@ class Log(models.Model):
         Статистика 
 ***************************************
 """
-class Test(models.Model):
-    user = models.ForeignKey(User,verbose_name='потребител', on_delete=models.CASCADE, default=1)
+# информация за отговорите на учениците на всеки въпрос в теста
+class Answer(models.Model):
+    user = models.ForeignKey(User, verbose_name='потребител', on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, verbose_name='въпрос', on_delete=models.CASCADE)
+    test_result = models.ForeignKey('TestResult', verbose_name='резултат от теста', on_delete=models.CASCADE)
+    is_correct = models.BooleanField('правилен отговор', default=False)  # Дали отговорът е правилен
+    points = models.FloatField('получени точки', default=0.0)  # Точки за този въпрос
+
+    def __str__(self):
+        return f"Answer by {self.user} for task {self.task.id}"
+
+    class Meta:
+        verbose_name = 'Отговор'
+        verbose_name_plural = 'Отговори'
+
+
+class TestResult(models.Model):
+    user = models.ForeignKey(User, verbose_name='потребител', on_delete=models.CASCADE, default=1)
     theme = models.ForeignKey(Theme, verbose_name='тема', on_delete=models.CASCADE, default=1)
     spec = models.ForeignKey(Specialty, verbose_name='специалност', on_delete=models.CASCADE, default=1)
     points = models.IntegerField('получени точки', default=0)
-    time = models.CharField('продължителност',  max_length=10, default='00:00:00')
-    date = models.DateTimeField('дата и час', default=datetime.now, null=True)
+    time = models.CharField('продължителност', max_length=10, default='00:00:00')
+    date = models.DateTimeField('дата и час', default=timezone.now, null=True)
+    average_difficulty = models.FloatField('средна трудност на теста', default=0.0)  # Средна трудност на въпросите в теста
 
     def __str__(self):
-        return self.user_name
+        return f"TestResult for {self.user} on {self.date}"
 
     class Meta:
         verbose_name = 'Тест'

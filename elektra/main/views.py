@@ -15,6 +15,9 @@ from django.db import transaction
 
 from openai import OpenAI
 
+from rest_framework.permissions import IsAuthenticated
+from .utils import update_test_statistics  # Функцията, която добавихме за обновяване на статистиките
+
 
 def index(request):
     return render(request, 'main/index.html')
@@ -343,16 +346,17 @@ class ThemeNumView(APIView):
 
 class TestByUserView(APIView):
     def get(self, request):
-        queryset = Test.objects.order_by('user_id')
+        queryset = TestResult.objects.order_by('user_id')
         serializer = TestSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
-
+# ToDo: да се актуализира TestSerializer
 
 class TestByThemeView(APIView):
     def get(self, request):
-        queryset = Test.objects.order_by('theme')
+        queryset = TestResult.objects.order_by('theme')
         serializer = TestSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
+# ToDo: да се актуализира TestSerializer
 
 
 """
@@ -360,7 +364,71 @@ class TestByThemeView(APIView):
 """
 
 # запазване на резултат от тест на на ниво потребител
+
 class SaveTestResults(APIView):
+    permission_classes = [IsAuthenticated]  # Уверете се, че само автентицирани потребители могат да записват резултати
+
+    def post(self, request):
+        # Запис на резултата на ниво потребител (тест)
+        user = request.user
+        theme_id = request.data.get('theme')
+        points = request.data.get('points')
+        time = request.data.get('time')
+        spec_id = request.data.get('spec')
+        test_questions = request.data.get('test')  # Списък с въпросите и техните резултати
+
+        # Създаване на нов запис за резултата от теста
+        try:
+            theme = Theme.objects.get(id=theme_id)
+            spec = Specialty.objects.get(id=spec_id)
+        except (Theme.DoesNotExist, Specialty.DoesNotExist):
+            return Response({"error": "Invalid theme or specialty ID"}, status=400)
+
+        # Създаване на нов TestResult запис
+        test_result = TestResult.objects.create(
+            user=user,
+            theme=theme,
+            spec=spec,
+            points=points,
+            time=time
+        )
+
+        # Списък за съхраняване на отговорите
+        answers = []
+
+        # Запис на резултатите на ниво въпроси
+        for test_question in test_questions:
+            try:
+                question = Task.objects.get(id=test_question['id'])
+            except Task.DoesNotExist:
+                return Response({"error": f"Task with ID {test_question['id']} does not exist"}, status=400)
+
+            # Актуализиране на статистиките на въпроса
+            question.stat_attempts += 1
+            question.stat_points += test_question.get('stat_points', 0)
+            question.save()
+
+            # Добавяне на отговор в списъка
+            is_correct = test_question.get('is_correct', False)
+            points = test_question.get('stat_points', 0)
+            answer = Answer(
+                user=user,
+                task=question,
+                test_result=test_result,
+                is_correct=is_correct,
+                points=points
+            )
+            answers.append(answer)
+
+        # Масово записване на отговорите
+        Answer.objects.bulk_create(answers)
+
+        # Актуализиране на статистиките за теста
+        update_test_statistics(test_result, answers)
+
+        return Response({"message": "Test results saved successfully"}, status=201)
+
+class SaveTestResults_old(APIView):
     def post(self, request):
         # запис на резултата на ниво потребител
         user = self.request.user
@@ -371,7 +439,7 @@ class SaveTestResults(APIView):
         time = request.data['time']
         spec = request.data['spec']
 
-        record = Test.objects.create()
+        record = TestResult.objects.create()
         record.user = user
         record.theme = Theme.objects.filter(id=theme).get()
         record.spec = Specialty.objects.filter(id=spec).get()

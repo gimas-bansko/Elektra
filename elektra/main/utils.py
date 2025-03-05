@@ -53,4 +53,18 @@ class DataMixin:
         context = kwargs
         return context
 
+def update_test_statistics(test_result, answers):
+    """
+    Актуализира статистиките за теста и въпросите.
+    """
+    total_difficulty = 0
+    for answer in answers:
+        # Актуализиране на статистиките за въпроса
+        answer.task.update_statistics(answer.is_correct, answer.points)
+        total_difficulty += answer.task.level
+
+    # Актуализиране на средната трудност на теста
+    test_result.average_difficulty = total_difficulty / len(answers)
+    test_result.save()
+
 
