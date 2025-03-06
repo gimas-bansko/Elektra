@@ -28,7 +28,7 @@ const App = {
                   },
             listOfUsers: [],
             listOfSpecialties: [],
-            l_user:{},
+            user:{},
             password_1:'',
             password_2:'',
         }
@@ -52,9 +52,9 @@ const App = {
             this.c_user.first_name=''
             this.c_user.last_name=''
             this.c_user.userprofile.gender=true
-            this.c_user.userprofile.school=this.l_user.school
+            this.c_user.userprofile.school=this.user.school
             this.c_user.userprofile.access_level=lvl
-            this.c_user.userprofile.speciality=this.l_user.speciality
+            this.c_user.userprofile.speciality=this.user.speciality
             if(spec>0){this.c_user.userprofile.speciality=spec}
         },
         changeUserPassword(){
@@ -81,7 +81,7 @@ const App = {
             let vm = this;
             axios.get('/api/delete-user/'+this.c_user.id+'/')
                 .then(function(response){
-                    vm.loadUsers(vm.l_user)
+                    vm.loadUsers(vm.user)
                 })
 
         },
@@ -108,7 +108,7 @@ const App = {
                 }
             })
                 .then(response => {
-                    vm.loadUsers(vm.l_user)
+                    vm.loadUsers(vm.user)
                 })
 
         },
@@ -139,7 +139,7 @@ const App = {
                 }
             })
                 .then(response => {
-                    vm.loadUsers(vm.l_user)
+                    vm.loadUsers(vm.user)
                 })
         },
         editUser(num){
@@ -149,10 +149,10 @@ const App = {
         },
         countUsers(l,s){
             let result = 0
-            for(let user of this.listOfUsers){
-                if(user.userprofile.access_level === l){
+            for(let usr of this.listOfUsers){
+                if(usr.userprofile.access_level === l){
                     if(s===0){result++}
-                    else {if(user.userprofile.speciality.id===s){result++}}
+                    else {if(usr.userprofile.speciality.id===s){result++}}
                 }
             }
             return result
@@ -179,9 +179,9 @@ const App = {
             const vm = this;
             axios.get('/api/context/')
                 .then(function(response){
-                    vm.l_user = response.data
-                    vm.loadUsers(vm.l_user)
-                    vm.loadSpecialties(vm.l_user)
+                    vm.user = response.data
+                    vm.loadUsers(vm.user)
+                    vm.loadSpecialties(vm.user)
                 })
         },
     },

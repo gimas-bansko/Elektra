@@ -1,24 +1,21 @@
 const App = {
     data() {
         return {
-        points_total:60,
-        status: 0, //0 - начално положение; 1 -  тече тест; 2 - край на теста и показваме резултата
-        timer: {
-            h: 0,
-            m: 0,
-            s: 0,
-            id: 0,
-        },
-        test: [],
-        theme: {},
-        ast:'-****-'
+           user:{},
         }
     },
-
     methods: {
+        loadUserDetails(){
+            const vm = this;
+            axios.get('/api/context/')
+                .then(function(response){
+                    vm.user = response.data
+                    console.log(vm.user);
+                })
+        },
     },
     created: function(){
-        this.status = 0
+        this.loadUserDetails();
     }
 }
 

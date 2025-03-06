@@ -31,11 +31,11 @@
                                     <ul class="mainmenu">
                                         <li><a href="{% url 'dzi_home' %}">Начало</a></li>
                                         <li><a href="{% url 'dzi_tests' %}">Тест</a></li>
-                                        <li><a href="{% url 'dzi_tasks' %}">Въпроси</a></li>
-                                        <li><a href="{% url 'dzi_users' %}">Потребители</a></li>
-                                        <li><a href="{% url 'dzi_sys' %}">Системни данни</a></li>
+                                        <li v-if="user.user_level_num<5"><a href="{% url 'dzi_tasks' %}">Въпроси</a></li>
+                                        <li v-if="user.user_level_num<5"><a href="{% url 'dzi_users' %}">Потребители</a></li>
+                                        <li v-if="user.user_level_num<5"><a href="{% url 'dzi_sys' %}">Системни данни</a></li>
                                         <li><a href="{% url 'dzi_settings' %}">Документи</a></li>
-                                        <li><a href="{% url 'dzi_settings' %}">Настройки</a></li>
+                                        <li v-if="user.user_level_num<5"><a href="{% url 'dzi_settings' %}">Настройки</a></li>
                                     </ul>
                                 </nav>
 
@@ -81,10 +81,10 @@
                         <ul class="mainmenu">
                             <li><a href="{% url 'dzi_home' %}">Начало</a></li>
                             <li><a href="{% url 'dzi_tests' %}">Тест</a></li>
-                            <li><a href="{% url 'dzi_tasks' %}">Въпроси</a></li>
-                            <li><a href="{% url 'dzi_users' %}">Потребители</a></li>
-                            <li><a href="{% url 'dzi_sys' %}">Системни данни</a></li>
-                            <li><a href="{% url 'dzi_settings' %}">Настройки</a></li>
+                            <li v-if="user.user_level_num<5"><a href="{% url 'dzi_tasks' %}">Въпроси</a></li>
+                            <li v-if="user.user_level_num<5"><a href="{% url 'dzi_users' %}">Потребители</a></li>
+                            <li v-if="user.user_level_num<5"><a href="{% url 'dzi_sys' %}">Системни данни</a></li>
+                            <li v-if="user.user_level_num<5"><a href="{% url 'dzi_settings' %}">Настройки</a></li>
                         </ul>
 
                         <div class="rbt-sm-separator"></div>

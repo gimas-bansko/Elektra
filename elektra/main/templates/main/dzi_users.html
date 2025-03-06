@@ -67,10 +67,10 @@
                                     </div>
                                 </div>
                                 <!-- списък на потребителите в тази група(роля) -->
-                                <div v-for="(user, user_idx) in listOfUsers">
+                                <div v-for="(user_obj, user_idx) in listOfUsers">
                                     <div class="chat-box ai-speech bg-flashlight mt--10" style="padding: 10px;"
-                                         v-if="((user.userprofile.access_level == 3)&&
-                                                (user.userprofile.school==l_user.school))"
+                                         v-if="((user_obj.userprofile.access_level == 3)&&
+                                                (user_obj.userprofile.school==user.school))"
                                          :id="'usr'+user_idx">
                                         <!-- показвам всички въпроси от тема/точка/ниво (theme/item/level) qst -->
                                         <div class="inner top-flashlight leftside light-xl">
@@ -80,7 +80,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                                             <h6 class="title">
-                                                                [[ user.first_name ]]  [[ user.last_name ]] ([[ user.username ]])
+                                                                [[ user_obj.first_name ]]  [[ user_obj.last_name ]] ([[ user_obj.username ]])
                                                             </h6>
                                                         </div>
                                                         <!-- copy -->
@@ -140,10 +140,10 @@
                                     </div>
                                 </div>
                                 <!-- списък на потребителите в тази група(роля) -->
-                                <div v-for="(user, user_idx) in listOfUsers">
+                                <div v-for="(user_obj, user_idx) in listOfUsers">
                                     <div class="chat-box ai-speech bg-flashlight mt--10" style="padding: 10px;"
-                                         v-if="((user.userprofile.access_level == 4)&&
-                                                (user.userprofile.school==l_user.school))"
+                                         v-if="((user_obj.userprofile.access_level == 4)&&
+                                                (user_obj.userprofile.school==user.school))"
                                          :id="'usr'+user_idx">
                                         <div class="inner top-flashlight leftside light-xl">
                                             <!-- Заглавна част -->
@@ -152,7 +152,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                                             <h6 class="title">
-                                                                [[ user.first_name ]]  [[ user.last_name ]] ([[ user.username ]])
+                                                                [[ user_obj.first_name ]]  [[ user_obj.last_name ]] ([[ user_obj.username ]])
                                                             </h6>
                                                         </div>
                                                         <!-- copy -->
@@ -213,11 +213,11 @@
                                         </div>
                                     </div>
                                     <!-- списък на потребителите в тази група(роля) -->
-                                    <div v-for="(user, user_idx) in listOfUsers">
+                                    <div v-for="(user_obj, user_idx) in listOfUsers">
                                         <div class="chat-box ai-speech bg-flashlight mt--10" style="padding: 10px;"
-                                             v-if="((user.userprofile.access_level == 5)&&
-                                                    (user.userprofile.school==l_user.school)&&
-                                                    (user.userprofile.speciality.id==spec.id))"
+                                             v-if="((user_obj.userprofile.access_level == 5)&&
+                                                    (user_obj.userprofile.school==user.school)&&
+                                                    (user_obj.userprofile.speciality.id==spec.id))"
                                              :id="'usr'+user_idx">
                                             <div class="inner top-flashlight leftside light-xl">
                                                 <!-- Заглавна част -->
@@ -226,7 +226,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                                                 <h6 class="title">
-                                                                    [[ user.first_name ]]  [[ user.last_name ]] ([[ user.username ]])
+                                                                    [[ user_obj.first_name ]]  [[ user_obj.last_name ]] ([[ user_obj.username ]])
                                                                 </h6>
                                                             </div>
                                                             <!-- copy -->

@@ -61,13 +61,13 @@
                             <ul class="staticbar-btn-grp d-md-flex">
                                 <li>
                                     <button class="btn-default btn-small btn-border"
-                                            data-bs-toggle="modal" data-bs-target="#selectSchool">
+                                            data-bs-toggle="modal" data-bs-target="#selectSchool" v-if="user.user_level_num<3">
                                         <span>Изберете друго училище</span>
                                     </button>
                                 </li>
                                 <li>
                                     <button class="btn-default btn-small btn-border"
-                                            data-bs-toggle="modal" data-bs-target="#selectSpeciality">
+                                            data-bs-toggle="modal" data-bs-target="#selectSpeciality"  v-if="user.user_level_num<5">
                                         <span>Изберете друга специалност</span>
                                     </button>
                                 </li>
