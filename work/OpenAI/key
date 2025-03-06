@@ -1,7 +1,7 @@
 user: office@gimas.bg
 password:  BanskoMesta25@
-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
-
+# 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
+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
 SuperHosting:
 
 source /home/gimasbga/virtualenv/elektra/elektra/3.9/bin/activate && cd /home/gimasbga/elektra/elektra

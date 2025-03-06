@@ -166,8 +166,10 @@ const App = {
                         if (task.options[0].value_t === option.value){numOk = 1}
 
                     }
+                    console.log(`points ${points}; отговор ${task.options[0].value_t}`)
                     if((points==0)&&(task.options[0].value_t.length>0)) {
                         this.checkAnswer(task)
+                        console.log('OpenAI')
                     }
                     if(task.options[0].value_t.length>0) { numAnswers++ }
                     task.stat_points = points*numOk

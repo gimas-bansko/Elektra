@@ -613,7 +613,7 @@ class DuplicateTask(APIView):
 """
 # Задайте вашия OpenAI API ключ
 client = OpenAI(
-  api_key ="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"
+  api_key ="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"
 )
 
 class CheckAnswer(APIView):
