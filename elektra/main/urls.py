@@ -56,4 +56,9 @@ urlpatterns = [
     path('api/transfer/<int:theme>/', convert.TransferData.as_view()),
     # AI
     path("api/check-answer/", views.CheckAnswer.as_view()),
+    # USERS
+    path('api/save-user/', views.CreateOrUpdateUserView.as_view(), name='save-user'),
+    path('api/users-list/<int:sc>/<int:lvl>/', views.UserListView.as_view(), name='user-list'),
+    path('api/schools/<int:school_id>/specialties/', views.SchoolSpecialtiesView.as_view(), name='school-specialties'),
+    path('api/change-password/', views.ChangePasswordView.as_view(), name='change-password'),
 ]

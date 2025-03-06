@@ -14,6 +14,7 @@ from django.db import transaction
 # from django.views.decorators.csrf import csrf_exempt
 
 import requests
+
 class Transfer:
     def __init__(self, theme):
         self.theme_num = theme

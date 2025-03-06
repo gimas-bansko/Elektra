@@ -18,6 +18,7 @@ from openai import OpenAI
 from rest_framework.permissions import IsAuthenticated
 from .utils import update_test_statistics  # Функцията, която добавихме за обновяване на статистиките
 
+from rest_framework import status
 
 def index(request):
     return render(request, 'main/index.html')
@@ -657,3 +658,93 @@ class CheckAnswer(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 
+"""
+        ПОТРЕБИТЕЛИ
+"""
+
+class CreateOrUpdateUserView(APIView):
+    def post(self, request, *args, **kwargs):
+        user_id = request.data.get('id', 0)  # Вземаме ID от заявката, по подразбиране е 0
+
+        if user_id == 0:  # Ако ID е 0, създаваме нов потребител
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                user = serializer.save()
+                return Response({'message': 'Потребителят е създаден успешно!', 'user_id': user.id}, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:  # Ако ID не е 0, модифицираме съществуващ потребител
+            try:
+                user = User.objects.get(id=user_id)  # Намираме потребителя по ID
+            except User.DoesNotExist:
+                return Response({'error': 'Потребителят не съществува.'}, status=status.HTTP_404_NOT_FOUND)
+
+            serializer = UserSerializer(user, data=request.data, partial=True)  # partial=True позволява частично обновяване
+            if serializer.is_valid():
+                user = serializer.save()
+                return Response({'message': 'Потребителят е модифициран успешно!', 'user_id': user.id}, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserListView(APIView):
+    def get(self, request, sc, lvl):
+        print(f'UserListView/{sc}/{lvl}/')
+        # Извличане на параметрите за филтриране от заявката
+        school_id = sc
+        level = lvl
+
+        # Филтриране на потребителите
+        users = User.objects.filter(
+            userprofile__school=school_id,
+            userprofile__access_level__gt=level,
+        )
+
+        # Сериализиране на резултатите
+        serializer = UserReadSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SchoolSpecialtiesView(APIView):
+    def get(self, request, school_id, *args, **kwargs):
+        try:
+            # Намираме училището по зададеното ID
+            school = School.objects.get(id=school_id)
+        except School.DoesNotExist:
+            return Response({'error': 'Училището не съществува.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Вземаме всички специалности, свързани с училището
+        specialties = school.specialities.all()
+
+        # Сериализираме специалностите
+        serializer = SpecialtySerializer(specialties, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Извличаме входните данни
+        user_id = request.data.get('id')
+        new_password = request.data.get('new_password')
+
+        # Проверка дали са подадени всички необходими данни
+        if not user_id or not new_password:
+            return Response(
+                {"error": "Идентификаторът на потребителя и новата парола са задължителни."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Намираме потребителя по ID
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "Потребителят с дадения ID не съществува."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Сменяме паролата
+        user.set_password(new_password)
+        user.save()
+
+        return Response(
+            {"message": "Паролата беше успешно сменена."},
+            status=status.HTTP_200_OK
+        )
