@@ -77,6 +77,14 @@ const App = {
                 })
 
         },
+        deleteUser(){
+            let vm = this;
+            axios.get('/api/delete-user/'+this.c_user.id+'/')
+                .then(function(response){
+                    vm.loadUsers(vm.l_user)
+                })
+
+        },
         saveUser(){
             let vm = this;
             axios({

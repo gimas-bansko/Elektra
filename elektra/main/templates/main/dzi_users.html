@@ -40,8 +40,8 @@
                     <!-- Dashboard Center Content -->
                     <div class="rbt-dashboard-content">
                         <div class="content-page">
-                            <!-- Списък УЧИЛИЩНИ АДМИНИСТРАТОРИ  - ако потребители от този тип -->
-                            <div class="chat-box-list pt--30" id="chatContainer" v-if="countUsers(3,0)>0">
+                            <!-- Списък УЧИЛИЩНИ АДМИНИСТРАТОРИ  - ако има потребители от този тип -->
+                            <div class="chat-box-list pt--30" v-if="countUsers(3,0)>0">
                                 <!-- Заглавна част -->
                                 <div class="chat-box author-speech bg-flashlight" style="padding-bottom: 0px;">
                                     <div class="inner">
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- списък на въпросите на подтемата по нива на Блум -->
+                                <!-- списък на потребителите в тази група(роля) -->
                                 <div v-for="(user, user_idx) in listOfUsers">
                                     <div class="chat-box ai-speech bg-flashlight mt--10" style="padding: 10px;"
                                          v-if="((user.userprofile.access_level == 3)&&
@@ -87,7 +87,8 @@
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
                                                             <button class="react-btn btn-default btn-small btn-border"
                                                                     style="font-size: 12px; color: red; border-color: #5c0000d4;"
-                                                                    data-bs-toggle="modal" data-bs-target="#deleteQuestionModal">
+                                                                    @click="editUser(user_idx)"
+                                                                    data-bs-toggle="modal" data-bs-target="#deleteUserModal">
                                                                 <i class="feather-user-x"></i><span>&nbsp;Премахни&nbsp;</span>
                                                             </button>
                                                             &nbsp;&nbsp;
@@ -107,6 +108,153 @@
                                                         </div>
                                                     </div>
                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Списък УЧИТЕЛИ  - ако има потребители от този тип -->
+                            <div class="chat-box-list pt--30" v-if="countUsers(4,0)>0">
+                                <!-- Заглавна част -->
+                                <div class="chat-box author-speech bg-flashlight" style="padding-bottom: 0px;">
+                                    <div class="inner">
+                                        <div class="chat-section">
+                                            <div class="chat-content">
+                                                <h6 class="title">Списък учители</h6>
+                                                <div class="rainbow-pricing-detailed-area">
+                                                    <div class="row mb--20">
+                                                        <div class="col-lg-10 text-left">
+                                                            <p class="title w-600">Регистрирани: [[ countUsers(4,0) ]] </p>
+                                                        </div>
+                                                        <div class="col-lg-2 text-right">
+                                                            <button class="react-btn btn-default btn-small btn-border"
+                                                                    data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                                                    @click="makeNewUser(3,0)">
+                                                                    Добави нов
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- списък на потребителите в тази група(роля) -->
+                                <div v-for="(user, user_idx) in listOfUsers">
+                                    <div class="chat-box ai-speech bg-flashlight mt--10" style="padding: 10px;"
+                                         v-if="((user.userprofile.access_level == 4)&&
+                                                (user.userprofile.school==l_user.school))"
+                                         :id="'usr'+user_idx">
+                                        <div class="inner top-flashlight leftside light-xl">
+                                            <!-- Заглавна част -->
+                                            <div class="chat-section generate-section">
+                                                <div class="chat-content">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                            <h6 class="title">
+                                                                [[ user.first_name ]]  [[ user.last_name ]] ([[ user.username ]])
+                                                            </h6>
+                                                        </div>
+                                                        <!-- copy -->
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
+                                                            <button class="react-btn btn-default btn-small btn-border"
+                                                                    style="font-size: 12px; color: red; border-color: #5c0000d4;"
+                                                                    @click="editUser(user_idx)"
+                                                                    data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                                                <i class="feather-user-x"></i><span>&nbsp;Премахни&nbsp;</span>
+                                                            </button>
+                                                            &nbsp;&nbsp;
+                                                            <button class="react-btn btn-default btn-small btn-border"
+                                                                    @click="editUser(user_idx)"
+                                                                    data-bs-toggle="modal" data-bs-target="#setUserPasswordModal"
+                                                                    style="font-size: 12px; color: #0600ff; border-color: rgb(10 88 202 / 29%);">
+                                                                <i class="feather-user-check"></i><span>&nbsp;Парола&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                            </button>
+                                                            &nbsp;&nbsp;
+                                                            <button class="react-btn btn-default btn-small btn-border"
+                                                                    @click="editUser(user_idx)"
+                                                                    data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                                                    style="font-size: 12px; color: green; border-color: #013401;">
+                                                                <i class="feather-edit"></i><span>&nbsp;Данни&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Списък УЧЕНИЦИ  - ако има потребители от този тип -->
+                            <div v-for="spec, spec_idx in listOfSpecialties">
+                                <div class="chat-box-list pt--30" v-if="countUsers(5,spec.id)>0">
+                                    <!-- Заглавна част -->
+                                    <div class="chat-box author-speech bg-flashlight" style="padding-bottom: 0px;">
+                                        <div class="inner">
+                                            <div class="chat-section">
+                                                <div class="chat-content">
+                                                    <h6 class="title">Списък ученици от специланост "[[ spec.specialty_name]]"</h6>
+                                                    <div class="rainbow-pricing-detailed-area">
+                                                        <div class="row mb--20">
+                                                            <div class="col-lg-10 text-left">
+                                                                <p class="title w-600">Регистрирани: [[ countUsers(5,spec.id) ]] </p>
+                                                            </div>
+                                                            <div class="col-lg-2 text-right">
+                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                        data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                                                        @click="makeNewUser(5,spec.id)">
+                                                                        Добави нов
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- списък на потребителите в тази група(роля) -->
+                                    <div v-for="(user, user_idx) in listOfUsers">
+                                        <div class="chat-box ai-speech bg-flashlight mt--10" style="padding: 10px;"
+                                             v-if="((user.userprofile.access_level == 5)&&
+                                                    (user.userprofile.school==l_user.school)&&
+                                                    (user.userprofile.speciality.id==spec.id))"
+                                             :id="'usr'+user_idx">
+                                            <div class="inner top-flashlight leftside light-xl">
+                                                <!-- Заглавна част -->
+                                                <div class="chat-section generate-section">
+                                                    <div class="chat-content">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                <h6 class="title">
+                                                                    [[ user.first_name ]]  [[ user.last_name ]] ([[ user.username ]])
+                                                                </h6>
+                                                            </div>
+                                                            <!-- copy -->
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
+                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                        style="font-size: 12px; color: red; border-color: #5c0000d4;"
+                                                                        @click="editUser(user_idx)"
+                                                                        data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                                                    <i class="feather-user-x"></i><span>&nbsp;Премахни&nbsp;</span>
+                                                                </button>
+                                                                &nbsp;&nbsp;
+                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                        @click="editUser(user_idx)"
+                                                                        data-bs-toggle="modal" data-bs-target="#setUserPasswordModal"
+                                                                        style="font-size: 12px; color: #0600ff; border-color: rgb(10 88 202 / 29%);">
+                                                                    <i class="feather-user-check"></i><span>&nbsp;Парола&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                                </button>
+                                                                &nbsp;&nbsp;
+                                                                <button class="react-btn btn-default btn-small btn-border"
+                                                                        @click="editUser(user_idx)"
+                                                                        data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                                                        style="font-size: 12px; color: green; border-color: #013401;">
+                                                                    <i class="feather-edit"></i><span>&nbsp;Данни&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                   </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -271,6 +419,34 @@
                 </div>
             </div>
        </div>
+        <!-- Диалог за изтриване на потребител -->
+        <div id="deleteUserModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <button class="close-button" data-bs-dismiss="modal">
+                        <i class="feather-x"></i>
+                    </button>
+                    <h5 class="title a">ВНИМАНИЕ!</h5>
+                    <p style="display: flex; align-items: center;">Потребител [[ c_user.first_name ]]  [[ c_user.last_name ]] ([[ c_user.username ]]) и
+                        ВСИЧКИ съразани с него данни ще бъдат премахнати от базата данни. Моля, потвърдете!</p>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12"  style="text-align: right;">
+                            <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                   data-bs-dismiss="modal">
+                               <i class="feather-x"></i><span>&nbsp;Откажи</span>
+                            </button>
+                            &nbsp
+                            <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                    data-bs-dismiss="modal"
+                                    @click="deleteUser()">
+                               <i class="feather-check"></i><span>&nbsp;Изтрий</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 {% endblock %}
 
 {% block page_script %}

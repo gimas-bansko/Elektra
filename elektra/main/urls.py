@@ -61,4 +61,5 @@ urlpatterns = [
     path('api/users-list/<int:sc>/<int:lvl>/', views.UserListView.as_view(), name='user-list'),
     path('api/schools/<int:school_id>/specialties/', views.SchoolSpecialtiesView.as_view(), name='school-specialties'),
     path('api/change-password/', views.ChangePasswordView.as_view(), name='change-password'),
+    path('api/delete-user/<int:user_id>/', views.DeleteUserView.as_view(), name='delete-user'),
 ]

@@ -748,3 +748,22 @@ class ChangePasswordView(APIView):
             {"message": "Паролата беше успешно сменена."},
             status=status.HTTP_200_OK
         )
+
+
+class DeleteUserView(APIView):
+    def get(self, request, user_id, *args, **kwargs):
+        try:
+            # Намираме потребителя по ID
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "Потребителят с дадения ID не съществува."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Изтриваме потребителя
+        user.delete()
+        return Response(
+            {"message": "Потребителят беше успешно изтрит."},
+            status=status.HTTP_200_OK
+        )
