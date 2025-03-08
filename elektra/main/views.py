@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.db import transaction
 
 from openai import OpenAI
-import keys
+from .keys import *
 
 from rest_framework.permissions import IsAuthenticated
 from .utils import update_test_statistics  # Функцията, която добавихме за обновяване на статистиките
@@ -234,7 +234,9 @@ class TaskSaveQuestionBodyAPIView(APIView):
 
         # записвам контекста, ако има такъв
         if data['context']:
-            context = TaskContext.objects.get(id=data['context']['id'])
+            print(f'data={data}')
+            ctx_id = data['context']['id']
+            context = TaskContext.objects.get(id=ctx_id)
             context.text = data['context']['text']
             context.textWrap = data['context']['textWrap']
             context.save()
@@ -511,6 +513,7 @@ class NewContextView(APIView):
 
         queryset = TaskContext.objects.filter(id=context.id)
         serializer = TaskContextSerializer(queryset, many=True, context={"request": request})
+        print(f'NewContextView: {serializer.data}')
         return Response(serializer.data)
 
 # Контекст - обновяване на картинка
@@ -614,7 +617,7 @@ class DuplicateTask(APIView):
 """
 # Задайте вашия OpenAI API ключ
 client = OpenAI(
-  api_key = keys.MY_API_KEY
+  api_key = MY_API_KEY
 )
 
 class CheckAnswer(APIView):

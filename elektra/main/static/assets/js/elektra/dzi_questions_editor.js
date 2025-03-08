@@ -620,6 +620,7 @@ const App = {
         },
         newContext(){
             const vm = this;
+            console.log(`Създадaва нов контекст --> author=${this.user.school}; ask_id=${this.theme[vm.current_item.theme_id].tasks[vm.current_item.task_id].id}`)
             axios({
                 method:'POST',
                 url:'/api/NewContext/',
@@ -634,8 +635,8 @@ const App = {
                 }
             })
                 .then(response => {
-                    cnsole.log('Създаден е нов контекст с id='+response.data)
-                    vm.theme[vm.current_item.theme_id].tasks[vm.current_item.task_id].context=response.data
+                    console.log('Създаден е нов контекст с id='+response.data)
+                    vm.theme[vm.current_item.theme_id].tasks[vm.current_item.task_id].context=response.data[0]
                     vm.make_q(vm.current_item.theme_id, vm.current_item.task_id)
                     vm.context_count+=1
                     vm.context_edit_mode=2
