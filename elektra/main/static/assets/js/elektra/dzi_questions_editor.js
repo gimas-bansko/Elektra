@@ -634,6 +634,7 @@ const App = {
                 }
             })
                 .then(response => {
+                    cnsole.log('Създаден е нов контекст с id='+response.data)
                     vm.theme[vm.current_item.theme_id].tasks[vm.current_item.task_id].context=response.data
                     vm.make_q(vm.current_item.theme_id, vm.current_item.task_id)
                     vm.context_count+=1

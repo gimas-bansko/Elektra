@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.db import transaction
 
 from openai import OpenAI
+import keys
 
 from rest_framework.permissions import IsAuthenticated
 from .utils import update_test_statistics  # Функцията, която добавихме за обновяване на статистиките
@@ -242,8 +243,8 @@ class TaskSaveQuestionBodyAPIView(APIView):
             task.context = None
 
         task.text = data['text']
-        task.type_q = data['type']
-        task.level_q = data['level']
+        task.type = data['type']
+        task.level = data['level']
         task.group = data['group']
         task.textWrap = data['textWrap']
 
@@ -613,7 +614,7 @@ class DuplicateTask(APIView):
 """
 # Задайте вашия OpenAI API ключ
 client = OpenAI(
-  api_key ="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"
+  api_key = keys.MY_API_KEY
 )
 
 class CheckAnswer(APIView):

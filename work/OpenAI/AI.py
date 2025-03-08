@@ -1,6 +1,7 @@
 from openai import OpenAI
 import argparse  
-import json  
+import json
+
 
 # Задайте вашия OpenAI API ключ
 client = OpenAI(
