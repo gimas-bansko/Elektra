@@ -1,671 +1,351 @@
-{% extends 'main/base_login.html' %}
-{% load static %}
+{% extends 'main/base.html' %}
+
+{% block title %}
+ПГЕЕ - начало
+{% endblock %}
 
 {% block content %}
+{% load static %}
+	<!-- Slider Area -->
+		<section class="home-slider">
+			<div class="slider-active">
+				<!-- Single Slider -->
+				<div class="single-slider overlay">
+					<!-- <div class="slider-image" style="background-image:url('images/slider/slider-bg1.jpg')"></div> -->
+					<div class="slider-image" style="background-image:url('{% static 'images/brand/bg_darkblue.jpg' %}')"></div>
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-10 col-md-10 col-12">
+								<!-- Slider Content -->
+								<div class="slider-content">
+									<h1 class="slider-title"><span>Успехът е умна игра!</span>
+										ПРОФЕСИОНАЛНА ГИМНАЗИЯ<br>
+										ПО ЕЛЕКТРОНИКА И ЕНЕРГЕТИКА<br>
+										<b>гр. Банско</b>
+									</h1>
+									<!-- Button -->
+									<p><br></p>
+									<div class="button">
+										{% if campaign %}
+										<a href="{% url 'campaign' %}" class="btn white primary">ПРИЕМ 2024/2025</a>
+										{% endif %}
+										<a href="{% url 'professions' %}" class="btn white primary">СПЕЦИАЛНОСТИ</a>
+									</div>
+									<!--/ End Button -->
+								</div>
+								<!--/ End Slider Content -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/ End Single Slider -->
+			</div>
+		</section>
+		<!--/ End Slider Area -->
+		<!-- Events -->
+		<section id="articles" class="events section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 offset-lg-3 col-12">
+						<div class="section-title bg">
+							<h2><span>Последни </span>Публикации</h2>
+							<div class="icon"><i class="fa fa-paper-plane"></i></div>
+							<a href="{% url 'publications' %}" class="btn white">Вижте всички публикации ...</a>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-5 col-12">
+						<div class="event-img">
+							<img src="{% static 'images/event-left.png' %}" alt="#">
+						</div>
+					</div>
+					<div class="col-lg-7 col-12">
+						<div class="coming-event">
+						{% for article in articles %}
+						<!-- Single Event -->
+						<div class="single-event">
+							<div class="event-image">
+								<img src="{{ article.picture.url }}" alt="#">
+								<div class="event-date">
+									<p>{{ article.event_date.day }}/{{ article.event_date.month }}<span>{{ article.event_date.year }}</span></p>
+								</div>
+							</div>
+							<div class="event-content">
+								<h3 class="event-title"><a href="article/{{ article.id }}">{{ article.title }}</a></h3>
+								<p>{{ article.annotation}}</p>
+								<span class="entry-date-time"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ article.publish_date}}</span>
+							</div>
+						</div>
+						{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--/ End Events -->
 
-        <!-- Imroz Preloader -->
-        <div class="preloader">
-            <div class='loader'>
-                <div class='circle'></div>
-                <div class='circle'></div>
-                <div class='circle'></div>
-                <div class='circle'></div>
-                <div class='circle'></div>
-            </div>
-        </div>
+		<!-- Features -->
+		<div class="features overlay section" data-stellar-background-ratio="0.5">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-12">
+						<!-- Single Feature -->
+						<div class="single-feature">
+							<div class="icon-img">
+								<img src="{% static 'images/feature1.jpg' %}" alt="#">
+								<i class="fa fa-clone"></i>
+							</div>
+							<div class="feature-content">
+								<h4 class="f-title">Специалности</h4>
+								<p>Нашите специалности са внимателно подбрани според актуалните тенденции на пазара на труда.
+									Те са изцяло обезпечени с необходимата материална база и квалифицирани преподаватели.
+								</p>
+							</div>
+						</div>
+						<!--/ End Single Feature -->
+					</div>
+					<div class="col-lg-3 col-md-6 col-12">
+						<!-- Single Feature -->
+						<div class="single-feature">
+							<div class="icon-img">
+								<img src="{% static 'images/feature1.jpg' %}" alt="#">
+								<i class="fa fa-institution"></i>
+							</div>
+							<div class="feature-content">
+								<h4 class="f-title">Училище</h4>
+								<p>Обновена сграда. Модерна техника. Физкултурен салон.</p>
+							</div>
+						</div>
+						<!--/ End Single Feature -->
+					</div>
+					<div class="col-lg-3 col-md-6 col-12">
+						<!-- Single Feature -->
+						<div class="single-feature">
+							<div class="icon-img">
+								<img src="{% static 'images/feature3.jpg' %}" alt="#">
+								<i class="fa fa-users"></i>
+							</div>
+							<div class="feature-content">
+								<h4 class="f-title">Учители</h4>
+								<p>Нашите учители са квалифицирани преподаватели с богат професионален опит в своята област.</p>
+							</div>
+						</div>
+						<!--/ End Single Feature -->
+					</div>
+					<div class="col-lg-3 col-md-6 col-12">
+						<!-- Single Feature -->
+						<div class="single-feature">
+							<div class="icon-img">
+								<img src="{% static 'images/feature2.jpg' %}" alt="#">
+								<i class="fa fa-book"></i>
+							</div>
+							<div class="feature-content">
+								<h4 class="f-title">е-Библиотека</h4>
+								<p>Виртуалната ни библиотека е достъпна за всички наши учители и ученици. Тя съдържа богат набор от електронни
+									учебни материали - учебници, презентации, учебни клипове, други помощни ресурси. </p>
+							</div>
+						</div>
+						<!--/ End Single Feature -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/ End Features -->
 
-        <!-- Start Slider Area  -->
-        <div class="slider-area slider-style-1 variation-default slider-bg-image bg-banner1" data-black-overlay="1">
-            <!-- <div class="bg-blend-top bg_dot-mask"></div> -->
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div class="inner text-center mt--60">
-                            <h1 class="title display-one">Добре дошли в<br>
-                                <span class="theme-gradient">Електра</span><br>
-                                <span class="color-off">софтуерна платформа в помощ на учителите</span>
-                            </h1>
-                            <p class="b1 desc-text">ресурси и инструменти, ориентирани към средното професионално обучение </p>
-                            <div class="button-group">
-                                <a class="btn-default bg-light-gradient btn-large" href="text-generator.html">
-                                    <div class="has-bg-light"></div>
-                                    <span>Start writing for free</span>
-                                </a>
-                            </div>
-                            <p class="color-gray mt--5">💳 No credit card required!</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 col-xl-10 order-1 order-lg-2">
-                        <div class="frame-image frame-image-bottom bg-flashlight video-popup icon-center">
-                            <img src="{% static 'assets/images/banner/banner-image-03.png' %}" alt="Banner Images">
-                            <div class="video-icon">
-                                <a class="btn-default rounded-player popup-video border bg-white-dropshadow" href="https://www.youtube.com/watch?v=tj9-MGHCs38">
-                                    <span><i class="feather-play"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="chatenai-separator has-position-bottom">
-                <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
-                <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
-            </div>
-        </div>
-        <!-- End Slider Area  -->
+		<!-- Класове -->
+		<section id="classes" class="courses section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 offset-lg-3 col-12">
+						<div class="section-title bg">
+							<h2><span>Нашите</span>  класове</h2>
+							<p>През учебната 2022/2023 г. в училището се обучават 210 ученици в 11 паралелки</p>
+							<div class="icon"><i class="fa fa-clone"></i></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					{% for klas in classes %}
+					<div class="col-lg-4 col-md-6 col-12">
+						<!-- Single Course -->
+						<div class="single-course">
+							<!-- Course Head -->
+							<div class="course-head overlay">
+								<img src="{{ klas.picture.url }}" alt="#">
+								<a href="class/{{ klas.id }}" class="btn white primary">Вижте повече...</a>
+							</div>
+							<!-- Course Body -->
+							<div class="course-body">
+								<div class="name-price">
+									<div class="teacher-info">
+										<img src="{{ klas.class_teacher.picture.url }}" alt="#">
+										<h4 class="title">Класен ръководител: {{ klas.class_teacher.name }}</h4>
+										</div>
+									<span class="price">{{klas.class_num}}  <sup>{{klas.class_char}}</sup> клас</span>
+								</div>
+								<h4 class="c-title">
+									{% for s in klas.specialities.all %}
+									<a href="speciality/{{ s.id }}">{{ s.name }}</a><br>
+									{% endfor %}
+								</h4>
+							</div>
+							<!-- Course Meta -->
+							<div class="course-meta">
+								<!-- Rattings -->
+								Среден успех за класа:&nbsp;
+								<ul class="rattings">
+									<li class="point"><span>{{ klas.rate }}</span></li>
+								</ul>
+							</div>
+							<!--/ End Course Meta -->
+						</div>
+						<!--/ End Single Course -->
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
+		<!--/ End Courses -->
 
-        <!-- Start Service__Style--1 Area  -->
-        <div class="rainbow-service-area rainbow-section-gap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title text-center" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
-                            <h4 class="subtitle">
-                                <span class="theme-gradient">GET IN TOUCH FOR FREE</span>
-                            </h4>
-                            <h2 class="title w-600 mb--20">Instant Content Generation with AI</h2>
-                            <p class="description b1">Provide Descriptions, Get Instant AI-Generated Content</p>
-                        </div>
-                    </div>
-                </div>
+		<!-- Call To Action -->
+		<section id="priem" class="cta">
+			<div class="cta-inner overlay section" style="background-image:url('{% static 'images/brand/bg_1_2.png'%}')" data-stellar-background-ratio="0.5">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 col-md-8 col-12">
+							<div class="text-content">
+								<h2>Прием <span> 2024/2025 г.</span></h2>
+								{% if campaign %}
+								<p>ПГЕЕ гр. Банско обявява прием на ученици за учебната 2024/2025 г. Предлагаме интересни и търсени специланости,
+									обезпечни с добра материална база и квалифицирани преподаватели.</p>
+								<!-- CTA Button -->
+								<div class="button">
+									<a class="btn white primary" href="{% url 'campaign' %}">Вижте повече ...</a>
+								</div>
+								<!--/ End CTA Button -->
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-12">
+							<!-- Cta Image -->
+							<div class="cta-image">
+								<img src="{% static 'images/girl-1.png' %}" alt="#">
+							</div>
+							<!--/ End Cta Image -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--/ End Call To Action -->
+	<!-- Специалности -->
+		<section id="professions"  class="courses section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 offset-lg-3 col-12">
+						<div class="section-title bg">
+							<h2><span>Нашите </span>Специалности</h2>
+							<div class="icon"><i class="fa fa-bandcamp"></i></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-5 col-12">
+						<div class="faq-image">
+							<img src="{% static 'images/faq.png' %}" alt="#">
+						</div>
+					</div>
+					<div class="col-lg-7 col-12">
+						<!-- Специалност -->
+						{% for speciality in specialities %}
+						<div class="single-course">
+							<!-- Картинка и бутон -->
+							<div class="course-head overlay">
+								<img src="{{ speciality.picture.url }}" alt="#">
+								<a href="speciality/{{ speciality.id }}" class="btn white primary">Вижте повече...</a>
+							</div>
+							<!-- Текст под картинката -->
+							<div class="course-body">
+								<h4 class="c-title">
+									Специалност:&nbsp;{{ speciality.name }}<br>
+								</h4>
+								<p>Професия: {{ speciality.profession}}</p>
+							</div>
+						</div>
+						{% endfor %}
+						<!--/ край на специалност -->
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--/ End Специалности -->
 
-                <div class="row row--15 service-wrapper">
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-sal="slide-up" data-sal-duration="700">
-                        <div class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight">
-                            <div class="icon">
-                                <i class="feather-activity"></i>
-                            </div>
-                            <div class="content">
-                                <h4 class="title w-600">
-                                    <a href="#">Effortless Content AI</a>
-                                </h4>
-                                <p class="description b1 color-gray mb--0">Let our AI-powered service take the hard
-                                    work out of content creation. Get started today with AI.</p>
-                            </div>
-                        </div>
-                    </div>
+		<!-- Партньори -->
+		<div  id="partners" class="clients">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 col-md-2 col-12">
+						<div class="text-content">
+							<h4>Партньори</h4>
+							<p></p>
+						</div>
+					</div>
+					<div class="col-lg-10 col-md-10 col-12">
+						<div class="client-slider">
+							{% for partner in partners %}
+							<div class="single-slider">
+								<a href="{{ partner.url.url }}"><img src="{{ partner.logo.url }}" alt="{{partner.title}}"></a>
+								<p style="color: #f8f8f8">{{partner.title}}</p>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
-                        <div class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight">
-                            <div class="icon">
-                                <i class="feather-cast"></i>
-                            </div>
-                            <div class="content">
-                                <h4 class="title w-600">
-                                    <a href="#">Your Words, Our Tech</a>
-                                </h4>
-                                <p class="description b1 color-gray mb--0">Discover how AI can transform your ideas
-                                    into engaging with our qualitifull service for a better content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-sal="slide-up" data-sal-duration="700" data-sal-delay="200">
-                        <div class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight">
-                            <div class="icon">
-                                <i class="feather-map"></i>
-                            </div>
-                            <div class="content">
-                                <h4 class="title w-600">
-                                    <a href="#">AI-Powered Writing </a>
-                                </h4>
-                                <p class="description b1 color-gray mb--0">Access AI-generated content for your
-                                    blogs, websites, and more with our qualitifull convenient service.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-sal="slide-up" data-sal-duration="700">
-                        <div class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight">
-                            <div class="icon">
-                                <i class="feather-loader"></i>
-                            </div>
-                            <div class="content">
-                                <h4 class="title w-600">
-                                    <a href="#">AI Generation Simple</a>
-                                </h4>
-                                <p class="description b1 color-gray mb--0">Experience the ease of content creation
-                                    with our AI service. Write less, achieve more.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
-                        <div class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight">
-                            <div class="icon">
-                                <i class="feather-speaker"></i>
-                            </div>
-                            <div class="content">
-                                <h4 class="title w-600">
-                                    <a href="#">Quality AI Content</a>
-                                </h4>
-                                <p class="description b1 color-gray mb--0">Get professionally written content in no
-                                    time with our AI service. Quality meets speed.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-sal="slide-up" data-sal-duration="700" data-sal-delay="200">
-                        <div class="service service__style--1 bg-color-blackest radius mt--25 text-center rbt-border-none variation-4 bg-flashlight">
-                            <div class="icon">
-                                <i class="feather-terminal"></i>
-                            </div>
-                            <div class="content">
-                                <h4 class="title w-600">
-                                    <a href="#">Your Writing Assistant</a>
-                                </h4>
-                                <p class="description b1 color-gray mb--0">Collaborate with AI to generate content
-                                    that resonates with your audience. Try it now.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Service__Style--1 Area  -->
-
-        <!-- Start Seperator Area  -->
-        <div class="chatenai-separator">
-            <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
-            <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
-        </div>
-        <!-- End Seperator Area  -->
-
-        <!-- Start Timeline-Style-Four  -->
-        <div class="rainbow-timeline-area rainbow-section-gap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title text-center" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
-                            <h4 class="subtitle ">
-                                <span class="theme-gradient">HOW IT WORKS</span>
-                            </h4>
-                            <h2 class="title w-600 mb--20">Guide Our AI to Create Your Copy</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-10 offset-lg-1 mt--30">
-                        <div class="timeline-style-two bg-flashlight bg-color-blackest">
-                            <div class="row row--0">
-                                <div class="col-lg-4 col-md-4 rainbow-timeline-single dark-line">
-                                    <div class="rainbow-timeline">
-                                        <h6 class="title" data-sal="slide-up" data-sal-duration="700" data-sal-delay="200">1.Select template</h6>
-                                        <div class="progress-line">
-                                            <div class="line-inner"></div>
-                                        </div>
-                                        <div class="progress-dot">
-                                            <div class="dot-level">
-                                                <div class="dot-inner"></div>
-                                            </div>
-                                        </div>
-                                        <p class="description" data-sal="slide-up" data-sal-duration="700" data-sal-delay="300">Easily Select Templates for Website Content.</p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 rainbow-timeline-single dark-line">
-                                    <div class="rainbow-timeline">
-                                        <h6 class="title" data-sal="slide-up" data-sal-duration="700" data-sal-delay="200">2.Describe topic</h6>
-                                        <div class="progress-line">
-                                            <div class="line-inner"></div>
-                                        </div>
-                                        <div class="progress-dot">
-                                            <div class="dot-level">
-                                                <div class="dot-inner"></div>
-                                            </div>
-                                        </div>
-                                        <p class="description" data-sal="slide-up" data-sal-duration="700" data-sal-delay="300">All Feature available features in Essentials.</p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 rainbow-timeline-single dark-line">
-                                    <div class="rainbow-timeline">
-                                        <h6 class="title" data-sal="slide-up" data-sal-duration="700" data-sal-delay="200">3.Generate content</h6>
-                                        <div class="progress-line">
-                                            <div class="line-inner"></div>
-                                        </div>
-                                        <div class="progress-dot">
-                                            <div class="dot-level">
-                                                <div class="dot-inner"></div>
-                                            </div>
-                                        </div>
-                                        <p class="description" data-sal="slide-up" data-sal-duration="700" data-sal-delay="300">Popular Feature available features in Essentials.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="button-group mt--50 text-center">
-                            <a class="btn-default btn-large" href="text-generator.html">Start writing for free</a>
-                            <a class="btn-default btn-large btn-border popup-video" href="https://www.youtube.com/watch?v=tj9-MGHCs38"><span>
-                                    <i class="feather-play"></i>
-                                </span> See action in video</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Timeline-Style-Four  -->
-
-        <!-- Start Seperator Area  -->
-        <div class="chatenai-separator">
-            <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
-            <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
-        </div>
-        <!-- End Seperator Area  -->
-
-
-        <!-- Start Split Style-1 Area  -->
-        <div class="rainbow-split-area rainbow-section-gap">
-            <div class="container">
-                <div class="rainbow-splite-style">
-                    <div class="split-wrapper">
-                        <div class="row g-0 radius-10 align-items-center">
-                            <div class="col-lg-12 col-xl-6 col-12">
-                                <div class="thumbnail">
-                                    <img class="radius" src="{% static 'assets/images/split/split-8.png' %}" alt="split Images">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-xl-6 col-12">
-                                <div class="split-inner">
-                                    <h4 class="title" data-sal="slide-up" data-sal-duration="400" data-sal-delay="200">
-                                        Instant Content with AI</h4>
-                                    <p class="description" data-sal="slide-up" data-sal-duration="400" data-sal-delay="300">Unlock Conversion-Driven Content: Business Bios,
-                                        Facebook Ads, Product Descriptions, Emails, Landing Pages, Social Ads, and
-                                        Beyond.</p>
-                                    <ul class="split-list" data-sal="slide-up" data-sal-duration="400" data-sal-delay="350">
-                                        <li>- Craft Articles in Under 20 Seconds.</li>
-                                        <li>- Reclaim Hundreds of Valuable Hours with AI</li>
-                                        <li>- Elevate Copywriting with Rewriter.</li>
-                                    </ul>
-                                    <div class="view-more-button mt--35" data-sal="slide-up" data-sal-duration="400" data-sal-delay="400">
-                                        <a class="btn-default" href="contact.html">Contact With Us</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Split Style-1 Area  -->
-
-        <!-- Start Seperator Area  -->
-        <div class="chatenai-separator">
-            <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
-            <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
-        </div>
-        <!-- End Seperator Area  -->
-
-        <!-- Start Pricing Area  -->
-        <div class="rainbow-pricing-area rainbow-section-gap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title text-center" data-sal="slide-up" data-sal-duration="400" data-sal-delay="150">
-                            <h4 class="subtitle "><span class="theme-gradient">Pricing</span></h4>
-                            <h2 class="title w-600 mb--20">Commence Content Journey with AI</h2>
-                            <p class="description b1">Collaborate with AI to generate content that resonates.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row row--15">
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="rainbow-pricing style-2">
-                            <div class="pricing-table-inner bg-flashlight">
-                                <div class="pricing-header">
-                                    <h4 class="title">Basic</h4>
-                                    <div class="pricing">
-                                        <div class="price-wrapper"><span class="price">Free</span></div><span
-                                            class="subtitle">Forever</span>
-                                    </div>
-                                </div>
-                                <div class="separator-animated mt--30 mb--30"></div>
-                                <div class="pricing-body">
-                                    <ul class="list-style--1">
-                                        <li><i class="feather-check-circle"></i> 7,700 Words</li>
-                                        <li><i class="feather-check-circle"></i> 6+ Templates</li>
-                                        <li><i class="feather-check-circle"></i> 5+ Languages</li>
-                                        <li><i class="feather-minus-circle"></i> AI Blog generate</li>
-                                        <li><i class="feather-minus-circle"></i> Advance Editor Tool</li>
-                                        <li><i class="feather-minus-circle"></i> Consistent support</li>
-                                    </ul>
-                                </div>
-                                <div class="pricing-footer"><a class="btn-default btn-border" href="#">Try it
-                                        now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="rainbow-pricing style-2 active">
-                            <div class="pricing-table-inner bg-flashlight">
-                                <div class="pricing-header">
-                                    <h4 class="title">Business</h4>
-                                    <div class="pricing">
-                                        <div class="price-wrapper"><span class="currency">$</span><span
-                                                class="price">50</span></div><span class="subtitle">USD Per
-                                            Month</span>
-                                    </div>
-                                </div>
-                                <div class="separator-animated animated-true mt--30 mb--30"></div>
-                                <div class="pricing-body">
-                                    <ul class="list-style--1">
-                                        <li><i class="feather-check-circle"></i> 80,000 Words</li>
-                                        <li><i class="feather-check-circle"></i> 6+ Templates</li>
-                                        <li><i class="feather-check-circle"></i> 5+ Languages</li>
-                                        <li><i class="feather-check-circle"></i> AI Blog generate</li>
-                                        <li><i class="feather-check-circle"></i> Advance Editor Tool</li>
-                                        <li><i class="feather-check-circle"></i> Consistent support</li>
-                                    </ul>
-                                </div>
-                                <div class="pricing-footer"><a class="btn-default" href="#">Purchase Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="rainbow-pricing style-2">
-                            <div class="pricing-table-inner bg-flashlight">
-                                <div class="pricing-header">
-                                    <h4 class="title">Advanced</h4>
-                                    <div class="pricing">
-                                        <div class="price-wrapper"><span class="currency">$</span><span
-                                                class="price">100</span></div><span class="subtitle">USD Per
-                                            Month</span>
-                                    </div>
-                                </div>
-                                <div class="separator-animated mt--30 mb--30"></div>
-                                <div class="pricing-body">
-                                    <ul class="list-style--1">
-                                        <li><i class="feather-check-circle"></i> 80,000 Words</li>
-                                        <li><i class="feather-check-circle"></i> 6+ Templates</li>
-                                        <li><i class="feather-check-circle"></i> 5+ Languages</li>
-                                        <li><i class="feather-check-circle"></i> AI Blog generate</li>
-                                        <li><i class="feather-check-circle"></i> Advance Editor Tool</li>
-                                        <li><i class="feather-check-circle"></i> Consistent support</li>
-                                    </ul>
-                                </div>
-                                <div class="pricing-footer"><a class="btn-default btn-border" href="#">Purchase
-                                        Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="button-group mt--50 text-center">
-                    <a class="btn-default btn-large btn-border" href="pricing.html">View Comparision</a>
-                </div>
-            </div>
-        </div>
-        <!-- End Pricing Area  -->
-
-        <!-- Start Seperator Area  -->
-        <div class="chatenai-separator">
-            <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
-            <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
-        </div>
-        <!-- End Seperator Area  -->
-
-        <!-- Start Accordion-2 Area  -->
-        <div class="rainbow-accordion-area rainbow-section-gap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-10 offset-lg-1">
-                        <div class="section-title text-center" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
-                            <h4 class="subtitle "><span class="theme-gradient">Accordion</span></h4>
-                            <h2 class="title w-600 mb--20">Frequently Asked Questions</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt--35 row--20">
-                    <div class="col-lg-10 offset-lg-1">
-                        <div class="rainbow-accordion-style  accordion">
-                            <div class="accordion" id="accordionExamplea">
-                                <div class="accordion-item card bg-flashlight">
-                                    <h2 class="accordion-header card-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            What is ChatenAI ? How does it work?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExamplea">
-                                        <div class="accordion-body card-body">
-                                            ChatenAI is an AI-powered messaging platform that understands and
-                                            responds to your natural language queries. Ask anything you'd typically
-                                            ask a human assistant—get weather updates, news, restaurant
-                                            recommendations, and more!
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item card bg-flashlight">
-                                    <h2 class="accordion-header card-header" id="headingTwo">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            What kind of questions can I ask ChatenAI?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExamplea">
-                                        <div class="accordion-body card-body">
-                                            ChatenAI, an AI-driven messaging platform, adeptly communicates with
-                                            users using natural language understanding. It delivers helpful
-                                            responses to your inquiries and requests.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item card bg-flashlight">
-                                    <h2 class="accordion-header card-header" id="headingThree">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            Can I get update regularly and For how long do I get updates?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExamplea">
-                                        <div class="accordion-body card-body">
-                                            Yes, We will get update the ChatenAI. And you can get it any time. Next
-                                            time we will comes with more feature. You can be get update for
-                                            unlimited times. Our dedicated team works for update.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item card bg-flashlight">
-                                    <h2 class="accordion-header card-header" id="headingFour">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                            How can I get the customer support?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExamplea">
-                                        <div class="accordion-body card-body">
-                                            After purchasing the product need you any support you can be share with
-                                            us with sending mail to rainbowit10@gmail.com.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="accordion-item card bg-flashlight">
-                                    <h2 class="accordion-header card-header" id="headingFive">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                            HIs my data safe with ChatenAI?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExamplea">
-                                        <div class="accordion-body card-body">
-                                            Feel free to toss any questions at chatenAI, just like you would with a
-                                            human helper—whether it's about the weather, the latest news, restaurant
-                                            suggestions, or anything else you fancy!
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="accordion-item card bg-flashlight">
-                                    <h2 class="accordion-header card-header" id="headingSix">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                                            Is ChatenAI available in multiple languages?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExamplea">
-                                        <div class="accordion-body card-body">
-                                            Yes, ChatenAI is designed to support multiple languages, offering a
-                                            versatile and inclusive communication experience for users worldwide.
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Accordion-2 Area  -->
-
-        <!-- Start Seperator Area  -->
-        <div class="chatenai-separator">
-            <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-bottom.svg' %}" alt="separator">
-            <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-bottom.svg' %}" alt="separator">
-        </div>
-        <!-- End Seperator Area  -->
-
-        <!-- Start Brands Area -->
-        <div class="rainbow-brand-area rainbow-section-gap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title text-center sal-animate" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
-                            <h4 class="subtitle "><span class="theme-gradient">Our Awesome Client</span></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 mt--10">
-                        <ul class="brand-list brand-style-2">
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-01.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-02.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-03.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-04.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-05.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-06.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-07.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-08.png' %}" alt="Brand Image"></a></li>
-                            <li><a href="#"><img src="{% static 'assets/images/brand/brand-01.png' %}" alt="Brand Image"></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Brands Area -->
-
-        <!-- Start Seperator Area  -->
-        <div class="chatenai-separator">
-            <img class="w-100 separator-dark" src="{% static 'assets/images/separator/separator-top.svg' %}" alt="separator">
-            <img class="w-100 separator-light" src="{% static 'assets/images/light/separator/separator-top.svg' %}" alt="separator">
-        </div>
-        <!-- End Seperator Area  -->
-
-        <!-- Start Call TO Action Area  -->
-        <div class="rainbow-callto-action-area">
-            <div class="wrapper">
-                <div class="rainbow-callto-action clltoaction-style-default rainbow-section-gap">
-                    <div class="container">
-                        <div class="row row--0">
-                            <div class="col-lg-12">
-                                <div class="align-items-center content-wrapper">
-                                    <div class="inner">
-                                        <div class="content text-center">
-                                            <span class="theme-gradient b2 mb--30 d-inline-block">Boost your writing
-                                                productivity</span>
-                                            <h2 class="title" data-sal="slide-up" data-sal-duration="400" data-sal-delay="200">Overcome Writer's Block Today</h2>
-                                            <p class="description" data-sal="slide-up" data-sal-duration="400" data-sal-delay="300">Gain Access to a Team of Copywriting Experts.
-                                            </p>
-                                            <div class="call-to-btn" data-sal="slide-up" data-sal-duration="400" data-sal-delay="350">
-                                                <a class="btn-default bg-light-gradient btn-large" href="text-generator.html">
-                                                    <div class="has-bg-light"></div>
-                                                    <span>Start writing for free</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="fancy-genearate-section">
-                    <div class="container">
-                        <div class="genarator-section">
-                            <ul class="genarator-card-group full-width-list">
-                                <li>
-                                    <a href="text-generator.html" class="genarator-card bg-flashlight-static center-align">
-                                        <div class="inner">
-                                            <div class="left-align">
-                                                <div class="img-bar">
-                                                    <img src="{% static 'assets/images/generator-icon/text_line.png' %}" alt="AI Generator">
-                                                </div>
-                                                <h5 class="title">Text Generator</h5>
-                                                <span class="rainbow-demo-btn">Try It Now Free</span>
-
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="image-editor.html" class="genarator-card bg-flashlight-static center-align">
-                                        <div class="inner">
-                                            <div class="left-align">
-                                                <div class="img-bar">
-                                                    <img src="{% static 'assets/images/generator-icon/photo-editor_line.png' %}" alt="AI Generator">
-                                                </div>
-                                                <h5 class="title">Photo Editor</h5>
-                                                <span class="rainbow-demo-btn">Try It Now Free</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="vedio-generator.html" class="genarator-card bg-flashlight-static center-align">
-                                        <div class="inner">
-                                            <div class="left-align">
-                                                <div class="img-bar">
-                                                    <img src="{% static 'assets/images/generator-icon/video-camera_line.png' %}" alt="AI Generator">
-                                                </div>
-                                                <h5 class="title">Vedio Generator</h5>
-                                                <span class="rainbow-demo-btn">Try It Now Free</span>
-                                                <span class="rainbow-badge-card ml--10">Hot</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="email-generator.html" class="genarator-card bg-flashlight-static center-align">
-                                        <div class="inner">
-                                            <div class="left-align">
-                                                <div class="img-bar">
-                                                    <img src="{% static 'assets/images/generator-icon/email_line.png' %}" alt="AI Generator">
-                                                </div>
-                                                <h5 class="title">Email Writer</h5>
-                                                <span class="rainbow-demo-btn">Try It Now Free</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="code-generator.html" class="genarator-card bg-flashlight-static center-align">
-                                        <div class="inner">
-                                            <div class="left-align">
-                                                <div class="img-bar">
-                                                    <img src="{% static 'assets/images/generator-icon/code-editor_line.png' %}" alt="AI Generator">
-                                                </div>
-                                                <h5 class="title">Code Generator</h5>
-                                                <span class="rainbow-demo-btn">Try It Now Free</span>
-                                                <span class="rainbow-badge-card ml--10">Hot</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Call TO Action Area  -->
-
-
+		<!--/ End Партньори -->
+	<!-- Важно -->
+	<section id="notes" class="faqs section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3 col-12">
+					<div class="section-title bg">
+						<h2>Важно</h2>
+						<p>Съобщения, обяви, актуални документи.</p>
+						<div class="icon"><i class="fa fa-exclamation-triangle"></i></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="faq-main">
+						<div class="faq-content">
+							<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+								{% for important_note in important_notes %}
+								<!-- Single Faq -->
+								<div class="panel panel-default">
+									<div class="faq-heading"  id="FaqTitle1">
+										<h4 class="faq-title">
+											<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#faq{{important_note.id}}">
+												<i class="fa fa-bell-o"></i>{{important_note.title}}</a>
+										</h4>
+									</div>
+									<div id="faq{{important_note.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="FaqTitle1">
+										<div class="faq-body">
+											<p><a href="{{ important_note.attachment.url }}" target="blank"><i class="fa fa-download"></i> {{important_note.annotation}}</a></p>
+										</div>
+									</div>
+								</div>
+								<!--/ End Single Faq -->
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--/ End Важно -->
 {% endblock %}

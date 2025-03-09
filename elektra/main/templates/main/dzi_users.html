@@ -294,7 +294,10 @@
                     <!-- Роля -->
                     <div class="row">
                         <div class="col-12 d-flex justify-content-end">
-                            Роля (ниво на достъп):&nbsp;<span class="title"> Училищен администратор </span>
+                            Роля (ниво на достъп):&nbsp;
+                            <span class="title" v-if="c_user.userprofile.access_level==3"> Училищен администратор </span>
+                            <span class="title" v-else-if="c_user.userprofile.access_level==4"> Учител </span>
+                            <span class="title" v-else> Ученик </span>
                         </div>
                     </div>
                     <!-- Потребителско име -->
@@ -375,8 +378,10 @@
                     <!-- Роля -->
                     <div class="row">
                         <div class="col-12 d-flex justify-content-end">
-                            Роля (ниво на достъп):&nbsp;<span class="title"> Училищен администратор </span>
-                        </div>
+                            Роля (ниво на достъп):&nbsp;
+                            <span class="title" v-if="c_user.userprofile.access_level==3"> Училищен администратор </span>
+                            <span class="title" v-else-if="c_user.userprofile.access_level==4"> Учител </span>
+                            <span class="title" v-else> Ученик </span>                        </div>
                     </div>
                     <!-- Потребителско име -->
                     <div class="row">
@@ -410,7 +415,9 @@
                                 </button>
                                 &nbsp
                                 <button class="react-btn btn-default btn-small btn-border bg-color-success"
-                                       data-bs-dismiss="modal" @click="changeUserPassword()" v-if="equalPasswords">
+                                        data-bs-dismiss="modal"
+                                        v-if="equalPasswords"
+                                        @click="changeUserPassword()">
                                    <i class="feather-check"></i><span>&nbsp;Промени паролата</span>
                                 </button>
                             </div>
@@ -428,7 +435,7 @@
                     </button>
                     <h5 class="title a">ВНИМАНИЕ!</h5>
                     <p style="display: flex; align-items: center;">Потребител [[ c_user.first_name ]]  [[ c_user.last_name ]] ([[ c_user.username ]]) и
-                        ВСИЧКИ съразани с него данни ще бъдат премахнати от базата данни. Моля, потвърдете!</p>
+                        ВСИЧКИ свъразани с него данни ще бъдат премахнати от базата данни. Моля, потвърдете!</p>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12"  style="text-align: right;">
                             <button class="react-btn btn-default btn-small btn-border bg-color-success"

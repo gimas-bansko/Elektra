@@ -722,11 +722,17 @@ class SchoolSpecialtiesView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 class ChangePasswordView(APIView):
     def post(self, request, *args, **kwargs):
         # Извличаме входните данни
         user_id = request.data.get('id')
         new_password = request.data.get('new_password')
+        print(f'password changing for user id={user_id}, new_password={new_password}')
 
         # Проверка дали са подадени всички необходими данни
         if not user_id or not new_password:
@@ -745,14 +751,23 @@ class ChangePasswordView(APIView):
             )
 
         # Сменяме паролата
+        print(f'Сменям парола с {new_password}')
         user.set_password(new_password)
         user.save()
 
-        return Response(
-            {"message": "Паролата беше успешно сменена."},
-            status=status.HTTP_200_OK
-        )
-
+        # Проверяваме дали паролата е правилно зададена
+        if user.check_password(new_password):
+            print('Паролата беше успешно сменена и проверена.')
+            return Response(
+                {"message": "Паролата беше успешно сменена и проверена."},
+                status=status.HTTP_200_OK
+            )
+        else:
+            print('Паролата не беше правилно зададена.')
+            return Response(
+                {"error": "Паролата не беше правилно зададена."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class DeleteUserView(APIView):
     def get(self, request, user_id, *args, **kwargs):

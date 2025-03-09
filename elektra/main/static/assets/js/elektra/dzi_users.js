@@ -59,9 +59,10 @@ const App = {
         },
         changeUserPassword(){
             let vm = this;
+            console.log(`password changing for user id=${this.c_user.id}, new_password=${this.password_1}`)
             axios({
                 method:'POST',
-                url:'/api/save-user/',
+                url:'/api/change-password/',
                 headers:{
                     'X-CSRFToken':CSRF_TOKEN,
                     //'Access-Control-Allow-Origin':'*',
