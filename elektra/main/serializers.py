@@ -248,9 +248,40 @@ class UserSerializer(serializers.ModelSerializer):
 
         return instance
 
+
 class UserReadSerializer(serializers.ModelSerializer):
     userprofile = UserProfileSpecSerializer()
 
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'userprofile']
+
+# данни за училище
+class SchoolSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = School
+        fields = (
+            'id', 'short_name', 'full_name', 'city', 'logo', 'address',
+            'phone_number', 'email', 'boss'
+        )
+
+class SchoolSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = [
+            'id', 'short_name', 'full_name', 'city', 'address', 'phone_number', 'email', 'boss'
+        ]
+
+# Училище - обновяваане на лого
+class SchoolLogoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = ('id', 'logo')
+
+    def create(self, validated_data):
+        image = validated_data.get('logo')
+        item = School.objects.update_or_create(id=validated_data.get("id"), defaults={'logo': image})
+        return item
+
+

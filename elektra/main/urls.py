@@ -15,6 +15,7 @@ urlpatterns = [
     path('dzi_dashboard', views.dzi_dashboard, name='dzi_home'),
     path('dzi_school_selected/<int:sc>/', views.dzi_set_school, name='set_school'),
     path('dzi_speciality_selected/<int:sp>/', views.dzi_set_speciality, name='set_speciality'),
+    path('dzi_add_speciality/<int:sp>/', views.dzi_add_speciality, name='add_speciality'),
 
     path('dzi_tests', views.dzi_test, name='dzi_tests'),
     path('dzi_tests_online_start', views.dzi_test_online_start, name='start_test'),
@@ -24,6 +25,7 @@ urlpatterns = [
     path('dzi_users', views.dzi_users, name='dzi_users'),
     path('dzi_sys', views.dzi_sys, name='dzi_sys'),
     path('dzi_settings', views.dzi_settings, name='dzi_settings'),
+    path('dzi_edit_speciality/<int:sp>/', views.dzi_edit_speciality, name='edit_speciality'),
 
     path('api-auth/', include('rest_framework.urls')),
 
@@ -62,4 +64,9 @@ urlpatterns = [
     path('api/schools/<int:school_id>/specialties/', views.SchoolSpecialtiesView.as_view(), name='school-specialties'),
     path('api/change-password/', views.ChangePasswordView.as_view(), name='change-password'),
     path('api/delete-user/<int:user_id>/', views.DeleteUserView.as_view(), name='delete-user'),
+    path('api/schools/<int:pk>/', views.SchoolDetailAPIView.as_view(), name='school-detail'),
+    path('api/SchoolLogo/', views.SchoolLogoAPIView.as_view()),
+    path('api/schools/<int:pk>/update/', views.SchoolUpdateAPIView.as_view(), name='school-update'),
+    path('api/remove_speciality/<int:sp>/', views.dzi_remove_speciality, name='remove_speciality'),
+
 ]

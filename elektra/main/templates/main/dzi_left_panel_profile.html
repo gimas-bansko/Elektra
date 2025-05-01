@@ -12,11 +12,14 @@
                                             {{ user_profile.school.short_name}} - {{ user_profile.school.city}}</li>
                                         <li>{{ user_profile.school.full_name}}</li>
                                    </ul>
+                                    {% if show_spec %}
                                     <div class="rbt-sm-separator"></div>
                                     <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                                         <li>Специалност:</li>
                                         <li style="font-size: 12px;">{{user_profile.speciality.specialty_num}} - {{user_profile.speciality.specialty_name}}</li>
                                     </ul>
+                                    {% endif %}
+
                                     {% if show_theme %}
                                     <div class="rbt-sm-separator"></div>
                                     <ul class="dashboard-mainmenu rbt-default-sidebar-list">

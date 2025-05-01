@@ -25,6 +25,7 @@
                     <div class="signup-box-bottom">
                         <div class="signup-box-content">
                             <h4 class="title">Добре дошли!</h4>
+                            <!--
                             <div class="social-btn-grp">
                                 <a class="btn-default btn-border" href="#">
                                     <span class="icon-left"><img src="{% static 'assets/images/sign-up/google.png' %}"
@@ -40,6 +41,7 @@
                                 <span>Или влезте </span>
                                 <hr>
                             </div>
+                            -->
                             <form method="post">
                                 {% csrf_token %}
                                 <div class="input-section mail-section">
@@ -50,15 +52,19 @@
                                     <div class="icon"><i class="feather-lock"></i></div>
                                     {{ form.password }}
                                 </div>
+                                <!--
                                 <div class="forget-text"><a class="btn-read-more" href="#"><span>Забравена парола</span></a></div>
+                                -->
                                 <button type="submit" class="btn-default">Вход</button>
                             </form>
                         </div>
+                        <!--
                         <div class="signup-box-footer">
                             <div class="bottom-text">
                                 Нямате регистрация? <a class="btn-read-more" href="{% url 'register' %}"><span>Регистрирайте се</span></a>
                             </div>
                         </div>
+                        -->
                     </div>
                 </div>
             </div>

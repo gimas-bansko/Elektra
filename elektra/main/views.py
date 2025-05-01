@@ -20,6 +20,7 @@ from rest_framework.permissions import IsAuthenticated
 from .utils import update_test_statistics  # Функцията, която добавихме за обновяване на статистиките
 
 from rest_framework import status
+from rest_framework import generics
 
 def index(request):
     return render(request, 'main/index.html')
@@ -114,7 +115,7 @@ def dzi_set_speciality(request, sp):
 
     return dzi_dashboard(request)
 
-def user_context(request, title, show_th=False):
+def user_context(request, title, show_th=False, show_sp=False):
     user = request.user
     user_profile = user.userprofile
 
@@ -128,23 +129,24 @@ def user_context(request, title, show_th=False):
         'user_level': USER_LEVEL[user_profile.access_level-1][1],
         'user_profile': user_profile,
         'show_theme': show_th,
+        'show_spec': show_sp,
         #        'schools': schools,
 #        'specialities': user_profile.school.specialities.all(),
     }
     return context
 
 def dzi_test(request):
-    return render(request, 'main/dzi_test.html', user_context(request,'въпроси'))
+    return render(request, 'main/dzi_test.html', user_context(request,'въпроси', show_th=True, show_sp=True))
 
 def dzi_test_online_start(request):
-    return render(request, 'main/dzi_test_online_start.html', user_context(request,'въпроси'))
+    return render(request, 'main/dzi_test_online_start.html', user_context(request,'въпроси', show_th=True, show_sp=True))
 
 def dzi_test_online(request):
-    return render(request, 'main/dzi_test_online.html', user_context(request,'тест', show_th=True))
+    return render(request, 'main/dzi_test_online.html', user_context(request,'тест', show_th=True, show_sp=True))
 
 
 def dzi_tasks(request):
-    return render(request, 'main/dzi_tasks.html', user_context(request,'въпроси', show_th=True))
+    return render(request, 'main/dzi_tasks.html', user_context(request,'въпроси', show_th=True, show_sp=True))
 
 def dzi_users(request):
     context = user_context(request, 'потребители')
@@ -158,8 +160,33 @@ def dzi_sys(request):
 
 def dzi_settings(request):
     context = user_context(request, 'настройки')
-    context['tab_title'] = 'настройки'
+    context['specialities'] = Specialty.objects.all()
+
     return render(request, 'main/dzi_settings.html', context)
+
+
+def dzi_add_speciality(request, sp):
+    specialty = get_object_or_404(Specialty, id=sp)
+    user = request.user
+    user_profile = user.userprofile
+    school = get_object_or_404(School, id=user_profile.school.id)
+
+    # Проверяваме дали специалността вече не е добавена към училището
+    if specialty not in school.specialities.all():
+        # Добавяме специалността към училището
+        school.specialities.add(specialty)
+
+        # Записване на промените
+        school.save()
+    return dzi_settings(request)
+
+
+def dzi_edit_speciality(request, sp):
+    context = user_context(request, 'настройки')
+    context['specialities'] = Specialty.objects.all()
+
+    return render(request, 'main/dzi_edit_speciality.html', context)
+
 
 """ 
 ***************************************
@@ -719,6 +746,7 @@ class SchoolSpecialtiesView(APIView):
 
         # Сериализираме специалностите
         serializer = SpecialtySerializer(specialties, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -786,3 +814,63 @@ class DeleteUserView(APIView):
             {"message": "Потребителят беше успешно изтрит."},
             status=status.HTTP_200_OK
         )
+
+# данни за определено по id училище
+class SchoolDetailAPIView(generics.RetrieveAPIView):
+    queryset = School.objects.all()
+    serializer_class = SchoolSerializer
+
+
+# Данни за училище - обновяване на логото
+class SchoolLogoAPIView(APIView):
+    def post(self, request):
+        data = SchoolLogoSerializer(data=request.data)
+        if data.is_valid():
+            data.save(id=request.data['id'])
+        return Response(status=201)
+
+# Запазване на данни за училище
+class SchoolUpdateAPIView(generics.UpdateAPIView):
+    queryset = School.objects.all()
+    serializer_class = SchoolSerializer2
+
+
+# премахване на специалност от дадено училище
+def dzi_remove_speciality(request, sp):
+    try:
+        # Взимаме обектите от базата данни
+        specialty = get_object_or_404(Specialty, id=sp)
+        user = request.user
+        user_profile = user.userprofile
+        school = get_object_or_404(School, id=user_profile.school.id)
+
+        # Проверяваме дали специалността съществува в списъка
+        if specialty in school.specialities.all():
+            # Премахваме специалността от училището
+            school.specialities.remove(specialty)
+
+            # Записване на промените
+            school.save()
+
+            return JsonResponse({
+                'success': True,
+                'message': f'Специалност "{specialty.specialty_name}" беше премахната от училище "{school.short_name} {school.city}".',
+                'school_id': school.id,
+                'specialty_id': specialty.id
+            })
+        else:
+            # Специалността не е в списъка
+            return JsonResponse({
+                'success': False,
+                'message': f'Специалност "{specialty.specialty_name}" не е добавена към училище "{school.short_name} {school.city}".',
+                'school_id': school.id,
+                'specialty_id': specialty.id
+            })
+
+    except Exception as e:
+        # Обработка на грешки
+        return JsonResponse({
+            'success': False,
+            'message': f'Възникна грешка при премахване на специалност: {str(e)}',
+            'error': str(e)
+        }, status=500)
