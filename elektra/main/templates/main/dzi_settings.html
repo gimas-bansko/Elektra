@@ -172,7 +172,7 @@
                                                             <div class="inner">
                                                                 <div class="chat-section">
                                                                     <div class="chat-content">
-                                                                        <h6 class="title">Списък на специланостите, изучавани в училището</h6>
+                                                                        <h6 class="title">Списък на специлностите, изучавани в училището</h6>
                                                                         <div class="rainbow-pricing-detailed-area">
                                                                             <div class="row mb--20">
                                                                                 <div class="col-lg-2 text-left">
@@ -220,7 +220,6 @@
                                                                                     &nbsp;&nbsp;
                                                                                     <a class="react-btn btn-default btn-small btn-border"
                                                                                             :href="'dzi_edit_speciality/' + spec.id"
-                                                                                            data-bs-toggle="modal" data-bs-target="#editUserModal"
                                                                                             style="font-size: 12px; color: green; border-color: #013401;">
                                                                                         <i class="feather-edit"></i><span>&nbsp;Данни&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                                                     </a>
@@ -233,35 +232,34 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!-- Специалности край -->
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Специалности край -->
                             </div>
                         </div>
-                        <!-- Светла/тъмна тема -->
-                        <div class="rbt-static-bar collapse-width">
-                            <!-- End Header Top Area  -->
-                            <div id="my_switcher" class="my_switcher">
-                                <ul>
-                                    <li>
-                                        <a href="javascript: void(0);" data-theme="light" class="setColor light">
-                                            <img src="{% static 'assets/images/light/switch/sun-01.svg' %}" alt="Sun images">
-                                            <span title="Light Mode"> Light</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
-                                            <img src="{% static 'assets/images/light/switch/vector.svg' %}" alt="Vector Images">
-                                            <span title="Dark Mode"> Dark</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <-- ------------------ -->
                     </div>
+                    <!-- Светла/тъмна тема -->
+                    <div class="rbt-static-bar collapse-width">
+                        <!-- End Header Top Area  -->
+                        <div id="my_switcher" class="my_switcher">
+                            <ul>
+                                <li>
+                                    <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                                        <img src="{% static 'assets/images/light/switch/sun-01.svg' %}" alt="Sun images">
+                                        <span title="Light Mode"> Light</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                                        <img src="{% static 'assets/images/light/switch/vector.svg' %}" alt="Vector Images">
+                                        <span title="Dark Mode"> Dark</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <-- ------------------ -->
                 </div>
             </div>
 {% endblock %}

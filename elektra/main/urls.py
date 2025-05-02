@@ -25,7 +25,7 @@ urlpatterns = [
     path('dzi_users', views.dzi_users, name='dzi_users'),
     path('dzi_sys', views.dzi_sys, name='dzi_sys'),
     path('dzi_settings', views.dzi_settings, name='dzi_settings'),
-    path('dzi_edit_speciality/<int:sp>/', views.dzi_edit_speciality, name='edit_speciality'),
+    path('dzi_edit_speciality/<int:sp>', views.dzi_edit_speciality, name='edit_speciality'),
 
     path('api-auth/', include('rest_framework.urls')),
 
@@ -64,9 +64,11 @@ urlpatterns = [
     path('api/schools/<int:school_id>/specialties/', views.SchoolSpecialtiesView.as_view(), name='school-specialties'),
     path('api/change-password/', views.ChangePasswordView.as_view(), name='change-password'),
     path('api/delete-user/<int:user_id>/', views.DeleteUserView.as_view(), name='delete-user'),
+    # SETTINGS
     path('api/schools/<int:pk>/', views.SchoolDetailAPIView.as_view(), name='school-detail'),
     path('api/SchoolLogo/', views.SchoolLogoAPIView.as_view()),
     path('api/schools/<int:pk>/update/', views.SchoolUpdateAPIView.as_view(), name='school-update'),
     path('api/remove_speciality/<int:sp>/', views.dzi_remove_speciality, name='remove_speciality'),
+    path('api/specialty/<int:pk>/', views.SpecialtyDetailAPIView.as_view(), name='specialty-detail'),
 
 ]

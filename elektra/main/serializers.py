@@ -284,4 +284,3 @@ class SchoolLogoSerializer(serializers.ModelSerializer):
         item = School.objects.update_or_create(id=validated_data.get("id"), defaults={'logo': image})
         return item
 
-

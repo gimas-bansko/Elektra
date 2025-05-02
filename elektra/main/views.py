@@ -183,8 +183,8 @@ def dzi_add_speciality(request, sp):
 
 def dzi_edit_speciality(request, sp):
     context = user_context(request, 'настройки')
-    context['specialities'] = Specialty.objects.all()
-
+    context['specialty'] = get_object_or_404(Specialty, id=sp)
+    context['speciality_id'] = sp
     return render(request, 'main/dzi_edit_speciality.html', context)
 
 
@@ -874,3 +874,9 @@ def dzi_remove_speciality(request, sp):
             'message': f'Възникна грешка при премахване на специалност: {str(e)}',
             'error': str(e)
         }, status=500)
+
+
+# Данни за специалност
+class SpecialtyDetailAPIView(generics.RetrieveAPIView):
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer

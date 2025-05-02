@@ -5,6 +5,17 @@ const App = {
             listOfSpecialties: [],
             user:{},
             school:{},
+            specialty: {
+                "id": 2,
+                "professional_field_num": "481",
+                "professional_field_name": "Компютърни науки",
+                "profession_num": "481020",
+                "profession_name": "Системен програмист",
+                "specialty_num": "4810201",
+                "specialty_name": "Системно програмиране",
+                "nip": "http://127.0.0.1:8008/media_files/docs/nip_4810201.pdf"
+            },
+
         }
     },
     computed: {
@@ -127,13 +138,20 @@ const App = {
                     vm.showSnackbar('Възникна грешка при премахване на специалността', 'error');
                 });
         },
-        editSpecialty(specialtyId) {
+        editSpecialty() {
             // Записваме действието в лога
             this.sendLogRecord(`Започване на редактиране на специалност с ID ${specialtyId}`);
             console.log(`Започване на редактиране на специалност с ID ${specialtyId}`);
 
             // Пренасочване
             window.location.href = `/edit_spec/${specialtyId}`;
+        },
+        loadSpeciality() {
+            const vm = this;
+            axios.get('/api/specialty/'+SPEC+'/')
+                .then(function(response){
+                    vm.specialty = response.data
+                })
         },
     },
     created: function(){
