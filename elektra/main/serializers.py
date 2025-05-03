@@ -186,10 +186,32 @@ class RemarkSerializer(serializers.ModelSerializer):
 """
         ПОТРЕБИТЕЛИ
 """
+
+
+# В serializers.py добавете:
 class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialty
-        fields = '__all__'  # Включи всички полета на модела Specialty
+        fields = [
+            'id',
+            'professional_field_num',
+            'professional_field_name',
+            'profession_num',
+            'profession_name',
+            'specialty_num',
+            'specialty_name',
+            'nip'
+        ]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        request = self.context.get('request')
+
+        if representation['nip'] and request:
+            representation['nip'] = request.build_absolute_uri(instance.nip.url)
+
+        return representation
+
 
 class UserProfileSpecSerializer(serializers.ModelSerializer):
     speciality = SpecialtySerializer()  # Включваме сериализатора за Specialty

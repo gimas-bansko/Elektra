@@ -52,16 +52,16 @@
                                             <ul class="nav nav-tabs tab-button-style-2 justify-content-start"
                                                 id="settinsTab-4" role="tablist">
                                                 <li role="presentation">
-                                                    <a href="#" class="tab-button" id="school-tab" data-bs-toggle="tab"
+                                                    <a class="tab-button" id="school-tab" data-bs-toggle="tab"
                                                        data-bs-target="#school" role="tab" aria-controls="profile"
-                                                       aria-selected="true">
+                                                       aria-selected="true" @click="activeTab=0">
                                                         <span class="title">Специалност</span>
                                                     </a>
                                                 </li>
                                                 <li role="presentation">
                                                     <a href="#" class="tab-button" id="password-tab" data-bs-toggle="tab"
                                                        data-bs-target="#password" role="tab" aria-controls="password"
-                                                       aria-selected="false">
+                                                       aria-selected="false"  @click="activeTab=1">
                                                         <span class="title">НИП</span>
                                                     </a>
                                                 </li>
@@ -69,7 +69,7 @@
                                         </div>
 
                                         <div class="tab-content">
-                                            <!-- Данни за училището -->
+                                            <!-- Данни за специалността -->
                                             <div class="tab-pane fade active show" id="school" role="tabpanel" aria-labelledby="school-tab">
                                                 <form class="rbt-profile-row rbt-default-form row row--15">
                                                     <!-- направление -->
@@ -111,35 +111,238 @@
                                                             <input id="sp_name" type="text" v-model="specialty.specialty_name">
                                                         </div>
                                                     </div>
+                                                    <div class="col-12 mt--20" style="text-align: start;">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                <!-- Добавете този блок за показване на файла -->
+                                                                <div class="file-display" v-if="specialty.nip">
+                                                                    <div class="file-info">
+                                                                        <label>НИП:&nbsp;&nbsp;</label>
+                                                                        <i class="feather-file-text"></i>
+                                                                        <span class="file-name">[[ getFileName(specialty.nip) ]]</span>&nbsp;&nbsp;
+                                                                        <a :href="specialty.nip" target="_blank"
+                                                                           class="react-btn btn-default btn-small btn-border"
+                                                                           style="font-size: 12px; color: #0600ff; border-color: rgb(10 88 202 / 29%);">
+                                                                            Преглед&nbsp;&nbsp;
+                                                                        </a>&nbsp;&nbsp;
+                                                                        <a :href="specialty.nip" download
+                                                                           class="react-btn btn-default btn-small btn-border"
+                                                                           style="font-size: 12px; color: green; border-color: #013401;">
+                                                                            Изтегляне
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Показва се, ако няма качен файл -->
+                                                                <div class="no-file" v-else>
+                                                                    <p>Няма качен файл с НИП.</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+                                                                <!-- Секция за качване на нов файл -->
+                                                                <div class="file-upload">
+                                                                    <h6 class="upload-title">Качване на нов НИП файл</h6>
+                                                                    <div class="upload-area">
+                                                                        <span v-if="selectedFile" class="selected-file-name">[[ selectedFile.name ]]</span>
+                                                                        <span v-else class="selected-file-name">Няма избран файл</span>
+                                                                        <input type="file" id="nipFile" @change="handleFileUpload" class="hidden-file-input" hidden>
+                                                                        <label for="nipFile"
+                                                                               class="react-btn btn-default btn-small btn-border"
+                                                                               style="font-size: 12px; color: green; border-color: #013401;">
+                                                                            <i class="feather-upload"></i>
+                                                                            Избери файл
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2 col-md-2 col-sm-2 col-12">
+                                                                <div v-if="selectedFile" class="upload-actions mt--40">
+                                                                    <button class="react-btn btn-default btn-small btn-border"
+                                                                            style="font-size: 12px; color: green; border-color: #013401;"
+                                                                            @click="uploadNipFile" :disabled="!selectedFile">
+                                                                        Качи файл
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-12 mt--20" style="text-align: center;">
                                                         <div class="form-group mb--0">
-                                                            <a class="btn-default">Запиши</a>
+                                                            <a class="btn-default" @click="saveSpecialty" :class="{'disabled': isSaving}">
+                                                                <span v-if="isSaving">Записване...</span>
+                                                                <span v-else>Запиши</span>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </form>
                                             </div>
                                             <!-- Данни за училището край-->
 
-                                            <!-- Специалности -->
+                                            <!-- НИП -->
                                             <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
-                                                <div class="chat-box-list pt--30">
-                                                    <!-- Заглавна част -->
-                                                    <div class="chat-box author-speech bg-flashlight" style="padding-bottom: 0px;">
-                                                        <div class="inner">
-                                                            <div class="chat-section">
-                                                                <div class="chat-content">
-                                                                    <h6 class="title">Списък на специлностите, изучавани в училището</h6>
+                                                <h6 class="title">НИП за специалност [[ specialty.specialty_num ]]  [[ specialty.specialty_name ]]  </h6>
+                                                <!-- списък на темите, подтемите и матриците за изпитен тест -->
+                                                <div class="content-page">
+                                                    <!-- Точки от темата  -->
+                                                    <div class="chat-box-list pt--30" id="chatContainer"
+                                                         v-for="(theme, theme_idx) in themes">
+                                                        <!-- Тема -->
+                                                        <div class="chat-box author-speech bg-flashlight">
+                                                            <div class="inner">
+                                                                <div class="chat-section">
+                                                                    <div class="chat-content">
+                                                                        <h5 class="title">ТЕМА [[theme.num]]. [[theme.title]]</h5>
+                                                                        <div class="rainbow-pricing-detailed-area">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-12">
+                                                                                    <div class="section-title text-left mt--20 d-flex justify-content-center">
+                                                                                        <p class="title w-600 mb--0">Брой тестови задачи по равнища (общо за темата) </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row row--15">
+                                                                                <div class="col-lg-12">
+                                                                                    <div class="rainbow-compare-table style-1">
+                                                                                        <table class="table-responsive">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th></th>
+                                                                                                    <th class="sm-radius-top-left color-level-1">
+                                                                                                        Знание<br>(0 – 2 т.)</th>
+                                                                                                    <th class="color-level-2">
+                                                                                                        Разбиране<br>(0 – 4 т.)</th>
+                                                                                                    <th class="color-level-3">
+                                                                                                        Приложение<br>(0 – 6 т.)</th>
+                                                                                                    <th class="sm-radius-top-right color-level-4">
+                                                                                                        Анализ<br>(0 – 8 т.)
+                                                                                                    </th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td>брой</td>
+                                                                                                    <td>[[theme.tasks_knowledge]]</td>
+                                                                                                    <td>[[theme.tasks_comprehension]]</td>
+                                                                                                    <td>[[theme.tasks_application]]</td>
+                                                                                                    <td>[[theme.tasks_analysis]]</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td>точки</td>
+                                                                                                    <td>[[theme.tasks_knowledge*2]]</td>
+                                                                                                    <td>[[theme.tasks_comprehension*4]]</td>
+                                                                                                    <td>[[theme.tasks_application*6]]</td>
+                                                                                                    <td>[[theme.tasks_analysis*8]]</td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row row--15 mt--20">
+                                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                                </div>
+                                                                                <!-- copy -->
+                                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
+                                                                                    <button class="react-btn btn-default btn-small btn-border"
+                                                                                            @click="showEditThemeForm(theme)"
+                                                                                            data-bs-toggle="modal" data-bs-target="#editThemeModal"
+                                                                                            style="font-size: 12px; color: green; border-color: #013401;">
+                                                                                        <i class="feather-edit"></i><span>&nbsp;Промени данните &nbsp;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <!-- списък на потребителите в тази група(роля) -->
-                                                    <div class="chat-box ai-speech bg-flashlight mt--10" style="padding: 10px;">
-                                                        <div class="inner top-flashlight leftside light-xl">
-                                                            <!-- Заглавна част -->
-                                                            <div class="chat-section generate-section">
-                                                                <div class="chat-content">
-                                                               </div>
+                                                        <!-- списък на точките от темата -->
+                                                        <div v-for="(item, item_idx) in theme.items"   :id="'T'+theme_idx+item_idx">
+                                                            <div class="chat-box ai-speech bg-flashlight mt--10">
+                                                                <div class="inner top-flashlight leftside light-xl">
+                                                                    <!-- Заглавна част - параметри на точката -->
+                                                                    <div class="chat-section generate-section">
+                                                                        <div class="chat-content">
+                                                                            <h6 class="title">[[theme.num]].[[item.item]]. [[item.title]]</h6>
+                                                                            <p class="title w-600 mb--0">Брой тестови задачи по равнища </p>
+                                                                            <table class="table-responsive">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th></th>
+                                                                                        <th class="sm-radius-top-left color-level-1">
+                                                                                            Знание (0 – 2 т.)</th>
+                                                                                        <th class="color-level-2">
+                                                                                            Разбиране (0 – 4 т.)</th>
+                                                                                        <th class="color-level-3">
+                                                                                            Приложение (0 – 6 т.)</th>
+                                                                                        <th class="sm-radius-top-right color-level-4">
+                                                                                            Анализ (0 – 8 т.)
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>брой</td>
+                                                                                        <td>[[item.knowledge]]</td>
+                                                                                        <td>[[item.comprehension]]</td>
+                                                                                        <td>[[item.application]]</td>
+                                                                                        <td>[[item.analysis]]</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>точки</td>
+                                                                                        <td>[[item.knowledge*2]]</td>
+                                                                                        <td>[[item.comprehension*4]]</td>
+                                                                                        <td>[[item.application*6]]</td>
+                                                                                        <td>[[item.analysis*8]]</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <div class="row row--15 mt--20">
+                                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                                </div>
+                                                                                <!-- copy -->
+                                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
+                                                                                    <button class="react-btn btn-default btn-small btn-border"
+                                                                                            @click="deleteThemeItem(theme, item)"
+                                                                                            style="font-size: 12px; color: red; border-color: #5c0000d4;">
+                                                                                        <i class="feather-edit"></i><span>&nbsp;Премахни точката &nbsp;</span>
+                                                                                    </button>
+                                                                                    &nbsp;&nbsp;
+                                                                                    <button class="react-btn btn-default btn-small btn-border"
+                                                                                            @click="showEditThemeItemForm(theme, item)"
+                                                                                            data-bs-toggle="modal" data-bs-target="#editItemModal"
+                                                                                            style="font-size: 12px; color: green; border-color: #013401;">
+                                                                                        <i class="feather-edit"></i><span>&nbsp;Промени данните &nbsp;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                       </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- футер на темата с бутон за добавяне на точка -->
+                                                        <div class="chat-box author-speech bg-flashlight">
+                                                            <div class="inner">
+                                                                <div class="chat-section">
+                                                                    <div class="chat-content">
+                                                                        <h6 class="title">ТЕМА [[theme.num]]. [[theme.title]]</h6>
+                                                                        <div class="rainbow-pricing-detailed-area">
+                                                                            <div class="row row--15 mt--10">
+                                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                                                </div>
+                                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
+                                                                                    <button class="react-btn btn-default btn-small btn-border"
+                                                                                            @click="showCreateThemeItemForm(theme)"
+                                                                                            data-bs-toggle="modal" data-bs-target="#editNewItemModal"
+                                                                                            style="font-size: 12px; color: #0600ff; border-color: rgb(10 88 202 / 29%);">
+                                                                                        <i class="feather-user-check"></i><span>&nbsp;Добави точка &nbsp;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -152,7 +355,15 @@
                         </div>
                         <!-- Светла/тъмна тема -->
                         <div class="rbt-static-bar collapse-width">
-                            <!-- End Header Top Area  -->
+                            <ul class="staticbar-btn-grp d-md-flex" v-if="activeTab==1">
+                                <li>
+                                    <button class="btn-default btn-small btn-border"
+                                            data-bs-toggle="modal" data-bs-target="#editNewThemeModal"
+                                            @click="showCreateThemeForm()">
+                                        <span>Добави Тема</span>
+                                    </button>
+                                </li>
+                            </ul>
                             <div id="my_switcher" class="my_switcher">
                                 <ul>
                                     <li>
@@ -170,13 +381,292 @@
                                 </ul>
                             </div>
                         </div>
-                        <!-- ------------------ -->
                     </div>
                 </div>
             </div>
 {% endblock %}
 
 {% block modals %}
+        <!-- Нова Тема -->
+        <div id="editNewThemeModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <!-- Заглавна част  -->
+                    <h5 class="title">Добавяне на нова тема от НИП за специалност [[ specialty.specialty_num ]]  [[ specialty.specialty_name ]]</h5>
+
+                    <!-- Формулировка на въпроса -->
+                    <div >
+                       <div class="border-gradient text-form pl--10 pr--10">
+                           <div class="row mt--20">
+                               <div class="form-group col-lg-2">
+                                   <label for="themeNum">Тема №</label>
+                                   <input type="text" class="form-control" id="themeNum"
+                                          maxlength="4" size="4" v-model="newTheme.num">
+                               </div>
+                               <div class="form-group col-lg-10">
+                                   <label for="themeTitle">Наименование на темата</label>
+                                   <input type="text" class="form-control" id="themeTitle"
+                                          v-model="newTheme.title">
+                               </div>
+                           </div>
+                           <p class="mt--20">Общ брой задачи по тестови равнища:</p>
+                           <div class="row ">
+                               <div class="form-group col-lg-3">
+                                   <label for="tasks_knowledge">Знание</label>
+                                   <input type="text" class="form-control" id="tasks_knowledge"
+                                          maxlength="4" size="4" v-model="newTheme.tasks_knowledge">
+                               </div>
+                               <div class="form-group col-lg-3">
+                                   <label for="tasks_comprehension">Разбиране</label>
+                                   <input type="text" class="form-control" id="tasks_comprehension"
+                                          maxlength="4" size="4" v-model="newTheme.tasks_comprehension">
+                               </div>
+                               <div class="form-group col-lg-3">
+                                   <label for="tasks_application">Приложение</label>
+                                   <input type="text" class="form-control" id="tasks_application"
+                                          maxlength="4" size="4" v-model="newTheme.tasks_application">
+                               </div>
+                               <div class="form-group col-lg-3">
+                                   <label for="tasks_analysis">Анализ</label>
+                                   <input type="text" class="form-control" id="tasks_analysis"
+                                          maxlength="4" size="4" v-model="newTheme.tasks_analysis">
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                    <!-- бутон горе ляво - затваряне на прозореца -->
+                    <button class="close-button" data-bs-dismiss="modal">
+                       <i class="feather-x"></i>
+                    </button>
+                    <!-- footer - бутони за отказ/запис -->
+                    <div class="row mt--20">
+                       <div class="col-lg-2 col-md-2">
+                       </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                            <div class="btn-grp">
+                                <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                       data-bs-dismiss="modal">
+                                   <i class="feather-x"></i><span>&nbsp;Откажи</span>
+                                </button>
+                                &nbsp
+                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                       data-bs-dismiss="modal" @click="createTheme()">
+                                   <i class="feather-check"></i><span>&nbsp;Запази</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+        <!-- Редактиране на Тема -->
+        <div id="editThemeModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <!-- Заглавна част  -->
+                    <h5 class="title">Редактиране на тема от НИП за специалност [[ specialty.specialty_num ]]  [[ specialty.specialty_name ]]</h5>
+
+                    <!-- данни за темата -->
+                    <div class="border-gradient text-form pl--10 pr--10">
+                       <div class="row mt--20">
+                           <div class="form-group col-lg-2">
+                               <label for="themeNumЕ">Тема №</label>
+                               <input type="text" class="form-control" id="themeNumЕ"
+                                      maxlength="4" size="4" v-model="editingTheme.num">
+                           </div>
+                           <div class="form-group col-lg-10">
+                               <label :for="'themeTitleЕ'">Наименование на темата</label>
+                               <input type="text" class="form-control" :id="'themeTitleЕ'"
+                                      v-model="editingTheme.title">
+                           </div>
+                       </div>
+                       <p class="mt--20">Общ брой задачи по тестови равнища:</p>
+                       <div class="row ">
+                           <div class="form-group col-lg-3">
+                               <label for="tasks_knowledgeЕ">Знание</label>
+                               <input type="text" class="form-control" id="tasks_knowledgeЕ"
+                                      maxlength="4" size="4" v-model="editingTheme.tasks_knowledge">
+                           </div>
+                           <div class="form-group col-lg-3">
+                               <label for="tasks_comprehensionЕ">Разбиране</label>
+                               <input type="text" class="form-control" id="tasks_comprehensionЕ"
+                                      maxlength="4" size="4" v-model="editingTheme.tasks_comprehension">
+                           </div>
+                           <div class="form-group col-lg-3">
+                               <label for="tasks_applicationЕ">Приложение</label>
+                               <input type="text" class="form-control" id="tasks_applicationЕ"
+                                      maxlength="4" size="4" v-model="editingTheme.tasks_application">
+                           </div>
+                           <div class="form-group col-lg-3">
+                               <label for="tasks_analysisЕ">Анализ</label>
+                               <input type="text" class="form-control" id="tasks_analysisЕ"
+                                      maxlength="4" size="4" v-model="editingTheme.tasks_analysis">
+                           </div>
+                       </div>
+                   </div>
+
+                    <!-- бутон горе ляво - затваряне на прозореца -->
+                    <button class="close-button" data-bs-dismiss="modal">
+                       <i class="feather-x"></i>
+                    </button>
+                    <!-- footer - бутони за отказ/запис -->
+                    <div class="row mt--20">
+                       <div class="col-lg-2 col-md-2">
+                       </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                            <div class="btn-grp">
+                                <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                       data-bs-dismiss="modal">
+                                   <i class="feather-x"></i><span>&nbsp;Откажи</span>
+                                </button>
+                                &nbsp
+                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                       data-bs-dismiss="modal" @click="updateTheme()">
+                                   <i class="feather-check"></i><span>&nbsp;Запази</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+        <!-- Нова Точка -->
+        <div id="editNewItemModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <h5 class="title">Добавяне на нова точка към тема от НИП за специалност [[ specialty.specialty_num ]]  [[ specialty.specialty_name ]]</h5>
+                    <div class="border-gradient text-form pl--10 pr--10">
+                        <div class="row mt--20">
+                            <div class="form-group col-lg-2">
+                                <label for="itemNum">Точка №</label>
+                                <input type="text" class="form-control" id="itemNum"
+                                       maxlength="4" size="4" v-model="newThemeItem.item">
+                            </div>
+                            <div class="form-group col-lg-10">
+                                <label for="itemTitle">Критерий за оценяване (наименование на точката)</label>
+                                <input type="text" class="form-control" id="itemTitle"
+                                      v-model="newThemeItem.title">
+                            </div>
+                        </div>
+                        <p class="mt--20">Общ брой задачи по тестови равнища:</p>
+                        <div class="row ">
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_knowledgeI">Знание</label>
+                                <input type="text" class="form-control" id="tasks_knowledgeI"
+                                       maxlength="4" size="4" v-model="newThemeItem.knowledge">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_comprehensionI">Разбиране</label>
+                                <input type="text" class="form-control" id="tasks_comprehensionI"
+                                       maxlength="4" size="4" v-model="newThemeItem.comprehension">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_applicationI">Приложение</label>
+                                <input type="text" class="form-control" id="tasks_applicationI"
+                                       maxlength="4" size="4" v-model="newThemeItem.application">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_analysisI">Анализ</label>
+                                <input type="text" class="form-control" id="tasks_analysisI"
+                                       maxlength="4" size="4" v-model="newThemeItem.analysis">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- бутон горе ляво - затваряне на прозореца -->
+                    <button class="close-button" data-bs-dismiss="modal">
+                       <i class="feather-x"></i>
+                    </button>
+                    <!-- footer - бутони за отказ/запис -->
+                    <div class="row mt--20">
+                       <div class="col-lg-2 col-md-2">
+                       </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                            <div class="btn-grp">
+                                <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                       data-bs-dismiss="modal">
+                                   <i class="feather-x"></i><span>&nbsp;Откажи</span>
+                                </button>
+                                &nbsp
+                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                       data-bs-dismiss="modal" @click="createThemeItem()">
+                                   <i class="feather-check"></i><span>&nbsp;Запази</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+        <!-- Редактиране на Точка -->
+        <div id="editItemModal" class="modal rbt-modal-box like-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight leftside light-xl">
+                    <h5 class="title">Редактиране на точка към тема от НИП за специалност [[ specialty.specialty_num ]]  [[ specialty.specialty_name ]]</h5>
+                    <div class="border-gradient text-form pl--10 pr--10">
+                        <div class="row mt--20">
+                            <div class="form-group col-lg-2">
+                                <label for="itemNumIE">Точка №</label>
+                                <input type="text" class="form-control" id="itemNumIE"
+                                       maxlength="4" size="4" v-model="editingThemeItem.item">
+                            </div>
+                            <div class="form-group col-lg-10">
+                                <label for="itemTitleIE">Критерий за оценяване (наименование на точката)</label>
+                                <input type="text" class="form-control" id="itemTitleIE"
+                                      v-model="editingThemeItem.title">
+                            </div>
+                        </div>
+                        <p class="mt--20">Общ брой задачи по тестови равнища:</p>
+                        <div class="row ">
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_knowledgeIE">Знание</label>
+                                <input type="text" class="form-control" id="tasks_knowledgeIE"
+                                       maxlength="4" size="4" v-model="editingThemeItem.knowledge">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_comprehensionIE">Разбиране</label>
+                                <input type="text" class="form-control" id="tasks_comprehensionIE"
+                                       maxlength="4" size="4" v-model="editingThemeItem.comprehension">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_applicationIE">Приложение</label>
+                                <input type="text" class="form-control" id="tasks_applicationIE"
+                                       maxlength="4" size="4" v-model="editingThemeItem.application">
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="tasks_analysisIE">Анализ</label>
+                                <input type="text" class="form-control" id="tasks_analysisIE"
+                                       maxlength="4" size="4" v-model="editingThemeItem.analysis">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- бутон горе ляво - затваряне на прозореца -->
+                    <button class="close-button" data-bs-dismiss="modal">
+                       <i class="feather-x"></i>
+                    </button>
+                    <!-- footer - бутони за отказ/запис -->
+                    <div class="row mt--20">
+                       <div class="col-lg-2 col-md-2">
+                       </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-12" style="text-align: right;">
+                            <div class="btn-grp">
+                                <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                       data-bs-dismiss="modal">
+                                   <i class="feather-x"></i><span>&nbsp;Откажи</span>
+                                </button>
+                                &nbsp
+                                <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                       data-bs-dismiss="modal" @click="updateThemeItem()">
+                                   <i class="feather-check"></i><span>&nbsp;Запази</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
 {% endblock %}
 
 {% block page_script %}

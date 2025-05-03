@@ -21,6 +21,8 @@ from .utils import update_test_statistics  # Функцията, която до
 
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.decorators import api_view
+
 
 def index(request):
     return render(request, 'main/index.html')
@@ -880,3 +882,416 @@ def dzi_remove_speciality(request, sp):
 class SpecialtyDetailAPIView(generics.RetrieveAPIView):
     queryset = Specialty.objects.all()
     serializer_class = SpecialtySerializer
+
+
+# API за качване на NIP файл
+@api_view(['POST'])
+def specialty_upload_nip(request, specialty_id):
+    specialty = get_object_or_404(Specialty, id=specialty_id)
+
+    if 'nip' not in request.FILES:
+        return Response({'error': 'Няма файл в заявката'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Изтриваме стария файл, ако има такъв
+    if specialty.nip:
+        specialty.nip.delete(save=False)
+
+    specialty.nip = request.FILES['nip']
+    specialty.save()
+
+    # Връщаме URL на файла
+    return Response({
+        'nip': request.build_absolute_uri(specialty.nip.url)
+    })
+
+
+"""
+    Изглед за зареждане и актуализиране на специалност.
+    GET - връща детайли за специалността
+    PUT - актуализира данните за специалността
+"""
+
+
+@api_view(['GET', 'PUT'])
+def specialty_detail(request, specialty_id):
+    specialty = get_object_or_404(Specialty, id=specialty_id)
+
+    if request.method == 'GET':
+        serializer = SpecialtySerializer(specialty, context={'request': request})
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        try:
+            data = request.data
+            print("Получени данни от PUT заявка:", data)
+
+            # Директно актуализиране на модела
+            specialty.professional_field_num = data.get('professional_field_num', specialty.professional_field_num)
+            specialty.professional_field_name = data.get('professional_field_name', specialty.professional_field_name)
+            specialty.profession_num = data.get('profession_num', specialty.profession_num)
+            specialty.profession_name = data.get('profession_name', specialty.profession_name)
+            specialty.specialty_num = data.get('specialty_num', specialty.specialty_num)
+            specialty.specialty_name = data.get('specialty_name', specialty.specialty_name)
+
+            specialty.save()
+
+            # Връщане на актуализираните данни
+            result = {
+                'id': specialty.id,
+                'professional_field_num': specialty.professional_field_num,
+                'professional_field_name': specialty.professional_field_name,
+                'profession_num': specialty.profession_num,
+                'profession_name': specialty.profession_name,
+                'specialty_num': specialty.specialty_num,
+                'specialty_name': specialty.specialty_name
+            }
+
+            # Добавяне на nip, ако съществува
+            if specialty.nip:
+                result['nip'] = request.build_absolute_uri(specialty.nip.url)
+            else:
+                result['nip'] = ""
+
+            return Response(result)
+
+        except Exception as e:
+            print(f"Грешка при актуализиране на специалност: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+def specialty_themes_view(request, specialty_id):
+    """
+    Изглед, който връща теми и техните подточки за зададена специалност.
+    Извлича само необходимите полета.
+    """
+    try:
+        # Проверяваме дали специалността съществува
+        specialty = get_object_or_404(Specialty, id=specialty_id)
+
+        # Намираме всички теми за тази специалност, подредени по 'num'
+        themes = Theme.objects.filter(specialty=specialty).order_by('num')
+
+        # Подготвяме резултата
+        result = []
+
+        # За всяка тема извличаме само нужните полета и нейните подточки
+        for theme in themes:
+            theme_data = {
+                'id': theme.id,
+                'num': theme.num,
+                'title': theme.title,
+                'tasks_knowledge': theme.tasks_knowledge,
+                'tasks_comprehension': theme.tasks_comprehension,
+                'tasks_application': theme.tasks_application,
+                'tasks_analysis': theme.tasks_analysis,
+                'items': []
+            }
+
+            # Намираме всички подточки за тази тема, подредени по 'item'
+            theme_items = ThemeItem.objects.filter(theme_id=theme).order_by('item')
+
+            # За всяка подточка извличаме само нужните полета
+            for item in theme_items:
+                item_data = {
+                    'id': item.id,
+                    'item': item.item,
+                    'title': item.title,
+                    'total_points': item.total_points,
+                    'knowledge': item.knowledge,
+                    'comprehension': item.comprehension,
+                    'application': item.application,
+                    'analysis': item.analysis
+                }
+                theme_data['items'].append(item_data)
+
+            result.append(theme_data)
+
+        return Response(result)
+
+    except Exception as e:
+        print(f"Грешка при извличане на теми за специалност: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['POST'])
+def create_theme_view(request, specialty_id):
+    """
+    Изглед за създаване на нова тема за дадена специалност.
+    """
+    try:
+        # Проверяваме дали специалността съществува
+        specialty = get_object_or_404(Specialty, id=specialty_id)
+
+        # Извличаме данните от заявката
+        data = request.data
+
+        # Определяме номера на новата тема
+        num = data.get('num')
+        if not num:
+            # Ако не е предоставен номер, намираме максималния номер и увеличаваме с 1
+            max_num = Theme.objects.filter(specialty=specialty).aggregate(models.Max('num'))['num__max'] or 0
+            num = max_num + 1
+
+        # Създаваме новата тема
+        theme = Theme.objects.create(
+            specialty=specialty,
+            num=num,
+            title=data.get('title', ''),
+            tasks_knowledge=data.get('tasks_knowledge', 0),
+            tasks_comprehension=data.get('tasks_comprehension', 0),
+            tasks_application=data.get('tasks_application', 0),
+            tasks_analysis=data.get('tasks_analysis', 0),
+            tasks_total=data.get('tasks_total', 24)
+        )
+
+        # Връщаме данните за новата тема
+        result = {
+            'id': theme.id,
+            'num': theme.num,
+            'title': theme.title,
+            'tasks_knowledge': theme.tasks_knowledge,
+            'tasks_comprehension': theme.tasks_comprehension,
+            'tasks_application': theme.tasks_application,
+            'tasks_analysis': theme.tasks_analysis,
+            'items': []
+        }
+
+        return Response(result, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print(f"Грешка при създаване на тема: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['PUT'])
+def update_theme_view(request, theme_id):
+    """
+    Изглед за обновяване на съществуваща тема.
+    """
+    try:
+        # Проверяваме дали темата съществува
+        theme = get_object_or_404(Theme, id=theme_id)
+
+        # Извличаме данните от заявката
+        data = request.data
+
+        # Обновяваме темата
+        theme.num = data.get('num', theme.num)
+        theme.title = data.get('title', theme.title)
+        theme.tasks_knowledge = data.get('tasks_knowledge', theme.tasks_knowledge)
+        theme.tasks_comprehension = data.get('tasks_comprehension', theme.tasks_comprehension)
+        theme.tasks_application = data.get('tasks_application', theme.tasks_application)
+        theme.tasks_analysis = data.get('tasks_analysis', theme.tasks_analysis)
+
+        # Запазваме обновената тема
+        theme.save()
+
+        # Намираме всички подточки за тази тема, подредени по 'item'
+        theme_items = ThemeItem.objects.filter(theme_id=theme).order_by('item')
+
+        # Връщаме обновените данни за темата
+        result = {
+            'id': theme.id,
+            'num': theme.num,
+            'title': theme.title,
+            'tasks_knowledge': theme.tasks_knowledge,
+            'tasks_comprehension': theme.tasks_comprehension,
+            'tasks_application': theme.tasks_application,
+            'tasks_analysis': theme.tasks_analysis,
+            'items': []
+        }
+
+        # Добавяме подточките към резултата
+        for item in theme_items:
+            item_data = {
+                'id': item.id,
+                'item': item.item,
+                'title': item.title,
+                'total_points': item.total_points,
+                'knowledge': item.knowledge,
+                'comprehension': item.comprehension,
+                'application': item.application,
+                'analysis': item.analysis
+            }
+            result['items'].append(item_data)
+
+        return Response(result)
+
+    except Exception as e:
+        print(f"Грешка при обновяване на тема: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['POST'])
+def create_theme_item_view(request, theme_id):
+    """
+    Изглед за създаване на нова подточка към тема.
+    """
+    try:
+        # Проверяваме дали темата съществува
+        theme = get_object_or_404(Theme, id=theme_id)
+
+        # Извличаме данните от заявката
+        data = request.data
+
+        # Определяме номера на новата подточка
+        item_num = data.get('item')
+        if not item_num:
+            # Ако не е предоставен номер, намираме максималния номер и увеличаваме с 1
+            max_item = ThemeItem.objects.filter(theme_id=theme).aggregate(models.Max('item'))['item__max'] or 0
+            item_num = max_item + 1
+
+        # Създаваме новата подточка
+        theme_item = ThemeItem.objects.create(
+            theme_id=theme,
+            item=item_num,
+            title=data.get('title', ''),
+            criterion=data.get('criterion', ''),
+            total_points=data.get('total_points', 20),
+            knowledge=data.get('knowledge', 0),
+            comprehension=data.get('comprehension', 0),
+            application=data.get('application', 0),
+            analysis=data.get('analysis', 0)
+        )
+
+        # Връщаме данните за новата подточка
+        result = {
+            'id': theme_item.id,
+            'item': theme_item.item,
+            'title': theme_item.title,
+            'total_points': theme_item.total_points,
+            'knowledge': theme_item.knowledge,
+            'comprehension': theme_item.comprehension,
+            'application': theme_item.application,
+            'analysis': theme_item.analysis
+        }
+
+        return Response(result, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print(f"Грешка при създаване на подточка: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['PUT'])
+def update_theme_item_view(request, item_id):
+    """
+    Изглед за обновяване на съществуваща подточка.
+    """
+    try:
+        # Проверяваме дали подточката съществува
+        theme_item = get_object_or_404(ThemeItem, id=item_id)
+
+        # Извличаме данните от заявката
+        data = request.data
+
+        # Обновяваме подточката
+        theme_item.item = data.get('item', theme_item.item)
+        theme_item.title = data.get('title', theme_item.title)
+        theme_item.total_points = data.get('total_points', theme_item.total_points)
+        theme_item.knowledge = data.get('knowledge', theme_item.knowledge)
+        theme_item.comprehension = data.get('comprehension', theme_item.comprehension)
+        theme_item.application = data.get('application', theme_item.application)
+        theme_item.analysis = data.get('analysis', theme_item.analysis)
+
+        # Не обновяваме полето criterion, тъй като не е в списъка с изискваните полета
+
+        # Запазваме обновената подточка
+        theme_item.save()
+
+        # Връщаме обновените данни за подточката
+        result = {
+            'id': theme_item.id,
+            'item': theme_item.item,
+            'title': theme_item.title,
+            'total_points': theme_item.total_points,
+            'knowledge': theme_item.knowledge,
+            'comprehension': theme_item.comprehension,
+            'application': theme_item.application,
+            'analysis': theme_item.analysis
+        }
+
+        return Response(result)
+
+    except Exception as e:
+        print(f"Грешка при обновяване на подточка: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+# views.py
+
+@api_view(['DELETE'])
+def delete_theme_item_view(request, item_id):
+    """
+    Изглед за изтриване на подточка.
+    """
+    try:
+        theme_item = get_object_or_404(ThemeItem, id=item_id)
+
+        # Запазваме ID на темата, за да можем да я върнем в отговора
+        theme_id = theme_item.theme_id.id if theme_item.theme_id else None
+
+        # Изтриваме подточката (и всички свързани задачи поради CASCADE)
+        theme_item.delete()
+
+        return Response({
+            'success': True,
+            'message': 'Подточката беше успешно изтрита.',
+            'theme_id': theme_id
+        }, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Грешка при изтриване на подточка: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['GET'])
+def theme_item_tasks_count(request, item_id):
+    """
+    Връща броя на задачите, свързани с дадена подточка.
+    """
+    try:
+        theme_item = get_object_or_404(ThemeItem, id=item_id)
+        tasks_count = Task.objects.filter(item=theme_item).count()
+        print(f'item_id={item_id} -> {tasks_count} намерени')
+        return Response({'count': tasks_count})
+
+    except Exception as e:
+        print(f"Грешка при проверка на задачи за подточка: {str(e)}")
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

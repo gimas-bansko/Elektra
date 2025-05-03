@@ -1,80 +1,356 @@
-                                                <form class="rbt-profile-row rbt-default-form row row--15">
-                                                    <!-- направление -->
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-12">
-                                                        <div class="form-group">
-                                                            <label for="pn_num">Професионално направление - номер</label>
-                                                            <input id="pn_num" type="text" v-model="specialty.professional_field_num">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-12">
-                                                        <div class="form-group">
-                                                            <label for="pn_name">Професионално направление - име</label>
-                                                            <input id="pn_name" type="text" v-model="specialty.professional_field_name">
-                                                        </div>
-                                                    </div>
-                                                    <!-- професия -->
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-12">
-                                                        <div class="form-group">
-                                                            <label for="pr_num">Професия - номер</label>
-                                                            <input id="pr_num" type="text" v-model="specialty.profession_num">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-12">
-                                                        <div class="form-group">
-                                                            <label for="pr_name">Професия - име</label>
-                                                            <input id="pr_name" type="text" v-model="specialty.profession_name">
-                                                        </div>
-                                                    </div>
-                                                    <!-- специалност -->
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-12">
-                                                        <div class="form-group">
-                                                            <label for="sp_num">Професия - номер</label>
-                                                            <input id="sp_num" type="text" v-model="specialty.specialty_num">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-12">
-                                                        <div class="form-group">
-                                                            <label for="sp_name">Професия - име</label>
-                                                            <input id="sp_name" type="text" v-model="specialty.specialty_name">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 mt--20" style="text-align: center;">
-                                                        <div class="form-group mb--0">
-                                                            <a class="btn-default">Запиши</a>
-                                                        </div>
-                                                    </div>
-                                                </form>
 
-****************************************************************************************************************
+## API за теми и подтеми по специалност
 
-const App = {
-    delimiters: ['[[', ']]'], // Променяме синтаксиса на [[ ]]
-    data() {
-        return {
-            specialty: {
-                "id": 2,
-                "professional_field_num": "481",
-                "professional_field_name": "Компютърни науки",
-                "profession_num": "481020",
-                "profession_name": "Системен програмист",
-                "specialty_num": "4810201",
-                "specialty_name": "Системно програмиране",
-                "nip": "http://127.0.0.1:8008/media_files/docs/nip_4810201.pdf"
+### 1. Добавяне на нови изгледи във views.py
+
+Добавете следните функции във вашия съществуващ `views.py` файл:
+
+```python
+@api_view(['GET'])
+def specialty_themes_view(request, specialty_id):
+    """
+    Изглед, който връща всички теми и подтеми за зададена специалност.
+    Използва съществуващите сериализатори без да ги променя.
+    """
+    try:
+        # Проверяваме дали специалността съществува
+        specialty = get_object_or_404(Specialty, id=specialty_id)
+
+        # Намираме всички теми за тази специалност
+        themes = Theme.objects.filter(specialty=specialty).order_by('num')
+
+        # Общ резултат, който ще върнем
+        result = {
+            'specialty': {
+                'id': specialty.id,
+                'professional_field_num': specialty.professional_field_num,
+                'professional_field_name': specialty.professional_field_name,
+                'profession_num': specialty.profession_num,
+                'profession_name': specialty.profession_name,
+                'specialty_num': specialty.specialty_num,
+                'specialty_name': specialty.specialty_name,
+                'nip': request.build_absolute_uri(specialty.nip.url) if specialty.nip else ""
             },
+            'themes': []
         }
-    },
-    methods: {
-        loadSpeciality() {
-            const vm = this;
-            axios.get('/api/specialty/'+SPEC+'/')
-                .then(function(response){
-                    vm.specialty = response.data
-                })
-        },
-    },
-    created: function(){
-        this.loadSpeciality();
-    }
-};
 
-Vue.createApp(App).mount('#main')
+        # За всяка тема извличаме нейните точки (подтеми)
+        for theme in themes:
+            # Сериализирайте темата с ThemeSerializer
+            theme_serializer = ThemeSerializer(theme)
+            theme_data = theme_serializer.data
+
+            # Намираме всички точки (подтеми) за тази тема
+            theme_items = ThemeItem.objects.filter(theme_id=theme).order_by('item')
+
+            # Сериализирайте точките с ThemeItemSerializer
+            theme_items_serializer = ThemeItemSerializer(theme_items, many=True)
+
+            # Добавяме точките към темата
+            theme_data['items'] = theme_items_serializer.data
+
+            # Добавяме темата с нейните точки към резултата
+            result['themes'].append(theme_data)
+
+        return Response(result)
+
+    except Exception as e:
+        print(f"Грешка при извличане на теми за специалност: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['GET'])
+def theme_detail_view(request, theme_id):
+    """
+    Изглед, който връща детайли за конкретна тема и нейните подтеми.
+    """
+    try:
+        # Проверяваме дали темата съществува
+        theme = get_object_or_404(Theme, id=theme_id)
+
+        # Сериализираме темата
+        theme_serializer = ThemeSerializer(theme)
+        theme_data = theme_serializer.data
+
+        # Намираме всички точки (подтеми) за тази тема
+        theme_items = ThemeItem.objects.filter(theme_id=theme).order_by('item')
+
+        # Сериализираме точките
+        theme_items_serializer = ThemeItemSerializer(theme_items, many=True)
+
+        # Добавяме точките към темата
+        theme_data['items'] = theme_items_serializer.data
+
+        return Response(theme_data)
+
+    except Exception as e:
+        print(f"Грешка при извличане на детайли за тема: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+```
+
+### 2. Добавяне на URL маршрути в urls.py
+
+Добавете следните URL маршрути във вашия `urls.py` файл:
+
+```python
+# URLs за теми и подтеми
+urlpatterns += [
+    # Извличане на всички теми и подтеми за специалност
+    path('api/specialty/<int:specialty_id>/themes/', views.specialty_themes_view, name='specialty_themes'),
+
+    # Детайли за конкретна тема с нейните подтеми
+    path('api/themes/<int:theme_id>/', views.theme_detail_view, name='theme_detail'),
+]
+```
+
+### 3. Пример за JavaScript код за извикване на API
+
+Ето пример как да извикате новото API от вашия JavaScript/Vue код:
+
+```javascript
+// Метод за зареждане на теми и подтеми за специалност
+loadThemesForSpecialty() {
+    const vm = this;
+    vm.isLoading = true;
+
+    axios.get('/api/specialty/' + SPEC + '/themes/')
+        .then(function(response) {
+            vm.specialty = response.data.specialty;
+            vm.themes = response.data.themes;
+            vm.isLoading = false;
+        })
+        .catch(function(error) {
+            console.error("Грешка при зареждане на теми:", error);
+            vm.error = "Възникна грешка при зареждане на темите.";
+            vm.isLoading = false;
+        });
+},
+
+// Метод за зареждане на детайли за конкретна тема
+loadThemeDetails(themeId) {
+    const vm = this;
+    vm.isLoadingTheme = true;
+
+    axios.get('/api/themes/' + themeId + '/')
+        .then(function(response) {
+            vm.currentTheme = response.data;
+            vm.themeItems = response.data.items;
+            vm.isLoadingTheme = false;
+        })
+        .catch(function(error) {
+            console.error("Грешка при зареждане на детайли за тема:", error);
+            vm.themeError = "Възникна грешка при зареждане на детайлите за темата.";
+            vm.isLoadingTheme = false;
+        });
+}
+```
+
+### 4. Разширяване на API с функции за управление на теми и подтеми
+
+Ако искате да добавите API за създаване, редактиране и изтриване на теми и подтеми, можете да добавите следните функции:
+
+```python
+@api_view(['POST'])
+def create_theme_view(request):
+    """
+    Изглед за създаване на нова тема.
+    """
+    try:
+        # Вземаме данните от заявката
+        specialty_id = request.data.get('specialty')
+        specialty = get_object_or_404(Specialty, id=specialty_id)
+
+        # Определяме номера на новата тема
+        num = request.data.get('num')
+        if not num:
+            # Ако не е предоставен номер, намираме максималния номер и увеличаваме с 1
+            max_num = Theme.objects.filter(specialty=specialty).aggregate(models.Max('num'))['num__max'] or 0
+            num = max_num + 1
+
+        # Създаваме новата тема
+        theme = Theme.objects.create(
+            specialty=specialty,
+            num=num,
+            title=request.data.get('title', ''),
+            tasks_total=request.data.get('tasks_total', 24),
+            tasks_knowledge=request.data.get('tasks_knowledge', 0),
+            tasks_comprehension=request.data.get('tasks_comprehension', 0),
+            tasks_application=request.data.get('tasks_application', 0),
+            tasks_analysis=request.data.get('tasks_analysis', 0)
+        )
+
+        # Сериализираме и връщаме новата тема
+        serializer = ThemeSerializer(theme)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print(f"Грешка при създаване на тема: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['PUT', 'DELETE'])
+def update_delete_theme_view(request, theme_id):
+    """
+    Изглед за обновяване или изтриване на тема.
+    """
+    try:
+        theme = get_object_or_404(Theme, id=theme_id)
+
+        if request.method == 'PUT':
+            # Обновяваме темата
+            theme.title = request.data.get('title', theme.title)
+            theme.num = request.data.get('num', theme.num)
+            theme.tasks_total = request.data.get('tasks_total', theme.tasks_total)
+            theme.tasks_knowledge = request.data.get('tasks_knowledge', theme.tasks_knowledge)
+            theme.tasks_comprehension = request.data.get('tasks_comprehension', theme.tasks_comprehension)
+            theme.tasks_application = request.data.get('tasks_application', theme.tasks_application)
+            theme.tasks_analysis = request.data.get('tasks_analysis', theme.tasks_analysis)
+            theme.save()
+
+            # Сериализираме и връщаме обновената тема
+            serializer = ThemeSerializer(theme)
+            return Response(serializer.data)
+
+        elif request.method == 'DELETE':
+            # Изтриваме темата
+            theme.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        print(f"Грешка при обновяване/изтриване на тема: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['POST'])
+def create_theme_item_view(request):
+    """
+    Изглед за създаване на нова подтема (точка).
+    """
+    try:
+        # Вземаме данните от заявката
+        theme_id = request.data.get('theme_id')
+        theme = get_object_or_404(Theme, id=theme_id)
+
+        # Определяме номера на новата подтема
+        item = request.data.get('item')
+        if not item:
+            # Ако не е предоставен номер, намираме максималния номер и увеличаваме с 1
+            max_item = ThemeItem.objects.filter(theme_id=theme).aggregate(models.Max('item'))['item__max'] or 0
+            item = max_item + 1
+
+        # Създаваме новата подтема
+        theme_item = ThemeItem.objects.create(
+            theme_id=theme,
+            item=item,
+            title=request.data.get('title', ''),
+            criterion=request.data.get('criterion', ''),
+            total_points=request.data.get('total_points', 20),
+            knowledge=request.data.get('knowledge', 0),
+            comprehension=request.data.get('comprehension', 0),
+            application=request.data.get('application', 0),
+            analysis=request.data.get('analysis', 0)
+        )
+
+        # Сериализираме и връщаме новата подтема
+        serializer = ThemeItemSerializer(theme_item)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print(f"Грешка при създаване на подтема: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['PUT', 'DELETE'])
+def update_delete_theme_item_view(request, item_id):
+    """
+    Изглед за обновяване или изтриване на подтема (точка).
+    """
+    try:
+        theme_item = get_object_or_404(ThemeItem, id=item_id)
+
+        if request.method == 'PUT':
+            # Обновяваме подтемата
+            theme_item.title = request.data.get('title', theme_item.title)
+            theme_item.item = request.data.get('item', theme_item.item)
+            theme_item.criterion = request.data.get('criterion', theme_item.criterion)
+            theme_item.total_points = request.data.get('total_points', theme_item.total_points)
+            theme_item.knowledge = request.data.get('knowledge', theme_item.knowledge)
+            theme_item.comprehension = request.data.get('comprehension', theme_item.comprehension)
+            theme_item.application = request.data.get('application', theme_item.application)
+            theme_item.analysis = request.data.get('analysis', theme_item.analysis)
+            theme_item.save()
+
+            # Сериализираме и връщаме обновената подтема
+            serializer = ThemeItemSerializer(theme_item)
+            return Response(serializer.data)
+
+        elif request.method == 'DELETE':
+            # Изтриваме подтемата
+            theme_item.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    except Exception as e:
+        print(f"Грешка при обновяване/изтриване на подтема: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+```
+
+### 5. Допълнителни URL маршрути за управление на теми и подтеми
+
+```python
+# URLs за управление на теми и подтеми
+urlpatterns += [
+    # Създаване на нова тема
+    path('api/themes/create/', views.create_theme_view, name='create_theme'),
+
+    # Обновяване/изтриване на тема
+    path('api/themes/<int:theme_id>/update-delete/', views.update_delete_theme_view, name='update_delete_theme'),
+
+    # Създаване на нова подтема
+    path('api/theme-items/create/', views.create_theme_item_view, name='create_theme_item'),
+
+    # Обновяване/изтриване на подтема
+    path('api/theme-items/<int:item_id>/update-delete/', views.update_delete_theme_item_view, name='update_delete_theme_item'),
+]
+```
+
+### Важна забележка относно TaskSerializer
+
+В оригиналния код на ThemeItemSerializer забелязвам, че включвате TaskSerializer:
+
+```python
+class ThemeItemSerializer(serializers.ModelSerializer):
+    tasks = TaskSerializer(many=True)
+
+    class Meta:
+        model = ThemeItem
+        fields = "__all__"
+```
+
+Тъй като не искате да променяте съществуващите сериализатори, аз запазих тази структура в моето решение. Ако TaskSerializer и връзката между ThemeItem и Task не са релевантни за новото API, данните за tasks просто ще бъдат включени в JSON отговора.

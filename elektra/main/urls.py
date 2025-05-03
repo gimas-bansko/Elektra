@@ -69,6 +69,22 @@ urlpatterns = [
     path('api/SchoolLogo/', views.SchoolLogoAPIView.as_view()),
     path('api/schools/<int:pk>/update/', views.SchoolUpdateAPIView.as_view(), name='school-update'),
     path('api/remove_speciality/<int:sp>/', views.dzi_remove_speciality, name='remove_speciality'),
-    path('api/specialty/<int:pk>/', views.SpecialtyDetailAPIView.as_view(), name='specialty-detail'),
+    # path('api/specialty/<int:pk>/', views.SpecialtyDetailAPIView.as_view(), name='specialty-detail'),
+    path('api/specialty/<int:specialty_id>/upload_nip/', views.specialty_upload_nip, name='specialty_upload_nip'),
+    path('api/specialty/<int:specialty_id>/', views.specialty_detail, name='specialty_detail'),
+    # Извличане на всички теми и подточки за специалност
+    path('api/specialty/<int:specialty_id>/themes/', views.specialty_themes_view, name='specialty_themes'),
+    # Създаване на нова тема
+    path('api/specialty/<int:specialty_id>/themes/create/', views.create_theme_view, name='create_theme'),
+    # Обновяване на тема
+    path('api/themes/<int:theme_id>/update/', views.update_theme_view, name='update_theme'),
+    # Създаване на нова подточка
+    path('api/themes/<int:theme_id>/items/create/', views.create_theme_item_view, name='create_theme_item'),
+    # Обновяване на подточка
+    path('api/theme-items/<int:item_id>/update/', views.update_theme_item_view, name='update_theme_item'),
+    # Изтриване на подточка
+    path('api/theme-items/<int:item_id>/delete/', views.delete_theme_item_view, name='delete_theme_item'),
+    # Проверка за брой задачи към подточка
+    path('api/theme-items/<int:item_id>/tasks-count/', views.theme_item_tasks_count, name='theme_item_tasks_count'),
 
 ]
