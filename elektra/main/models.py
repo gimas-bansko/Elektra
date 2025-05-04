@@ -34,13 +34,18 @@ class Specialty(models.Model):
                Училища
 ***************************************
 """
+def school_pic_path(instance, filename):
+    ext = filename.split('.')[-1]
+    new_filename = f"school_logo_{instance.id}.{ext}"
+    return f"sys_pics/{new_filename}"
+
 class School(models.Model):
     short_name = models.CharField('Абревиатура', max_length=20, default='', blank=True,
                                   help_text='Съкратено име на училището')
     full_name = models.TextField('Име', default='', blank=True, help_text='Пълно име на училището')
     city = models.CharField('Населено място', max_length=50, default='', blank=True,
                             help_text='Населено място, където се намира училището')
-    logo = models.ImageField('Лого', upload_to='sys_pics', blank=True)
+    logo = models.ImageField('Лого', upload_to=school_pic_path, blank=True)
     address = models.CharField('Адрес', max_length=50, default='', blank=True,
                             help_text='Адрес в населеното място (ул. ... №...)')
     phone_number = models.CharField('Телефон', max_length=15, default='', blank=True)
@@ -163,9 +168,28 @@ class ImageField(models.ImageField):
     def value_to_string(self, obj):
         return obj.pic.url
 
+
+def context_pic_path(instance, filename):
+    """
+    Функция, която определя пътя и името на файла за TaskContext.picture
+    Args:
+        instance: Инстанция на модела TaskContext
+        filename: Оригиналното име на файла
+    Returns:
+        Персонализирания път на файла с новото име
+    """
+
+    # Вземаме разширението на файла
+    ext = filename.split('.')[-1]
+    # Създаваме ново име: taskcontext_id.разширение
+    new_filename = f"taskcontext_{instance.id}.{ext}"
+
+    # Връщаме пълния път (папка + име)
+    return f"context_pics/{new_filename}"
+
 class TaskContext(models.Model):
     text = models.TextField('Контекст', default='', blank=True, help_text='Общ текстов контекст за въпросите')
-    picture = models.ImageField('Картинка', upload_to='context_pics', blank=True,
+    picture = models.ImageField('Картинка', upload_to=context_pic_path, blank=True,
                                 null=True, help_text='Обща картинка за въпросите')
     author = models.ForeignKey(School, on_delete=models.CASCADE, default=1)
     textWrap = models.CharField('Разположение на текста', max_length=1, default='s', blank=True,
@@ -185,13 +209,19 @@ class TaskManager(models.Manager):
         return item
 
 
+def task_pic_path(instance, filename):
+    ext = filename.split('.')[-1]
+    new_filename = f"task_image_{instance.id}.{ext}"
+    return f"task_pics/{new_filename}"
+
+
 class Task(models.Model):
     item = models.ForeignKey(ThemeItem, on_delete=models.CASCADE, null=True, related_name='tasks')
     text = models.TextField('Въпрос', default='', blank=True, help_text='Формулировка (текст) на въпроса')
     type = models.PositiveSmallIntegerField(choices=TASK_TYPE, default=TYPE1, help_text='тип на въпроса')
     level = models.PositiveSmallIntegerField(choices=LEVEL_TYPE, default=LEVEL1, help_text='ниво на въпроса по Блум')
     school = models.ManyToManyField(School, verbose_name='id на училище в което се ползва', blank=True)
-    picture = models.ImageField('Картинка', upload_to='task_pics', blank=True)
+    picture = models.ImageField('Картинка', upload_to=task_pic_path, blank=True)
     group = models.PositiveSmallIntegerField(default=0, help_text='0 - ако не е групирано')
     author = models.ForeignKey(School, on_delete=models.CASCADE, related_name='author_id', default=1)
     textWrap = models.CharField('Разположение на текста', max_length=1, default='s', blank=True,
@@ -238,9 +268,9 @@ class TaskItemManager(models.Manager):
 class TaskItem(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, related_name='options')
     leading_char = models.CharField('Водещ символ', max_length=4, default='', blank=True, help_text='№ или буква')
-    text = models.CharField('Текст', max_length=200, default='', blank=True, help_text='Формулировка (текст) на опцията(отговора)')
+    text = models.CharField('Текст', max_length=400, default='', blank=True, help_text='Формулировка (текст) на опцията(отговора)')
     value = models.CharField('Стойност', max_length=20, default='', blank=True, help_text='Отговор - стойност')
-    value_name = models.CharField("Стойност - име", max_length=200, default='', blank=True, help_text='Отговор - име')
+    value_name = models.CharField("Стойност - име", max_length=400, default='', blank=True, help_text='Отговор - име')
     checked = models.BooleanField('Отговор - маркирано', null=True, help_text='Отговор за опции с маркиране')
     checked_t = models.BooleanField('Отговор - маркирано', null=True, help_text='генерира се автоматично')
     value_t = models.CharField('Стойност', max_length=20, default='', blank=True, help_text='генерира се автоматично')

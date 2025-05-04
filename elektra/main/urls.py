@@ -86,5 +86,6 @@ urlpatterns = [
     path('api/theme-items/<int:item_id>/delete/', views.delete_theme_item_view, name='delete_theme_item'),
     # Проверка за брой задачи към подточка
     path('api/theme-items/<int:item_id>/tasks-count/', views.theme_item_tasks_count, name='theme_item_tasks_count'),
+    path('api/tasks/<int:task_id>/change-theme-item/', views.change_task_theme_item, name='change_task_theme_item'),
 
 ]

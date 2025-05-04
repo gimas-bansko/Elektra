@@ -1295,3 +1295,45 @@ def theme_item_tasks_count(request, item_id):
             {'error': str(e)},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+@api_view(['PATCH'])
+def change_task_theme_item(request, task_id):
+    """
+    Променя подточката (ThemeItem) на задача (Task).
+    """
+    try:
+        # Намираме задачата
+        task = get_object_or_404(Task, id=task_id)
+
+        # Извличаме ID на новата подточка от данните
+        theme_item_id = request.data.get('theme_item_id')
+        if not theme_item_id:
+            return Response(
+                {'error': 'Липсва ID на подточка.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Проверяваме дали подточката съществува
+        theme_item = get_object_or_404(ThemeItem, id=theme_item_id)
+
+        # Променяме връзката
+        task.item = theme_item
+        task.save()
+
+        # Връщаме успешен отговор с допълнителна информация
+        return Response({
+            'success': True,
+            'message': 'Връзката беше променена успешно.',
+            'task_id': task.id,
+            'theme_item_id': theme_item.id,
+            'theme_item_title': f"{theme_item.item}. {theme_item.title}"
+        }, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

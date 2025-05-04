@@ -22171,3 +22171,8 @@ body.active-light-mode .rbt-utilize-area .rbt-default-sidebar-list li.has-submen
 .color-grade-2 {
   color: #ef0606 !important;
 }
+
+.button-margins {
+  margin-left: 5px;
+  margin-right: 5px;
+}

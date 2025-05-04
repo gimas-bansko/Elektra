@@ -33,15 +33,18 @@ class ContextFileSerializer(serializers.ModelSerializer):
 
 # въпроси - списък
 class TaskSerializer(serializers.ModelSerializer):
-
     context = TaskContextSerializer()
-    options = TaskItemSerializer(many=True)
+    options = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
         fields = '__all__'
 
-
+    def get_options(self, obj):
+        # Извличане на опциите, сортирани по leading_char
+        options = obj.options.all().order_by('leading_char')
+        return TaskItemSerializer(options, many=True).data
+# -------------------------------
 # въпроси - обновяваане на картинка
 class TaskFileSerializer(serializers.ModelSerializer):
     class Meta:

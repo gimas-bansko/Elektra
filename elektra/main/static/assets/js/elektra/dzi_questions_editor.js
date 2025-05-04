@@ -322,9 +322,29 @@ const App = {
                 });
         },
         addEmptyOption(){
+            function nextChar(char) {
+                return String.fromCharCode(char.charCodeAt(0) + 1);
+            }
+            let lc='a'
+            console.log('1.'+lc)
+            const options = this.theme[this.current_item.theme_id].tasks[this.current_item.task_id].options
+            console.log('2.'+options)
+            if(options.length>0){ // има зададени отговори
+                const option = options.at(-1);
+                console.log('3.'+option)
+                if(option.leading_char.length>0){//има зададен водещ символ на последния
+                    lc = option.leading_char
+                    console.log('4.'+lc)
+                    console.log('5.'+nextChar(option.leading_char.at(-1)))
+
+                    lc = lc.slice(0, -1) + nextChar(option.leading_char.at(-1))
+                    console.log('6.'+lc)
+                }
+            }
+
             let newOption = {
                             id: 0,
-                            leading_char: "",
+                            leading_char: lc,
                             text: "",
                             value: "",
                             value_name: "",
@@ -511,7 +531,8 @@ const App = {
         },
         loadThemes(spec_id){
             const vm = this;
-            axios.get('/api/theme_nums/'+spec_id+'/') // темите са различни за всяка специалност
+            axios.get('/api/specialty/' + spec_id + '/themes/')
+//            axios.get('/api/theme_nums/'+spec_id+'/') // темите са различни за всяка специалност
             .then(function(response){
                 vm.listOfThemes = response.data
                 for (i=0; i< vm.listOfThemes.length; i++){
@@ -659,6 +680,56 @@ const App = {
             this.question.ctx=null;
             this.countThemeQuestions()
             },
+        changeQuestionThemeItem(themeItemId, taskId){
+            /**
+             * Метод за промяна на връзката между Task и ThemeItem
+             * @param {Number} taskId - ID на въпроса, който искаме да преместим
+             * @param {Number} themeItemId - ID на точката от тема, към която искаме да свържем въпроса
+             */
+            const vm = this;
+            vm.isLoading = true;
+            vm.error = null;
+            vm.success = null;
+            console.log(themeItemId, taskId);
+            // Данни за заявката - само ID на новата подточка
+            const data = {
+                theme_item_id: themeItemId
+            };
+
+            // Изпращаме заявка към API за промяна на връзката
+            axios.patch(`/api/tasks/${taskId}/change-theme-item/`, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': CSRF_TOKEN
+                }
+            })
+                .then(response => {
+                    // При успех, показваме съобщение
+                    vm.success = `Въпросът беше успешно преместен към друга подточка.`;
+
+                    // актуализираме и списъка с въпроси
+                    vm.theme[vm.current_item.theme_id].tasks.splice(vm.current_item.task_id, 1)
+
+                    vm.isLoading = false;
+                })
+                .catch(error => {
+                    console.error("Грешка при промяна на връзката:", error);
+
+                    // Показваме съобщение за грешка
+                    vm.error = "Възникна грешка при промяна на връзката на въпроса.";
+
+                    // Ако има по-подробна информация за грешката, я добавяме
+                    if (error.response && error.response.data) {
+                        if (error.response.data.error) {
+                            vm.error += ` Детайли: ${error.response.data.error}`;
+                        } else if (error.response.data.detail) {
+                            vm.error += ` Детайли: ${error.response.data.detail}`;
+                        }
+                    }
+
+                    vm.isLoading = false;
+                });
+        },
     },
     created: function(){
         this.loadUserDetails();

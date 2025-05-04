@@ -416,10 +416,10 @@
                                                     </div>
                                                     <!-- функционални бутони -->
                                                     <div class="row mt--10">
-                                                        <!-- comments -->
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+                                                        <div class="col-12 d-flex align-items-center justify-content-center">
+                                                            <!-- comments -->
                                                             <button type="button"
-                                                                    class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                                                    class="react-btn btn-default btn-small btn-border dropdown-toggle button-margins"
                                                                     style="font-size: 12px;"
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     @click="remark.text=''; remark.task_id=qst.id;">
@@ -434,11 +434,10 @@
                                                                        data-bs-toggle="modal" data-bs-target="#newRemarkModal">
                                                                     <i class="feather-edit"></i> Добави коментар</a></li>
                                                             </ul>
-                                                        </div>
-                                                        <!-- do not accept -->
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
+
+                                                            <!-- do not accept -->
                                                             <button type="button"
-                                                                    class="react-btn btn-default btn-small btn-border dropdown-toggle"
+                                                                    class="react-btn btn-default btn-small btn-border dropdown-toggle button-margins"
                                                                     style="font-size: 12px;"
                                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                                     @click="remark.text=''; remark.task_id=qst.id;"
@@ -460,42 +459,44 @@
                                                                        v-if="(qst.showLevel != -1)&&(qst.group!=0)">
                                                                     <i class="feather-edit"></i> Покажи списък на въпросите в групата</a></li>
                                                             </ul>
-                                                        </div>
-                                                        <!-- accept -->
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-secondary"
+
+                                                            <!-- accept -->
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-secondary button-margins"
                                                                     style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==0"
                                                                     @click="useQuestion(qst.id, user.school, 'remove')">
                                                                 <i class="feather-upload-cloud"></i><span>&nbspИзключи&nbsp</span>
                                                             </button>
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-primary"
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-primary button-margins"
                                                                     style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==-1"
                                                                     @click="useQuestion(qst.id, user.school, 'add')">
                                                                 <i class="feather-download-cloud"></i><span>&nbspПолзвай</span>
                                                             </button>
-                                                        </div>
-                                                        <!-- copy -->
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-warning"
+
+                                                            <!-- move -->
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-primary button-margins"
+                                                                    style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1"
+                                                                    data-bs-toggle="modal" data-bs-target="#themeItemSelectModal"
+                                                                    @click="make_q(item_idx, qst_idx)">
+                                                                <span>&nbspПремести&nbsp&nbsp</span>
+                                                            </button>
+
+                                                            <!-- copy -->
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-warning button-margins"
                                                                     @click="copyQuestion(qst.id)"
                                                                     data-bs-toggle="modal" data-bs-target="#editQuestionModal"
                                                                     style="font-size: 12px;">
                                                                 <i class="feather-copy"></i><span>&nbspКопирай&nbsp</span>
                                                             </button>
-                                                        </div>
 
-                                                        <!-- delete -->
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-danger"
+                                                            <!-- delete -->
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-danger button-margins"
                                                                     style="font-size: 12px;" v-if="theme[item_idx].tasks[qst_idx].showLevel==1"
                                                                     data-bs-toggle="modal" data-bs-target="#deleteQuestionModal"
                                                                     @click="id_to_delete=qst.id">
                                                                 <i class="feather-delete"></i><span>&nbspИзтрий&nbsp&nbsp</span>
                                                             </button>
-                                                        </div>
-                                                        <!-- edit -->
-                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-6">
-                                                            <button class="react-btn btn-default btn-small btn-border bg-color-success"
+                                                            <!-- edit -->
+                                                            <button class="react-btn btn-default btn-small btn-border bg-color-success button-margins"
                                                                     @click="make_q(item_idx, qst_idx)"
                                                                     data-bs-toggle="modal" data-bs-target="#editQuestionModal"
                                                                     style="font-size: 12px;" v-if="editEnabled(item_idx,qst_idx)">
@@ -1341,6 +1342,47 @@
                                             </div>
                                         </div>
                                 </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="close-button" data-bs-dismiss="modal">
+                        <i class="feather-x"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Избор на точка от тема -->
+        <div id="themeItemSelectModal" class="modal rbt-modal-box copy-modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wrapper top-flashlight light-xl">
+                    <div class="section-title text-center mb--30 sal-animate" data-sal="slide-up" data-sal-duration="400"
+                         data-sal-delay="150">
+                        <h6 class="title mb--0 w-600">Изберете точка от тема, в която да да бъде преместен въпроса</h6>
+                    </div>
+                    <div class="genarator-section">
+                        <ul>
+                            <li v-for="theme in listOfThemes">
+
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <h4>Тема [[ theme.num ]]</h4>
+                                        </div>
+                                        <div class="col-10">
+                                            <h6>[[ theme.title ]]</h6>
+                                            <ul class="genarator-card-group">
+                                                <li style="flex-basis: 100%;" v-for="item in theme.items">
+                                                    <div class="genarator-card"  style="font-size:10px;"
+                                                         data-bs-dismiss="modal"
+                                                         @click="changeQuestionThemeItem(item.id,question.id)" >
+                                                        &nbsp;&nbsp;
+                                                        [[ item.item]]. [[item.title]]
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
                             </li>
                         </ul>
                     </div>
