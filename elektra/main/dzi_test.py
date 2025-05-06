@@ -26,12 +26,8 @@ def generate_test(theme_id, user_school_id):
             level_nip = getattr(item, level_field)
 
             # Get all tasks for this item and Bloom level
-            # Применяем фильтрацию по школе пользователя
+            # Прилагаме филтрация по училището на потребителя
             from django.db.models import Q
-            # questions = list(Task.objects.filter(
-            #     Q(item=item, level=level_num) &
-            #     (Q(author=user_school_id) | Q(school__contains=[user_school_id]))
-            # ))
             questions = list(Task.objects.filter(
                 Q(item=item, level=level_num) &
                 (Q(author=user_school_id) | Q(school=user_school_id))
@@ -65,6 +61,19 @@ def generate_test(theme_id, user_school_id):
                         "checked_t": False,  # As in original JS logic
                         "value_t": ""  # As in original JS logic
                     })
+
+                # Добавяме информация за контекста, ако съществува
+                context_data = None
+                if q.context:
+                    context_data = {
+                        "id": q.context.id,
+                        "text": q.context.text,
+                        "textWrap": q.context.textWrap,
+                    }
+                    # Добавяме URL на изображението, ако има такова
+                    if q.context.picture:
+                        context_data["picture"] = q.context.picture.url
+
                 test.append({
                     "id": q.id,
                     "text": q.text,
@@ -72,8 +81,8 @@ def generate_test(theme_id, user_school_id):
                     "level": q.level,
                     "options": options,
                     "group": q.group,
-                    "context": q.context_id,
-                    # Add more fields as needed (e.g. num, etc.)
+                    "context": context_data,  # Прилагаме пълната информация за контекста
+                    # Добавете други полета, ако са необходими
                 })
 
     # Final shuffle (Fisher–Yates)

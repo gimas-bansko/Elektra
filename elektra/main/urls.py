@@ -88,5 +88,7 @@ urlpatterns = [
     # Проверка за брой задачи към подточка
     path('api/theme-items/<int:item_id>/tasks-count/', views.theme_item_tasks_count, name='theme_item_tasks_count'),
     path('api/tasks/<int:task_id>/change-theme-item/', views.change_task_theme_item, name='change_task_theme_item'),
+    # Тест за писмения тест
+    path('api/generate_test/<int:theme_id>/<int:school_id>/', views.generate_test_api, name='generate_test_api'),
 
 ]

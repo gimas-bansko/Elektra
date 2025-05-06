@@ -1342,3 +1342,37 @@ def change_task_theme_item(request, task_id):
             {'error': str(e)},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+#тeст за писмения тест
+# views.py
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from django.contrib.auth.decorators import login_required
+from .dzi_test import generate_test  # импортиране на функцията generate_test
+
+
+@login_required  # Изисква потребителя да е логнат
+@require_GET  # Приема само GET заявки
+def generate_test_api(request, theme_id, school_id):
+    """
+    API функция, която генерира тест за дадена тема и връща резултата като JSON.
+
+    Args:
+        request: HTTP заявка
+        theme_id: ID на темата
+
+    Returns:
+        JsonResponse: Списък с въпроси и опции в JSON формат
+    """
+    try:
+        # Извикваме generate_test с необходимите параметри
+        test_data = generate_test(theme_id=theme_id, user_school_id=school_id)
+
+        # Връщаме резултата като JSON
+        return JsonResponse(test_data, safe=False)
+
+    except Exception as e:
+        # Връщаме грешка, ако нещо се обърка
+        return JsonResponse({
+            'error': str(e)
+        }, status=500)

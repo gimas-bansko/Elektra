@@ -6,6 +6,9 @@ from django.dispatch import receiver
 from .utils import *
 from datetime import datetime
 from django.utils import timezone
+from django.conf import settings
+import os
+import uuid
 
 """ 
 ***************************************
@@ -394,3 +397,22 @@ class GeneratedTest(models.Model):
         verbose_name = 'Генериран тест'
         verbose_name_plural = 'Генерирани тестове'
         ordering = ['-generation_date']
+
+
+
+def template_file_path(instance, filename):
+    """Генерира път за съхранение на шаблони"""
+    ext = filename.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    return os.path.join('templates', filename)
+
+
+class DocumentTemplate(models.Model):
+    """Модел за съхранение на Word шаблони"""
+    name = models.CharField(max_length=255, verbose_name="Име на шаблона")
+    description = models.TextField(blank=True, verbose_name="Описание")
+    file = models.FileField(upload_to=template_file_path, verbose_name="Файл на шаблона")
+    uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата на качване")
+
+    def __str__(self):
+        return self.name
