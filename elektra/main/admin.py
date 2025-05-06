@@ -51,3 +51,4 @@ class LogV(admin.ModelAdmin):
     list_filter = ('user_name', 'action', )
     ordering = ('-date', )
 
+admin.site.register(GeneratedTest)

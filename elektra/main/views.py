@@ -138,13 +138,18 @@ def user_context(request, title, show_th=False, show_sp=False):
     return context
 
 def dzi_test(request):
-    return render(request, 'main/dzi_test.html', user_context(request,'въпроси', show_th=True, show_sp=True))
+    return render(request, 'main/dzi_test.html', user_context(request,'тест', show_th=True, show_sp=True))
 
 def dzi_test_online_start(request):
-    return render(request, 'main/dzi_test_online_start.html', user_context(request,'въпроси', show_th=True, show_sp=True))
+    return render(request, 'main/dzi_test_online_start.html', user_context(request,'тест', show_th=True, show_sp=True))
 
 def dzi_test_online(request):
     return render(request, 'main/dzi_test_online.html', user_context(request,'тест', show_th=True, show_sp=True))
+
+def dzi_test_docx(request):
+    context = user_context(request, 'писмен тест', show_sp=True)
+    context['specialities'] = Specialty.objects.all()
+    return render(request, 'main/dzi_test_docx.html', context)
 
 
 def dzi_tasks(request):

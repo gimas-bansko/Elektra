@@ -20,6 +20,7 @@ urlpatterns = [
     path('dzi_tests', views.dzi_test, name='dzi_tests'),
     path('dzi_tests_online_start', views.dzi_test_online_start, name='start_test'),
     path('dzi_tests_online', views.dzi_test_online, name='test'),
+    path('dzi_tests_docx', views.dzi_test_docx, name='word_tests'),
 
     path('dzi_tasks', views.dzi_tasks, name='dzi_tasks'),
     path('dzi_users', views.dzi_users, name='dzi_users'),

@@ -296,11 +296,19 @@ const App = {
                 }
             }
         },
-        loadTheme(vm){
-            axios.get('/api/theme_items/'+vm.listOfThemes[vm.theme_num].id+'/')
-                .then(function(response){
-                    vm.theme = response.data
-                })
+        loadTheme(vm) {
+            axios.get('/api/theme_items/' + vm.listOfThemes[vm.theme_num].id + '/')
+                .then(function(response) {
+                    // Фильтруем задания для каждого элемента темы
+                    const themeData = response.data;
+                    for (let themeItem of themeData) {
+                        // Фильтруем только те задания, где автор - школа пользователя или школа пользователя есть в списке школ
+                        themeItem.tasks = themeItem.tasks.filter(task =>
+                            task.author === vm.user.school || task.school.includes(vm.user.school)
+                        );
+                    }
+                    vm.theme = themeData;
+                });
         },
         loadUserDetails(){
             const vm = this;

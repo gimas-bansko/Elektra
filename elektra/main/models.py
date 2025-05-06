@@ -356,3 +356,41 @@ class TestResult(models.Model):
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тестове'
+
+
+def generated_test_path(instance, filename):
+    """
+    Функция, която определя пътя и името на файла за GeneratedTest.test_file
+    """
+    ext = filename.split('.')[-1]
+    new_filename = f"test_{instance.id}_{instance.topic.num}.{ext}"
+    return f"generated_tests/{new_filename}"
+
+
+def answer_key_path(instance, filename):
+    """
+    Функция, която определя пътя и името на файла за GeneratedTest.answer_key_file
+    """
+    ext = filename.split('.')[-1]
+    new_filename = f"key_{instance.id}_{instance.topic.num}.{ext}"
+    return f"generated_keys/{new_filename}"
+
+
+class GeneratedTest(models.Model):
+    topic = models.ForeignKey(Theme, on_delete=models.PROTECT, verbose_name='Тема',
+                              related_name='generated_tests')
+    school = models.ForeignKey(School, on_delete=models.PROTECT, verbose_name='Училище',
+                               related_name='generated_tests')
+    test_file = models.FileField('Тест файл', upload_to=generated_test_path,
+                                 help_text='MS Word файл с теста')
+    answer_key_file = models.FileField('Ключ за теста', upload_to=answer_key_path,
+                                       help_text='MS Word файл с ключа за теста')
+    generation_date = models.DateTimeField('Дата на генериране', auto_now_add=True)
+
+    def __str__(self):
+        return f"Тест по тема {self.topic.num} за {self.school.short_name} ({self.generation_date.strftime('%d.%m.%Y')})"
+
+    class Meta:
+        verbose_name = 'Генериран тест'
+        verbose_name_plural = 'Генерирани тестове'
+        ordering = ['-generation_date']
