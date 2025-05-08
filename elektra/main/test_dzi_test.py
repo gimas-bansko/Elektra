@@ -1,5 +1,3 @@
-# tests/test_dzi_test.py
-
 from django.test import TestCase
 from .models import Task, School, Theme  # adjust this import based on your models' location
 from .dzi_test import generate_test  # importing the function to test

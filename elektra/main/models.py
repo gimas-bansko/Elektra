@@ -24,6 +24,8 @@ class Specialty(models.Model):
     specialty_num = models.CharField('Специалност - номер', max_length=8, default='', blank=True)
     specialty_name = models.CharField('Специалност - име', max_length=100, default='', blank=True)
     nip = models.FileField('НИП', upload_to='docs/')
+    level = models.PositiveSmallIntegerField(choices=[(2, 'втора'), (3, 'трета')], default=3,
+                                             help_text='Степен на професионална квалификация')
 
     def __str__(self):
         return f'{self.specialty_num}: {self.specialty_name}'
@@ -361,6 +363,7 @@ class TestResult(models.Model):
         verbose_name_plural = 'Тестове'
 
 
+# Генериране на тестове
 def generated_test_path(instance, filename):
     """
     Функция, която определя пътя и името на файла за GeneratedTest.test_file

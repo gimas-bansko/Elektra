@@ -13,7 +13,8 @@ const App = {
                 "profession_name": "Системен програмист",
                 "specialty_num": "4810201",
                 "specialty_name": "Системно програмиране",
-                "nip": "http://127.0.0.1:8008/media_files/docs/nip_4810201.pdf"
+                "nip": "http://127.0.0.1:8008/media_files/docs/nip_4810201.pdf",
+                "level": 3,
             },
 
             // Списък с теми за текущата специалност

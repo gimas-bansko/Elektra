@@ -21,8 +21,14 @@ from .utils import update_test_statistics  # Функцията, която до
 
 from rest_framework import status
 from rest_framework import generics
-from rest_framework.decorators import api_view
 
+from .document_generator import *
+from rest_framework.decorators import api_view, permission_classes
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from django.contrib.auth.decorators import login_required
+from .dzi_test import generate_test  # импортиране на функцията generate_test
 
 def index(request):
     return render(request, 'main/index.html')
@@ -937,6 +943,7 @@ def specialty_detail(request, specialty_id):
             specialty.profession_name = data.get('profession_name', specialty.profession_name)
             specialty.specialty_num = data.get('specialty_num', specialty.specialty_num)
             specialty.specialty_name = data.get('specialty_name', specialty.specialty_name)
+            specialty.specialty_level = data.get('specialty_level', specialty.specialty_level)
 
             specialty.save()
 
@@ -948,7 +955,8 @@ def specialty_detail(request, specialty_id):
                 'profession_num': specialty.profession_num,
                 'profession_name': specialty.profession_name,
                 'specialty_num': specialty.specialty_num,
-                'specialty_name': specialty.specialty_name
+                'specialty_name': specialty.specialty_name,
+                'specialty_level': specialty.specialty_level
             }
 
             # Добавяне на nip, ако съществува
@@ -1344,12 +1352,6 @@ def change_task_theme_item(request, task_id):
         )
 
 #тeст за писмения тест
-# views.py
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
-from django.contrib.auth.decorators import login_required
-from .dzi_test import generate_test  # импортиране на функцията generate_test
-
 
 @login_required  # Изисква потребителя да е логнат
 @require_GET  # Приема само GET заявки
@@ -1376,3 +1378,54 @@ def generate_test_api(request, theme_id, school_id):
         return JsonResponse({
             'error': str(e)
         }, status=500)
+
+
+# генериране тест/ключ тест
+
+@login_required
+def generate_documents_view(request, theme_id):
+    try:
+        # Взимаме ID на училището от потребителя (ако е асоцииран с училище)
+        school_id = request.user.userprofile.school.id if hasattr(request.user,
+                                                                  'userprofile') and request.user.userprofile.school else None
+
+        if not school_id:
+            return JsonResponse({'success': False, 'error': 'Потребителят няма асоциирано училище'}, status=400)
+
+        # Генерираме тест и ключ
+        generated_test = generate_test_and_key(theme_id, school_id)
+
+        # Връщаме URL-и за изтегляне
+        return JsonResponse({
+            'success': True,
+            'test_url': generated_test.test_file.url,
+            'key_url': generated_test.answer_key_file.url,
+            'message': f'Тест и ключ за тема {generated_test.topic.num} са успешно генерирани'
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+# api_views.py
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def generate_test_docx_api(request, theme_id, school_id):
+    """
+    Генерира тест и ключ за конкретна тема и училище
+
+    GET параметри:
+    - theme_id: ID на темата
+    - school_id: ID на училището (по избор, ако не е предоставено, взема училището на потребителя)
+    """
+
+    try:
+        generated_test = generate_test_and_key(int(theme_id), int(school_id))
+
+        return Response({
+            'success': True,
+            'test_url': request.build_absolute_uri(generated_test.test_file.url),
+            'key_url': request.build_absolute_uri(generated_test.answer_key_file.url),
+            'generation_date': generated_test.generation_date
+        })
+    except Exception as e:
+        return Response({'success': False, 'error': str(e)}, status=500)

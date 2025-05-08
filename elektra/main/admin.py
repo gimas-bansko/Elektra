@@ -1,6 +1,10 @@
 from django.contrib import admin
 from .models import *
 
+from django.contrib import messages
+from .document_generator import generate_test_and_key
+
+
 admin.site.register(UserProfile)
 
 # Персонализиран филтър за Specialty
@@ -51,4 +55,31 @@ class LogV(admin.ModelAdmin):
     list_filter = ('user_name', 'action', )
     ordering = ('-date', )
 
-admin.site.register(GeneratedTest)
+
+@admin.register(GeneratedTest)
+class GeneratedTestAdmin(admin.ModelAdmin):
+    list_display = ('topic', 'school', 'generation_date')
+    list_filter = ('topic', 'school')
+    actions = ['regenerate_documents']
+
+    def regenerate_documents(self, request, queryset):
+        success_count = 0
+        for gen_test in queryset:
+            try:
+                generate_test_and_key(gen_test.topic.id, gen_test.school.id)
+                success_count += 1
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f'Грешка при регенериране на тест за {gen_test}: {e}',
+                    messages.ERROR
+                )
+
+        if success_count:
+            self.message_user(
+                request,
+                f'Успешно регенерирани {success_count} теста',
+                messages.SUCCESS
+            )
+
+    regenerate_documents.short_description = "Регенерирай избраните тестове"

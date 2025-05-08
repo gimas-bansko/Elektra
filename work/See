@@ -1,0 +1,91 @@
+from docxtpl import DocxTemplate, InlineImage
+from docx.shared import Mm
+import requests
+import os
+
+
+def doc_test(num, context):
+    def insert_image(key_name, list_name):
+        if item[key_name] > 0:
+            for task in item[list_name]:
+                if (task['type'] == 2) or (task['type'] == 4):
+                    print(task['id'], ': ', task['picture'])
+                    image_head, image_tail = os.path.split(task['picture'])
+                    image_tail = 'C:/DZI_2024/DIKI_Print/TestMaker/main/pics/'+image_tail
+                    f = open(image_tail, 'wb')
+                    f.write(requests.get(task['picture']).content)
+                    f.close()
+
+                    task['image'] = InlineImage(doc, image_descriptor=image_tail, width=Mm(90))
+
+    def extend_context():
+        etest = []
+
+        def add_task(key_name, list_name, points):
+            if item_local[key_name] > 0:
+                for task in item_local[list_name]:
+                    task['points'] = points
+                    etest.append(task)
+
+        for item_local in context['test']:
+            # print(item)
+            add_task('knowledge', 'tasks_knowledge', 2)
+            add_task('comprehension', 'tasks_comprehension', 4)
+            add_task('application', 'tasks_application',6)
+            add_task('analysis', 'tasks_analysis', 8)
+        context['etest'] = etest
+
+    doc = DocxTemplate("C:/DZI_2024/DIKI_Print/TestMaker/main/docs/test_template.docx")
+
+    for item in context['test']:
+        insert_image('knowledge','tasks_knowledge')
+        insert_image('analysis','tasks_analysis')
+        insert_image('application','tasks_application')
+        insert_image('comprehension','tasks_comprehension')
+
+    extend_context()
+    doc.render(context)
+    doc.save("C:/DZI_2024/DIKI_Print/TestMaker/main/themes/THEME_"+num+"_TEST.docx")
+
+
+def doc_keys(num, context):
+    def make_key(key_name, list_name, points):
+        if item[key_name]>0:
+            for task in item[list_name]:
+                # определям броя отговори и броя верни отговори
+                numOkBase = 0   # брой верни отговори по ключ
+                numOptions = len(task['options'])  #  брой отговори към въпроса
+                task['points'] = points
+                if task['type'] < 3: #  затворен отговор
+                    for option in task['options']:
+                        if option['checked']:
+                            numOkBase += 1
+                    if numOkBase == 1:
+                        key_list = [f'при посочен верен отговор - {points} точки;',
+                                        'във всички останали случаи - 0 точки',
+                                        ]
+                    else:
+                        key_list = [f'при посочен 1 верен отговор - {round(points*(1/numOkBase), 2)} точки;',]
+                        for i in range(2,numOkBase):
+                            key_list.append(f'при посочен {i} верни отговора - {round(points*(i/numOkBase), 2)} точки;')
+                        key_list.append(f'при посочени {numOkBase} верни отговора - {points} точки')
+                        key_list.append(f'при посочени повече от {numOkBase} отговора - 0 точки')
+                        key_list.append('във всички останали случаи  - 0 точки')
+                    task['key_list'] = key_list
+                elif task['type']<5:
+                    s = round(points*(1/numOptions), 2)
+                    p = ' точки'
+                    if s == 1.00:
+                        p = ' точка'
+                    task['ok'] = str(s)+p
+
+    doc = DocxTemplate("C:/DZI_2024/DIKI_Print/TestMaker/main/docs/keys_template.docx")
+
+    for item in context['test']:
+        make_key('knowledge','tasks_knowledge', 2)
+        make_key('analysis','tasks_analysis', 8)
+        make_key('application','tasks_application', 6)
+        make_key('comprehension','tasks_comprehension', 4)
+
+    doc.render(context)
+    doc.save("C:/DZI_2024/DIKI_Print/TestMaker/main/themes/THEME_"+num+"_KEYS.docx")

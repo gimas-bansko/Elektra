@@ -90,5 +90,9 @@ urlpatterns = [
     path('api/tasks/<int:task_id>/change-theme-item/', views.change_task_theme_item, name='change_task_theme_item'),
     # Тест за писмения тест
     path('api/generate_test/<int:theme_id>/<int:school_id>/', views.generate_test_api, name='generate_test_api'),
+    # Генериране на писмен тест
+    path('generate-test/<int:theme_id>/', views.generate_documents_view, name='generate_documents'),
+    # Ако използвате API:
+    path('api/generate-test/<int:theme_id>/<int:school_id>/', views.generate_test_docx_api, name='api_generate_test_test'),
 
 ]

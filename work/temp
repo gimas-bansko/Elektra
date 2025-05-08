@@ -1,0 +1,15 @@
+Сега	                            Трябва да стане	                        Коментар
+{% for task in etest %}	            {% for question in questions %}	        Основен цикъл за преминаване през всички въпроси
+{{ tsk.num }}	                    {{ question.num }}	                    Номер на въпроса
+{{ tsk.tBt }}	                    {{ question.text }}	                    Текст на въпроса
+{{ tsk.img }}	                    {{ question.image }}	                Изображение към въпроса
+task.type	                        question.type	                        Тип на въпроса
+task.options	                    question.options	                    Опции/отговори към въпроса
+{{ tin.lding_!hr }}	                {{ option.leading_char }}   	        Буква/номер за означаване на опция
+{{ tin.tBt }}	                    {{ option.text }}	                    Текст на опцията/отговора
+{{ tin.vlu_nm }}	                {{ option.value_name }}	                Име на стойността на опцията
+{% for option in task.options %}	{% for option in question.options %}	Цикъл за преминаване през всички опции
+{{ thm_num }}	                    {{ thm_num }}	                        Остава същото (добавя се в контекста)
+{{ thm_nm }}	                    {{ thm_nm }}	                        Остава същото (добавя се в контекста)
+{{ tsks_num }}	                    {{ tsks_num }}	                        Остава същото (добавя се в контекста)
+
