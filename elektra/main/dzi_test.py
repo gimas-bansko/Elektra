@@ -2,7 +2,7 @@ import random
 from .models import Theme, ThemeItem, Task, TaskItem
 
 
-def generate_test(theme_id, user_school_id):
+def generate_test(theme_id, user_school_id, shuffle):
     """
     Generate a test for a given theme, applying the same rules as the JS startTest method.
     Returns a list of questions with options, randomized as per methodology.
@@ -69,24 +69,25 @@ def generate_test(theme_id, user_school_id):
                         "id": q.context.id,
                         "text": q.context.text,
                         "textWrap": q.context.textWrap,
+                        "picture": q.context.picture.url if q.context.picture else '',
                     }
-                    # Добавяме URL на изображението, ако има такова
-                    if q.context.picture:
-                        context_data["picture"] = q.context.picture.url
 
                 test.append({
                     "id": q.id,
                     "text": q.text,
                     "type": q.type,
                     "level": q.level,
-                    "options": options,
                     "group": q.group,
                     "context": context_data,  # Прилагаме пълната информация за контекста
-                    # Добавете други полета, ако са необходими
+                    "picture": q.picture.url if q.picture else '',
+                    "textWrap": q.textWrap,
+                    "options": options,
                 })
 
     # Final shuffle (Fisher–Yates)
-    random.shuffle(test)
+    if shuffle:
+        random.shuffle(test)
+
     # Numbering (optional, for frontend ease)
     for idx, q in enumerate(test, start=1):
         q['num'] = idx

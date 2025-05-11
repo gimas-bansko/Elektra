@@ -943,7 +943,7 @@ def specialty_detail(request, specialty_id):
             specialty.profession_name = data.get('profession_name', specialty.profession_name)
             specialty.specialty_num = data.get('specialty_num', specialty.specialty_num)
             specialty.specialty_name = data.get('specialty_name', specialty.specialty_name)
-            specialty.specialty_level = data.get('specialty_level', specialty.specialty_level)
+            specialty.level = data.get('level', specialty.level)
 
             specialty.save()
 
@@ -956,7 +956,7 @@ def specialty_detail(request, specialty_id):
                 'profession_name': specialty.profession_name,
                 'specialty_num': specialty.specialty_num,
                 'specialty_name': specialty.specialty_name,
-                'specialty_level': specialty.specialty_level
+                'level': specialty.level
             }
 
             # Добавяне на nip, ако съществува
@@ -1409,17 +1409,21 @@ def generate_documents_view(request, theme_id):
 # api_views.py
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def generate_test_docx_api(request, theme_id, school_id):
+def generate_test_docx_api(request, theme_id, school_id, rnd):
     """
     Генерира тест и ключ за конкретна тема и училище
 
     GET параметри:
     - theme_id: ID на темата
     - school_id: ID на училището (по избор, ако не е предоставено, взема училището на потребителя)
+    - rnd: Разбъркаване по случаен начин 0-не, 1-да
     """
 
     try:
-        generated_test = generate_test_and_key(int(theme_id), int(school_id))
+        shuffle = False
+        if rnd == 0:
+            shuffle = True
+        generated_test = generate_test_and_key(int(theme_id), int(school_id), shuffle)
 
         return Response({
             'success': True,
@@ -1429,3 +1433,14 @@ def generate_test_docx_api(request, theme_id, school_id):
         })
     except Exception as e:
         return Response({'success': False, 'error': str(e)}, status=500)
+
+
+# Списък генерирани писмени тестове за училище/специалност
+class GeneratedTestListBySpecSchoolAPIView(APIView):
+    def get(self, request, spec_id, school_id):
+        queryset = GeneratedTest.objects.filter(
+            school_id=school_id,
+            topic__specialty_id=spec_id,
+        ).order_by('topic__num')  # Сортиране по theme_num във възходящ ред
+        serializer = GeneratedTestSerializer(queryset, many=True)
+        return Response(serializer.data)

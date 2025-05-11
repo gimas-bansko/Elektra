@@ -93,6 +93,9 @@ urlpatterns = [
     # Генериране на писмен тест
     path('generate-test/<int:theme_id>/', views.generate_documents_view, name='generate_documents'),
     # Ако използвате API:
-    path('api/generate-test/<int:theme_id>/<int:school_id>/', views.generate_test_docx_api, name='api_generate_test_test'),
+    path('api/generate-test/<int:theme_id>/<int:school_id>/<int:rnd>/', views.generate_test_docx_api, name='api_generate_test_test'),
+    # Списък генерирани писмени тестове за училище/специалност
+    path('api/generated-tests/<int:spec_id>/<int:school_id>/', views.GeneratedTestListBySpecSchoolAPIView.as_view(),
+         name='generated-test-list-by-spec-school')
 
 ]

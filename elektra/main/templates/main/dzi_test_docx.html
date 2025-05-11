@@ -54,14 +54,14 @@
                                                 <li role="presentation">
                                                     <a href="#" class="tab-button active" id="download-tab" data-bs-toggle="tab"
                                                        data-bs-target="#download" role="tab" aria-controls="profile"
-                                                       aria-selected="true" @click="activeTab=0">
+                                                       aria-selected="true" @click="setActiveTab(0)">
                                                         <span class="title">Преглед/Изтегляне</span>
                                                     </a>
                                                 </li>
                                                 <li role="presentation">
                                                     <a href="#" class="tab-button" id="password-tab" data-bs-toggle="tab"
                                                        data-bs-target="#password" role="tab" aria-controls="password"
-                                                       aria-selected="false" @click="activeTab=1">
+                                                       aria-selected="false" @click="setActiveTab(1)">
                                                         <span class="title">Генериране</span>
                                                     </a>
                                                 </li>
@@ -72,12 +72,53 @@
                                             <div class="tab-pane fade active show" id="download" role="tabpanel" aria-labelledby="password-tab">
                                                 <!-- списък на темите, подтемите и матриците за изпитен тест -->
                                                 <div class="content-page">
-                                                    <div class="chat-box ai-speech bg-flashlight mt--10">
+                                                    <div class="chat-box ai-speech bg-flashlight mt--10" v-for="test in generatedTests">
                                                         <div class="inner top-flashlight leftside light-xl">
                                                             <!-- Заглавна част - параметри на точката -->
                                                             <div class="chat-section generate-section">
                                                                 <div class="chat-content">
-                                                                    <h6 class="title">ТЕМА 1. fafasdf df sdfsadf sdf sad </h6>
+                                                                    <h6 class="title">ТЕМА [[test.theme_num]]. [[test.theme_title]] </h6>
+                                                                    <!-- Добавете този блок за показване на файла -->
+                                                                    <div class="row">
+                                                                        <div class="col-3">
+                                                                            <label>Дата/час:&nbsp;&nbsp;</label><br>
+                                                                            <span class="file-name">[[ formatDate(test.generation_date) ]]</span>&nbsp;&nbsp;
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <div class="file-display">
+                                                                                <div class="file-info">
+                                                                                    <label>Тест:&nbsp;&nbsp;</label>
+                                                                                    <a :href="test.test_file" target="_blank"
+                                                                                       class="react-btn btn-default btn-small btn-border"
+                                                                                       style="font-size: 12px; color: #0600ff; border-color: rgb(10 88 202 / 29%);">
+                                                                                        Преглед&nbsp;&nbsp;
+                                                                                    </a>&nbsp;&nbsp;
+                                                                                    <a :href="test.test_file" download
+                                                                                       class="react-btn btn-default btn-small btn-border"
+                                                                                       style="font-size: 12px; color: green; border-color: #013401;">
+                                                                                        Изтегляне
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-5">
+                                                                            <div class="file-display">
+                                                                                <div class="file-info">
+                                                                                    <label>Ключ към теста:&nbsp;&nbsp;</label>
+                                                                                    <a :href="test.answer_key_file" target="_blank"
+                                                                                       class="react-btn btn-default btn-small btn-border"
+                                                                                       style="font-size: 12px; color: #0600ff; border-color: rgb(10 88 202 / 29%);">
+                                                                                        Преглед&nbsp;&nbsp;
+                                                                                    </a>&nbsp;&nbsp;
+                                                                                    <a :href="test.answer_key_file" download
+                                                                                       class="react-btn btn-default btn-small btn-border"
+                                                                                       style="font-size: 12px; color: green; border-color: #013401;">
+                                                                                        Изтегляне
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                </div>
                                                             </div>
                                                         </div>
@@ -94,30 +135,19 @@
                                                         <div class="inner">
                                                             <div class="chat-section">
                                                                 <div class="chat-content">
-                                                                    <h6 class="title mb--20">Генериране на писмени (формат
+                                                                    <h4 class="title mb--20">Генериране на писмени (формат
                                                                         MS Word) тестове и ключове към тях по темите
-                                                                        от НИП за избраната специалност</h6>
+                                                                        от НИП за избраната специалност</h4>
                                                                     <div class="rainbow-pricing-detailed-area">
                                                                         <div class="row mb--20">
                                                                             <div class="col-lg-6 text-left">
                                                                                 <div class="rbt-checkbox-wrapper">
                                                                                     <input id="order"
-                                                                                           type="checkbox"  :checked="randomOrder">
+                                                                                           type="checkbox" v-model="randomOrder">
                                                                                     <label for="order">
                                                                                         групирай въпросите по точки от темата
                                                                                     </label>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6 text-right" style="text-align: right;">
-                                                                                <button class="react-btn btn-default btn-small btn-border"
-                                                                                        @click="">
-                                                                                        Размаркирай всички
-                                                                                </button>
-                                                                            &nbsp;&nbsp;
-                                                                                <button class="react-btn btn-default btn-small btn-border"
-                                                                                        @click="setAllChecked(true)">
-                                                                                        Маркирай всички
-                                                                                </button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -136,10 +166,12 @@
                                                             <div class="chat-content">
                                                                 <div class="rbt-checkbox-wrapper" style="margin-bottom: 0px;">
                                                                     <input :id="'t'+theme.id"
-                                                                           type="checkbox"  :checked="theme.checked">
+                                                                           type="checkbox"  v-model="theme.checked">
                                                                     <label :for="'t'+theme.id">
                                                                         Тема [[theme.num]]. [[theme.title]]
                                                                     </label>
+                                                                    <span class="color-grade-6 button-margins" v-if="theme.status=='success'">ОК</span>
+                                                                    <span class="color-grade-2 button-margins" v-if="theme.status=='error'">Грешка</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -153,18 +185,39 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Светла/тъмна тема -->
+                    <!-- фиксиран футер на работната област -->
                     <div class="rbt-static-bar collapse-width">
-                        <ul class="staticbar-btn-grp d-md-flex" v-if="activeTab==1">
+                        <!-- Бутони за генериране -->
+                        <ul class="staticbar-btn-grp d-md-flex" v-if="(activeTab==1) && (generatingMode==0)">
                             <li>
                                 <button class="btn-default btn-small btn-border"
-                                        @click="generate()">
+                                        @click="generateAllTests">
                                     <span>Генерирай</span>
                                 </button>
                             </li>
+                            <li>
+                                <button class="btn-default btn-small btn-border"
+                                        @click="setAllChecked(false)">
+                                        Размаркирай всички
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn-default btn-small btn-border"
+                                        @click="setAllChecked(true)">
+                                        Маркирай всички
+                                </button>
+                            </li>
                         </ul>
-
-                        <!-- End Header Top Area  -->
+                        <ul class="staticbar-btn-grp d-md-flex" v-if="(activeTab==1) && (generatingMode==2)">
+                            <li>
+                                <button class="btn-default btn-small btn-border"
+                                        @click="setActiveTab(1)">
+                                    <span>Изчисти</span>
+                                </button>
+                            </li>
+                        </ul>
+                        <span v-if="(activeTab==1) && (generatingMode==1)">Генериране ...</span>
+                        <!-- Светла/тъмна тема -->
                         <div id="my_switcher" class="my_switcher">
                             <ul>
                                 <li>

@@ -369,7 +369,7 @@ def generated_test_path(instance, filename):
     Функция, която определя пътя и името на файла за GeneratedTest.test_file
     """
     ext = filename.split('.')[-1]
-    new_filename = f"test_{instance.id}_{instance.topic.num}.{ext}"
+    new_filename = f"test_{instance.topic_id}_{instance.school_id}.{ext}"
     return f"generated_tests/{new_filename}"
 
 
@@ -378,7 +378,7 @@ def answer_key_path(instance, filename):
     Функция, която определя пътя и името на файла за GeneratedTest.answer_key_file
     """
     ext = filename.split('.')[-1]
-    new_filename = f"key_{instance.id}_{instance.topic.num}.{ext}"
+    new_filename = f"key_{instance.topic_id}_{instance.school_id}.{ext}"
     return f"generated_keys/{new_filename}"
 
 
@@ -391,7 +391,7 @@ class GeneratedTest(models.Model):
                                  help_text='MS Word файл с теста')
     answer_key_file = models.FileField('Ключ за теста', upload_to=answer_key_path,
                                        help_text='MS Word файл с ключа за теста')
-    generation_date = models.DateTimeField('Дата на генериране', auto_now_add=True)
+    generation_date = models.DateTimeField('Дата на генериране', auto_now=True)
 
     def __str__(self):
         return f"Тест по тема {self.topic.num} за {self.school.short_name} ({self.generation_date.strftime('%d.%m.%Y')})"

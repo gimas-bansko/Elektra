@@ -6,6 +6,7 @@ from docxtpl import DocxTemplate, InlineImage
 from docx.shared import Mm
 from PIL import Image
 from django.conf import settings
+from pprint import pprint
 
 
 def get_media_path(relative_path):
@@ -51,7 +52,7 @@ def get_media_path(relative_path):
     return None
 
 
-def make_test_doc(questions, template_path=None, output_filename=None):
+def make_test_doc(questions, common_data, template_path=None, output_filename=None):
     """
     Създава документ с тест на базата на шаблон
 
@@ -63,6 +64,13 @@ def make_test_doc(questions, template_path=None, output_filename=None):
     Returns:
         Път към създадения файл
     """
+    doc_context = {
+        'theme': common_data['theme'],
+        'school': common_data['school'],
+        'specialty': common_data['specialty'],
+        'year_str': common_data['year_str'],
+    }
+
     # Ако не е предоставен шаблон, използваме подразбиращ се от папката static/docs
     if not template_path:
         template_path = os.path.join(settings.BASE_DIR, 'main', 'static', 'docs', 'test_template.docx')
@@ -78,15 +86,25 @@ def make_test_doc(questions, template_path=None, output_filename=None):
     # Временна директория за изображения
     temp_dir = tempfile.mkdtemp()
 
-    # Обработваме изображенията за контексти и въпроси
+    # Обработваме изображенията
     temp_files = []
+
+    #  Лого на училището
+    logo_rel_path = common_data['school']['logo']
+    if logo_rel_path:  # има ли лого?
+        logo_abs_path = get_media_path(logo_rel_path)
+        if os.path.exists(logo_abs_path):
+            doc_context['school_logo'] = InlineImage(doc, logo_abs_path, width=Mm(19))
+        else:
+            doc_context['school_logo'] = ''
+    else:
+        doc_context['school_logo'] = ''
 
     for q in questions:
         # Обработка на изображение на въпроса
         if q.get('picture'):
             try:
                 temp_img_path = os.path.join(temp_dir, f"question_{q['id']}.png")
-
                 # Получаваме абсолютния път към изображението
                 if q['picture'].startswith(('http://', 'https://')):
                     # За URL използваме requests
@@ -105,8 +123,10 @@ def make_test_doc(questions, template_path=None, output_filename=None):
                         print(f"Изображението на въпроса не е намерено: {q['picture']}")
                         q['image'] = None
                         continue
-
-                q['image'] = InlineImage(doc, temp_img_path, width=Mm(100))
+                img_width = 90
+                if q['textWrap'] in {'n','s'}:
+                    img_width *= 2
+                q['image'] = InlineImage(doc, temp_img_path, width=Mm(img_width))
                 temp_files.append(temp_img_path)
             except Exception as e:
                 print(f"Грешка при обработка на изображението на въпроса: {e}")
@@ -134,8 +154,10 @@ def make_test_doc(questions, template_path=None, output_filename=None):
                         print(f"Изображението на контекста не е намерено: {context['picture']}")
                         context['image'] = None
                         continue
-
-                context['image'] = InlineImage(doc, temp_img_path, width=Mm(120))
+                img_width = 90
+                if context['textWrap'] in {'n','s'}:
+                    img_width *= 2
+                context['image'] = InlineImage(doc, temp_img_path, width=Mm(img_width))
                 temp_files.append(temp_img_path)
             except Exception as e:
                 print(f"Грешка при обработка на изображението на контекста: {e}")
@@ -162,15 +184,11 @@ def make_test_doc(questions, template_path=None, output_filename=None):
     questions_sorted = sorted(questions, key=lambda x: int(x['num']) if isinstance(x['num'], str) else x['num'])
 
     # Създаваме контекст за шаблона
-    context = {
-        'questions': questions_sorted,
-        'theme_num': '1**',  # Заменете с реалните данни от вашата система
-        'theme_name': 'Име на темата**',  # Заменете с реалните данни от вашата система
-        'tasks_num': len(questions)
-    }
-    # Рендерираме шаблона
-    doc.render(context)
+    doc_context['questions'] = questions_sorted
+    doc_context['tasks_num'] = len(questions)
 
+    # Рендерираме шаблона
+    doc.render(doc_context)
     # Записваме резултата
     doc.save(output_filename)
 
@@ -190,7 +208,7 @@ def make_test_doc(questions, template_path=None, output_filename=None):
     return output_filename
 
 
-def make_key_doc(questions, template_path=None, output_filename=None):
+def make_key_doc(questions, common_data, template_path=None, output_filename=None):
     """
     Създава документ с отговори (ключ) на базата на шаблон
 
@@ -202,6 +220,14 @@ def make_key_doc(questions, template_path=None, output_filename=None):
     Returns:
         Път към създадения файл
     """
+
+    doc_context = {
+        'theme': common_data['theme'],
+        'school': common_data['school'],
+        'specialty': common_data['specialty'],
+        'year_str': common_data['year_str'],
+    }
+
     # Ако не е предоставен шаблон, използваме подразбиращ се от папката static/docs
     if not template_path:
         template_path = os.path.join(settings.BASE_DIR, 'main', 'static', 'docs', 'keys_template.docx')
@@ -213,6 +239,17 @@ def make_key_doc(questions, template_path=None, output_filename=None):
 
     # Зареждаме шаблона
     doc = DocxTemplate(template_path)
+
+    #  Лого на училището
+    logo_rel_path = common_data['school']['logo']
+    if logo_rel_path:  # има ли лого?
+        logo_abs_path = get_media_path(logo_rel_path)
+        if os.path.exists(logo_abs_path):
+            doc_context['school_logo'] = InlineImage(doc, logo_abs_path, width=Mm(19))
+        else:
+            doc_context['school_logo'] = ''
+    else:
+        doc_context['school_logo'] = ''
 
     # Тук е КЛЮЧОВИЯТ ФИКс:
     # Уверяваме се, че всички числови стойности са числа, а не низове
@@ -231,17 +268,46 @@ def make_key_doc(questions, template_path=None, output_filename=None):
                 if 'num' in option and isinstance(option['num'], str):
                     option['num'] = int(option['num'])
 
+# ------------------------------------------------
+        # определям броя отговори и броя верни отговори
+        numOkBase = 0   # брой верни отговори по ключ
+        numOptions = len(q['options'])  #  брой отговори към въпроса
+        q['points'] = q['level']*2
+        if q['type'] < 3: #  затворен отговор
+            for option in q['options']:
+                if option['checked']:
+                    numOkBase += 1
+            if numOkBase == 1:
+                key_list = [f'при посочен верен отговор - {q["points"]} точки;',
+                                'във всички останали случаи - 0 точки',
+                                ]
+            else:
+                key_list = [f'при посочен 1 верен отговор - {round(q["points"]*(1/numOkBase), 2)} точки;',]
+                for i in range(2,numOkBase):
+                    key_list.append(f'при посочен {i} верни отговора - {round(q["points"]*(i/numOkBase), 2)} точки;')
+                key_list.append(f'при посочени {numOkBase} верни отговора - {q["points"]} точки')
+                key_list.append(f'при посочени повече от {numOkBase} отговора - 0 точки')
+                key_list.append('във всички останали случаи  - 0 точки')
+            q['key_list'] = key_list
+        elif q['type']<5:
+            s = round(q["points"]*(1/numOptions), 2)
+            p = ' точки'
+            if s == 1.00:
+                p = ' точка'
+            q['ok'] = str(s)+p
+
+# ------------------------------------------------
+
     # Сортираме въпросите по номер (ако има такъв)
     questions_sorted = sorted(questions, key=lambda x: int(x['num']) if isinstance(x['num'], str) else x['num'])
 
     # Създаваме контекст за шаблона
-    context = {
-        'questions': questions_sorted,
-        'theme_num': '1',  # Заменете с реалните данни от вашата система
-        'theme_num': 'Име на темата'  # Заменете с реалните данни от вашата система
-    }
+    doc_context['questions'] = questions_sorted
+    doc_context['tasks_num'] = len(questions)
+
     # Рендерираме шаблона
-    doc.render(context)
+    pprint(doc_context)
+    doc.render(doc_context)
 
     # Записваме резултата
     doc.save(output_filename)

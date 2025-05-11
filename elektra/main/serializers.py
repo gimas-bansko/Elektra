@@ -203,7 +203,8 @@ class SpecialtySerializer(serializers.ModelSerializer):
             'profession_name',
             'specialty_num',
             'specialty_name',
-            'nip'
+            'nip',
+            'level'
         ]
 
     def to_representation(self, instance):
@@ -309,3 +310,18 @@ class SchoolLogoSerializer(serializers.ModelSerializer):
         item = School.objects.update_or_create(id=validated_data.get("id"), defaults={'logo': image})
         return item
 
+# Списък генерирани писмени тестове за училище/специалност
+class GeneratedTestSerializer(serializers.ModelSerializer):
+    theme_num = serializers.IntegerField(source='topic.num', read_only=True)
+    theme_title = serializers.CharField(source='topic.title', read_only=True)
+
+    class Meta:
+        model = GeneratedTest
+        fields = [
+            'id',
+            'test_file',
+            'answer_key_file',
+            'generation_date',
+            'theme_num',
+            'theme_title',
+        ]

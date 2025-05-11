@@ -8,3 +8,57 @@ media_files/
 ├── templates/      # за съхранение на Word шаблони
 ├── generated/      # за съхранение на генерирани документи
 └── temp/           # за временни файлове при работа с изображения
+
+
+
+           'tasks_application': 3,
+           'tasks_comprehension': 10,
+           'tasks_knowledge': 13,
+           'tasks_total': 28,
+           'title': 'Многоядрени процесори на Intel'}}
+make_test_doc(questions, common_data, D:\ggb\TestSystem\Elektra\elektra\main\static\docs\test_template.docx, C:\Users\offic\AppData\Local\Temp\tmp3m5rcyi0\test_2_1.docx)
+{'theme': <Theme: Тема 2. Многоядрени процесори на Intel>, 'school': <School: ПГЕЕ гр. Банско>}
+[10/May/2025 22:25:41] "GET /api/generate-test/2/1/0/ HTTP/1.1" 200 215
+[10/May/2025 22:25:43] "GET /api/generated-tests/1/1/ HTTP/1.1" 200 5336
+D:\ggb\TestSystem\Elektra\elektra\main\document_generator.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 10, 2025 - 22:27:40
+Django version 4.2.17, using settings 'elektra.settings'
+Starting development server at http://127.0.0.1:8008/
+Quit the server with CTRL-BREAK.
+
+generate_test_and_key(2, 1, True)
+{'school': {'_state': <django.db.models.base.ModelState object at 0x000001DB9F297250>,
+            'address': 'България,  Банско 2770,  ул."България" 23',
+            'boss': 'инж. Сашка Тодорова',
+            'city': 'гр. Банско',
+            'email': 'info-102015@edu.mon.bg',
+            'full_name': 'ПРОФЕСИОНАЛНА ГИМНАЗИЯ ПО ЕЛЕКТРОНИКА И ЕНЕРГЕТИКА',
+            'id': 1,
+            'logo': 'sys_pics/school_logo_1.png',
+            'phone_number': '0749/8-84-02',
+            'short_name': 'ПГЕЕ'},
+ 'specialty': {'_state': <django.db.models.base.ModelState object at 0x000001DB9F297700>,
+               'id': 1,
+               'level': 3,
+               'nip': 'docs/nip_5230501.pdf',
+               'profession_name': 'Техник на компютърни системи',
+               'profession_num': '523050',
+               'professional_field_name': 'Електроника, автоматика, '
+                                          'комуникационна и компютърна техника',
+               'professional_field_num': '523',
+               'specialty_name': 'Компютърна техника и технологии',
+               'specialty_num': '5230501'},
+ 'theme': {'_state': <django.db.models.base.ModelState object at 0x000001DB9F27AE80>,
+           'id': 2,
+           'num': 2,
+           'specialty_id': 1,
+           'tasks_analysis': 2,
+           'tasks_application': 3,
+           'tasks_comprehension': 10,
+           'tasks_knowledge': 13,
+           'tasks_total': 28,
+           'title': 'Многоядрени процесори на Intel'}}
