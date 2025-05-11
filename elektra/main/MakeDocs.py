@@ -306,7 +306,6 @@ def make_key_doc(questions, common_data, template_path=None, output_filename=Non
     doc_context['tasks_num'] = len(questions)
 
     # Рендерираме шаблона
-    pprint(doc_context)
     doc.render(doc_context)
 
     # Записваме резултата
